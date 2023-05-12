@@ -1,0 +1,288 @@
+{% load static %}
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        EPC&amp;I - complete and verified news, views and opinions on construction and infrastructure development
+    </title>
+    <style>
+        
+        a{
+            text-decoration: none;
+            color: black;
+            background-color: white;
+            border-color: aqua;
+            border-style: solid;
+            border-width: 2px;
+            padding: 5% 5% 5% 5%;
+            margin: 7% 7% 7% 7%;
+            border-radius: 20px;
+            overflow: hidden;
+           display: block;
+        }
+        a:hover{
+            color: blue;
+            background-color:aqua;
+            border-radius: 5px;
+            transition-duration: 0.5s;
+        }
+        .Navbar{
+            position:fixed;
+            margin:10px; 
+            padding: 8px; 
+            background-color: chartreuse; 
+            color: chartreuse;
+            border-radius: 20px; 
+            width: 125px; 
+            height: 39px; 
+            overflow: hidden;
+            opacity: 0.8;
+            z-index: 19;
+            display: block;
+            writing-mode:vertical-tb;
+        }
+        .Navbar:hover{
+            height:300px;
+            border-radius: 10px;
+            transition-duration: 1s;
+        }
+        .next{
+            height: 110%;
+            margin-left: -10%;
+            opacity: 0;
+            transition: 1s;
+        }
+        .previous{
+            height: 90%;
+            margin-left: 0;
+            opacity: 1;
+            transition: 1s;
+        }
+        @keyframes mymove{
+    from{margin-left: -30%; opacity: 0;}
+    to{margin-left: 0%; opacity: 0.5;}
+        }
+        @keyframes intromove{
+            from{height: 2500px; width: 3000px; opacity: 2; margin-top: -75%;}
+            to{height: 1230px; width: 1830px; opacity: 0.6; margin-top: -25%;}
+        }
+        footer {
+            position:fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            
+  text-align: center;
+  padding: 3px;
+  background-color: rgba(17, 153, 124, 0.596);
+  color: white;
+}
+    </style>
+    
+</head>
+<body >
+        <canvas id="Canvas1" style="height: 1250px;width: 1850px; position: fixed; z-index: -8; opacity: 1;background-image: url('static/epcandiapp/Screenshot%20(463).png');filter: blur(3px);"></canvas>
+       <div style="display: flex; justify-content: center; "> {% load static %}<img src="{% static "epcandiapp/Screenshot (463).png" %}" alt="" style="height: 1230px;width: 1830px; position: fixed; z-index: -7; opacity: 0.6; margin-top: -25%;  animation: intromove 3s;">
+       </div>
+<script>
+    var con=document.getElementById("Canvas1");
+    con.blur();
+    var ctx=con.getContext("2d");
+    console.log(ctx);
+    con.width=window.innerWidth;
+    con.height=window.innerHeight;
+    console.log(con)
+    var i=0;
+    function North_light(ycor,diry,color)
+    {
+        this.ycor=ycor;
+        this.diry=diry;
+        this.color=color;
+    }
+    var colorArray=["rgba(79,255,176,0.1)","rgba(41,171,135,0.1)","rgba(1,21,111,0.1)","rgba(0,166,147,0.1)","rgba(80,200,120,0.1)","rgba(57,255,20,0.1)","rgba(151,252,151,0.1)","rgba(0,73,83,0.1)","rgba(172,225,175,0.1)","rgba(0,240,168,0.1)","rgba(0,86,59,0.1)"];
+
+    var lightArray=[];
+    for(var j=0;j<=300;j++)
+    {
+        var ycor=i;
+        var color=colorArray[Math.round(Math.random()*10)]
+        var diry=0.001;
+        i+=0.02;
+        var light1=new North_light(ycor,diry,color);
+        lightArray.push(light1);
+    }
+North_light.prototype.animate=function(){
+
+        ctx.beginPath();
+        var grd = ctx.createRadialGradient(75,50,5,90,60,100);
+        grd.addColorStop(0,this.color);
+        grd.addColorStop(0.5,"rgba(14,243,197,0.2)");
+        grd.addColorStop(1,this.color);
+        ctx.fillStyle=grd;
+        ctx.fillRect(300+(50*(this.ycor-3)*(this.ycor-1)*(this.ycor-5)*(this.ycor-2)*(this.ycor-4)),40*this.ycor,50,100);
+        this.ycor+=this.diry;
+        if(this.ycor<-5.2 || 300+(50*(this.ycor-3)*(this.ycor-1)*(this.ycor-5)*(this.ycor-2)*(this.ycor-4))>window.innerWidth)
+            {
+                this.diry*=-1;
+            }
+        }
+        function main(){
+            ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+            for(var j=0;j<lightArray.length;j++)
+            {
+                lightArray[j].animate();
+            }
+        }
+        setInterval(main,100);
+    
+</script>
+    <div class="Navbar">
+             
+            <a href="/" style="text-decoration:none ;">Home</a>
+           
+            <a href="/News" style="text-decoration:none ;">News</a>
+            
+            <a href="/Articles" style="text-decoration:none ;">Articles</a>
+            
+            <a href="/Equipment" style="text-decoration:none ;">Equipment News</a>
+            
+            <a href="Interview" style="text-decoration:none ;">Interview</a>
+        
+    </div>
+    <div class="Main">
+        <center>
+    <img src="https://the-media-ant.mo.cloudinary.net/medias/55b7dcc08ead0e4b288b4581/1565801070391/55b7dcc08ead0e4b288b4581_logo.jpg?tx=w_350" alt="" style=" opacity: 0; animation: mymove 1s; animation-delay: 3s; animation-fill-mode: forwards;">
+        </center>
+    <p style="padding:2%; color: black; background-color: azure; margin: 10px; opacity: 0; animation: mymove 1s; animation-delay: 3.2s; animation-fill-mode: forwards;"><b>A must-read magazine for complete and verified news, views and opinions on construction and infrastructure development. </b></p>
+    {% block content %}
+    <h1 style="opacity: 0; animation: mymove 1s; animation-delay: 3.4s; animation-fill-mode: forwards;">
+        Latest News
+            </h1>
+    <div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0; margin-top: 10px; animation: mymove 1s; animation-delay: 3.6s; animation-fill-mode: forwards;">
+        
+            
+        <p>
+        <br>
+        {% for i in News %}
+        {% if i.id == 1 %}
+        {{ i.heading }}
+        <br>
+       {{ i.news }}
+       {% endif %}
+       {% endfor %}
+        </p>        
+    </div>
+    <h1 style="opacity: 0; animation: mymove 1s; animation-delay: 3.8s; animation-fill-mode: forwards;">
+        Latest Article
+            </h1>
+    <div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0; margin-top: 10px; animation: mymove 1s; animation-delay: 4s; animation-fill-mode: forwards;">
+        
+            
+        <p>
+        <br>
+        {% for i in Articles %}
+        {% if i.id == 1 %}
+        {{ i.heading }}
+        <br>
+       {{ i.article }}
+       {% endif %}
+       {% endfor %}
+        </p>        
+    </div>
+    <h1 style="opacity: 0; animation: mymove 1s; animation-delay: 4.2s; animation-fill-mode: forwards;">
+        Latest Interview
+            </h1>
+    <div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0; margin-top: 10px; animation: mymove 1s; animation-delay: 4.4s; animation-fill-mode: forwards;">
+        
+            
+        <p>
+        <br>
+        {% for i in Interviews %}
+        {% if i.id == 1 %}
+        {{ i.heading }}
+        <br>
+       {{ i.Interview }}
+       {% endif %}
+       {% endfor %}
+        </p>        
+    </div>
+    <h1 style="opacity: 0;  animation: mymove 1s; animation-delay: 4.6s; animation-fill-mode: forwards;">
+        Latest Equipment News
+            </h1>
+    <div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0; margin-top: 10px; animation: mymove 1s; animation-delay: 4.8s; animation-fill-mode: forwards;">
+        
+            
+        <p>
+        <br>
+        {% for i in Equipment_News %}
+        {% if i.id == 1 %}
+        {{ i.heading }}
+        <br>
+       {{ i.equipment_news }}
+       {% endif %}
+       {% endfor %}
+        </p>        
+    </div>
+    <div id="magazine" style="height: 1000px; width: 200px; animation: mymove 1s; animation-delay: 5s; animation-fill-mode: forwards;">
+        <button id="previous" onclick="previous()" style="z-index: 199; position: relative;">previous</button>
+        <button id="next" onclick="next()" style="z-index: 199; position: relative;">next</button>
+    {% load static %}
+    <script>
+        var x="",i;
+        for(i=94;i>=1;i--)
+        {var a=""+i;
+             x+="<img class=\"previous\" src=\"{% static 'epcandiapp/' %}Feb%2022_page-00"+i+".jpg \" style=\"position:absolute;\">";
+        }
+        document.getElementById("magazine").innerHTML+=x;
+        var j=95;
+        function btn_chk()
+        {
+            if(j==95)
+        {
+            document.getElementById("previous").disabled=true;
+        }
+        else{
+            document.getElementById("previous").disabled=false;
+        }
+        if(j==2)
+        {
+            document.getElementById("next").disabled=true;
+        }
+        else{
+            document.getElementById("next").disabled=false;
+        }
+        }
+        function next()
+        {console.log(document.querySelectorAll("img")[j]);
+            document.querySelectorAll("img")[j].className="next";
+            j--;
+         btn_chk();
+        }
+        function previous()
+        {
+            j++;
+            document.querySelectorAll("img")[j].className="previous";
+            btn_chk();
+        }
+        btn_chk();
+    </script>
+    
+    </div>
+    {% endblock %}
+</div>
+<footer>
+    <p>
+        ©2010 NORTHERN LIGHTS COMMUNICATIONS<br>
+        Snehankit CHS, Plot No 103/ D-45, Sector 1, Charkop, Kandivali (W), Mumbai - 400 067
+        Tel. No. - +91 22 65220054 / 65296839  Mobile No. - +91 9820131960 / 9892313338<br>
+        Email: <a href="mailto:mktgepci@gmail.com" style="all:initial;">mktgepci@gmail.com</a> / <a href="mailto:epcandi@gmail.com" style="all: initial;">epcandi@gmail.com</a><br>
+        For Editorial, call: +91 22 65800244  Mobile No. - +91 9820324234 <br> Email: <a href="mailto:editor.epcandi@gmail.com" style="all: initial;">editor.epcandi@gmail.com</a>
+
+         </p>
+</footer>
+</body>
+</html>

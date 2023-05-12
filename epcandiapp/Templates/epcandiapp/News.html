@@ -1,0 +1,12 @@
+{% extends "epcandiapp/Inder.html" %}
+{% load mathfilters %}
+{% block content %}
+<h1 style="opacity: 0; animation: mymove 1s; animation-fill-mode: forwards; animation-delay: 3.2s;">NEWS</h1>
+{% for i in News %}
+<div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0; margin-top: 10px; animation: mymove 1s; animation-fill-mode: forwards; animation-delay: {{ i.id|mul:0.2|add:3.2 }}s;">
+<h2>{{ i.heading }}</h2>
+<br>
+{{ i.news }}
+</div>
+{% endfor %}
+{% endblock %}

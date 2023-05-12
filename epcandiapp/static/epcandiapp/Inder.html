@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        a{
+            text-decoration: none;
+            color: black;
+            background-color: white;
+            border-color: aqua;
+            border-style: solid;
+            border-width: 2px;
+            padding: 5px;
+            margin: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        a:hover{
+            color: blue;
+            background-color:aqua;
+            border-radius: 5px;
+            transition-duration: 0.5s;
+        }
+        .Navbar{
+            position:fixed;
+            margin:10px; 
+            padding: 8px; 
+            background-color: chartreuse; 
+            color: chartreuse;
+            border-radius: 20px; 
+            width: 125px; 
+            height: 23px; 
+            overflow: hidden;
+            opacity: 0.8;
+            z-index: 19;
+        }
+        .Navbar:hover{
+            height:200px;
+            border-radius: 10px;
+            transition-duration: 1s;
+        }
+        .next{
+            height: 110%;
+            margin-left: -10%;
+            opacity: 0;
+            transition: 1s;
+        }
+        .previous{
+            height: 90%;
+            margin-left: 0;
+            opacity: 1;
+            transition: 1s;
+        }
+    </style>
+    
+</head>
+<body >
+        <canvas id="Canvas1" style="height: 1250px;width: 1850px; position: fixed; z-index: -8; opacity: 1;background-image: url('Screenshot (463).png');filter: blur(3px);"></canvas>
+        {% load static %}<img src="{% static "epcandiapp/Screenshot (463).png" %}" alt="" style="height: 1230px;width: 1830px; position: fixed; z-index: -7; margin: -25%; opacity: 0.6;">
+
+<script>
+    var con=document.getElementById("Canvas1");
+    con.blur();
+    var ctx=con.getContext("2d");
+    console.log(ctx);
+    con.width=window.innerWidth;
+    con.height=window.innerHeight;
+    console.log(con)
+    var i=0;
+    function North_light(ycor,diry,color)
+    {
+        this.ycor=ycor;
+        this.diry=diry;
+        this.color=color;
+    }
+    var colorArray=["rgba(79,255,176,0.1)","rgba(41,171,135,0.1)","rgba(1,21,111,0.1)","rgba(0,166,147,0.1)","rgba(80,200,120,0.1)","rgba(57,255,20,0.1)","rgba(151,252,151,0.1)","rgba(0,73,83,0.1)","rgba(172,225,175,0.1)","rgba(0,240,168,0.1)","rgba(0,86,59,0.1)"];
+
+    var lightArray=[];
+    for(var j=0;j<=300;j++)
+    {
+        var ycor=i;
+        var color=colorArray[Math.round(Math.random()*10)]
+        var diry=0.001;
+        i+=0.02;
+        var light1=new North_light(ycor,diry,color);
+        lightArray.push(light1);
+    }
+North_light.prototype.animate=function(){
+
+        ctx.beginPath();
+        var grd = ctx.createRadialGradient(75,50,5,90,60,100);
+        grd.addColorStop(0,this.color);
+        grd.addColorStop(0.5,"rgba(14,243,197,0.2)");
+        grd.addColorStop(1,this.color);
+        ctx.fillStyle=grd;
+        ctx.fillRect(300+(50*(this.ycor-3)*(this.ycor-1)*(this.ycor-5)*(this.ycor-2)*(this.ycor-4)),40*this.ycor,50,100);
+        this.ycor+=this.diry;
+        if(this.ycor<-5.2 || 300+(50*(this.ycor-3)*(this.ycor-1)*(this.ycor-5)*(this.ycor-2)*(this.ycor-4))>window.innerWidth)
+            {
+                this.diry*=-1;
+            }
+        }
+        function main(){
+            ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+            for(var j=0;j<lightArray.length;j++)
+            {
+                lightArray[j].animate();
+            }
+        }
+        setInterval(main,100);
+    
+</script>
+    <div class="Navbar">
+             
+            <a href="" style="text-decoration:none ;">Home</a>
+            <br>
+            <<<
+            <a href="" style="text-decoration:none ;">Updates</a>
+            <<<
+            <a href="" style="text-decoration:none ;">Magazines</a>
+            <<<
+            <a href="" style="text-decoration:none ;">Subsriptions</a>
+            <<<
+                <
+            <a href="" style="text-decoration:none ;">About</a>
+        
+    </div>
+    <div class="Main">
+    <img src="https://the-media-ant.mo.cloudinary.net/medias/55b7dcc08ead0e4b288b4581/1565801070391/55b7dcc08ead0e4b288b4581_logo.jpg?tx=w_350" alt="" style="margin-left: 20%">
+    <p style="padding:2%; color: black; background-color: azure; margin: 10px;"><b>A must-read magazine for complete and verified news, views and opinions on construction and infrastructure development. </b></p>
+    <div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0.5;">
+        <p>
+        Latest News
+        <br>
+        Preventative Maintenance Tips for Backhoes
+        <br>
+        By: CONEXPO-CON/AGG
+
+
+        MILWAUKEE  Preventive maintenance is a very broad term,states GeorgeMacIntyre, Product Manager at CONEXPO-CON/AGGexhibitor CASE Construction Equipment.It can be as formal as the critical practice of performing regular service, asprescribed by the manufacturer of the machine, throughout the machines life.Or it can be as simple as the daily walkaround you do of the machine at thebeginning and end of each day to identify any potential issues that may impedesafe and efficient operation.
+        Preventive maintenance is routine/scheduledmaintenance of machines done to keep them running reliably to preventpremature costly unplanned downtime, David Young, Product ApplicationSpecialist, Caterpillar, adds.
+        Regardless of the type of preventivemaintenance program or machine, the desired result is improved safety and lessdowntime, plus the prevention of unnecessary costs, says Ryan Anderson,Product Manager, New Holland Construction.
+        To keep your equipment performing at peaklevels, it is critical that maintenance is prioritized accordingly, stressesJustin Steger, Solutions Marketing Manager, John DeereConstruction & Forestry. While it is essential to understand how tooperate your machine, it is equally, if not more important, to understand howto maintain each machine to extend the lifespan of the equipment and improveits resale value. Sticking to the OEM maintenance schedule allows contractorsto predict owning and operating costs more accurately and fix maintenancecosts. Ignoring machine maintenance will increase the operating cost.
+        WHEN TO SCHEDULE PREVENTIVE MAINTENANCE
+        It is imperative to have preventivemaintenance schedules for backhoes to keep them well-maintained. When parts arechecked regularly, issues can be identified and scheduled to be correctedbefore they result in unexpected repairs, downtime, and costs.
+        
+        TYPES OF PREVENTATIVE MAINTENANCE
+        Backhoe preventive maintenance can be basedon many parameters, such as the calendar, runtime, and predictive.
+        Calendar-based would include things on the daily or weekly checklist, Caterpillars Young, notes. Some of these items can be managed by an hours-based approach also. Like daily or every 10 hours and weekly or every 50 hours. Examples of this would include joint greasing, air filter checking, fluid level checks, tire pressure, water-in-fuel bowl drain, etc.
+        Runtime-based maintenance usually is more than simply checking and doing a quick job if needed, he explains. This would include more involved service work like engine oil and filter change, transmission oil and filter change, fuel filter replacement, and hydraulic system oil and filter change. It also includes oil sampling from critical components like the engine, transmissions, and hydraulic systems. Runtime-based preventive maintenance should be followed as presented in the operators manual of the machine, CASEs MacIntyre advises. Since each machine and manufacturer are different, it should never be assumed that it is apples-to-apples from machine-to-machine. Then, based on the job, there are some forms of maintenance that are not merely prescribed based on time.
+        Predictive maintenance is all about sticking to an oil sampling routine with the backhoes OEM dealer, Young adds. Do this as required to establish a trend on how parts within a major component are wearing.
+        If a particular element is jumping up highin the particle count it could very well indicate that a certain part inside alarge component is wearing out and that can be fixed before a major failurethat could damage more parts within a component or destroy the entire componentitself.
+        
+        MAKE RECORDKEEPING A TOP MAINTENANCEPRIORITY
+        Good recordkeeping and proper documentationare essential aspects of backhoe maintenance, a philosophy shared by eachbackhoe OEM.
+        This helps ensure that all preventivemaintenance activities are done in the timeframe they are meant to be done andthat the machine will continue to work as intended, says MacIntyre of CASE. Telematics makesthat easier than ever, alerting fleet managers to when service intervals areapproaching and helping simplify recordkeeping and proof that preventivemaintenance activities were performed as intended and on schedule.
+        Whats more, adds Caterpillars Young,recordkeeping and documentation ensure preventive maintenance is done on time,which is especially important for critical systems like the engine,transmission, and hydraulics. It also assists with predicting machine issuesthat are developing. For example, when oil samples are done as required, it canhelp determine if a problem is coming with a component.
+        Recordkeeping and documentation can helpsupport warranty-related repairs; he points out. It is also very valuable whenit comes time to sell or trade in a machine, as it adds value.
+        
+        READ THE MANUAL, STICKERS, AND WARNINGLABELS
+        Backhoe manufacturers recommend thatmaintenance personnel always refer to the backhoe owners manual to familiarizethemselves with all the manufacturer-recommended maintenance procedures andintervals. All of the information to properly perform maintenance is locatedin the manual, says Deeres Steger.
+        Anderson of New Holland adds: Manufacturershave designed and engineered these machines to perform and be serviced. Theowners manual provides a basic checklist and identifies the location of theservice points on the machine.
+         
+        IT STARTS WITH THE BACKHOE OPERATOR
+        The backhoe manufacturers agree that goodpreventive maintenance starts with the backhoe operator performing aninspection of the entire machine before putting it to work.
+        The operator should know that particularmachine fully to understand what to check, and more importantly, be able toidentify when something doesnt look right or might need attention based on theinspection, says Young of Caterpillar. Also, it is about having andunderstanding the maintenance interval schedule for their machine and followingthat schedule as closely as possible. Cat dealers can help by providingdocuments that help track and understand the maintenance items.
+        CASEs MacIntyre says of the inspection isso important, that the company has done entire educational sessions on thetopic, see NorthAmerica: The Daily Equipment Walkaround, and written extensively aboutit; The Equipment Walkaround. 
+        Telematics is another place  besides themachine  that will inform the owners and operators about error codes or aboutsensor readings that are outside of the normal range, notes MacIntyre. Accessto telematics data can also be shared with dealers and manufacturers to providea second set of eyes on equipment performance.
+        
+        DO NOT SKIP DAILY WALKAROUNDS
+        Every time an inspection is done, theoperator should start in the same spot and complete the inspection around themachine ending where they started, he recommends. This routine makes it easierto spot what is normal vs. abnormal and makes sure nothing gets missed.
+        When performing the walk-around, visuallyinspect the machines appearance and look for damage, check fluid levels andlook for leaks, and take a close look at worn items that could prevent themachine from efficiently doing its job, advises Steger. Key inspection pointswill vary between machine forms, but the concept is the same.
+        New Hollands Anderson provides the belowchecklist for the typical backhoe walk-around inspection:
+        � Check all tire pressures.
+        � Check all fluid levelsincluding engine oil, hydraulic oil, fuel, and coolant.
+        � Check all filters including airintake and cab filter.
+        � Inspect all structuralcomponents such as loader arms for any stress fractures or weldment failures.
+        � Ensure cab doors and seatbeltare in good working order.
+        In addition, it is important that alloperators verify the backhoes safety features are working prior to operationand that all the controls are clearly labeled.
+        
+        END OF WORKDAY TASKS
+        It is crucial for backhoe operators toperform a walk-around at the end of the workday as well, emphasizes Andersonof New Holland, because machine condition at the beginning of the day isusually not the same as at the end of the day. Machine damage may haveoccurred, fluid levels may have changed, and other parts of the machine mayhave additional wear and fatigue.
+        At the end of the day, operators shouldalso make sure that the work tool, such as bucket teeth, are intact and notdull, adds John Deeres Steger. For auxiliary attachments, make sure thatpressures and flows are set correctly to avoid damage to the attachment ormachine.
+        
+        Aboutthe Association of Equipment Manufacturers (AEM)
+        AEM is the NorthAmerica-based international trade group representing off-road equipmentmanufacturers and suppliers with more than 1,000 companies and more than 200product lines in the agriculture and construction-related industry sectorsworldwide. The equipment manufacturing industry in the United States supports2.8 million jobs and contributes roughly $288 billion to the economy everyyear.
+        
+        About CONEXPO-CON/AGG
+        Held every three years, CONEXPO-CON/AGG is the must-attend event forconstruction industry professionals. The show features the latest equipment,products, services and technologies for the construction industry, as well asindustry-leading education. The next CONEXPO-CON/AGG will be held March 14-18,2023 in Las Vegas, Nevada. For more information on CONEXPO-CON/AGG, visit https://www.conexpoconagg.com. Learnmore about excavatortech here.
+        
+        </p>        
+    </div>
+    <h1>
+        Latest News
+            </h1>
+    <div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0.5; margin-top: 10px;">
+        
+            
+        <p>
+        <br>
+        Preventative Maintenance Tips for Backhoes
+        <br>
+        By: CONEXPO-CON/AGG
+
+
+        MILWAUKEE  Preventive maintenance is a very broad term, states GeorgeMacIntyre, Product Manager at CONEXPO-CON/AGGexhibitor CASE Construction Equipment.It can be as formal as the critical practice of performing regular service, asprescribed by the manufacturer of the machine, throughout the machines life.Or it can be as simple as the daily walkaround you do of the machine at thebeginning and end of each day to identify any potential issues that may impedesafe and efficient operation.
+        Preventive maintenance is routine/scheduledmaintenance of machines done to keep them running reliably to preventpremature costly unplanned downtime, David Young, Product ApplicationSpecialist, Caterpillar, adds.
+        Regardless of the type of preventivemaintenance program or machine, the desired result is improved safety and lessdowntime, plus the prevention of unnecessary costs, says Ryan Anderson,Product Manager, New Holland Construction.
+        To keep your equipment performing at peaklevels, it is critical that maintenance is prioritized accordingly, stressesJustin Steger, Solutions Marketing Manager, John DeereConstruction & Forestry. While it is essential to understand how tooperate your machine, it is equally, if not more important, to understand howto maintain each machine to extend the lifespan of the equipment and improveits resale value. Sticking to the OEM maintenance schedule allows contractorsto predict owning and operating costs more accurately and fix maintenancecosts. Ignoring machine maintenance will increase the operating cost.
+        WHEN TO SCHEDULE PREVENTIVE MAINTENANCE
+        It is imperative to have preventivemaintenance schedules for backhoes to keep them well-maintained. When parts arechecked regularly, issues can be identified and scheduled to be correctedbefore they result in unexpected repairs, downtime, and costs.
+        
+        TYPES OF PREVENTATIVE MAINTENANCE
+        Backhoe preventive maintenance can be basedon many parameters, such as the calendar, runtime, and predictive.
+        Calendar-based would include things on the daily or weekly checklist, Caterpillars Young, notes. Some of these items can be managed by an hours-based approach also. Like daily or every 10 hours and weekly or every 50 hours. Examples of this would include joint greasing, air filter checking, fluid level checks, tire pressure, water-in-fuel bowl drain, etc.
+        Runtime-based maintenance usually is more than simply checking and doing a quick job if needed, he explains. This would include more involved service work like engine oil and filter change, transmission oil and filter change, fuel filter replacement, and hydraulic system oil and filter change. It also includes oil sampling from critical components like the engine, transmissions, and hydraulic systems. Runtime-based preventive maintenance should be followed as presented in the operators manual of the machine, CASEs MacIntyre advises. Since each machine and manufacturer are different, it should never be assumed that it is apples-to-apples from machine-to-machine. Then, based on the job, there are some forms of maintenance that are not merely prescribed based on time.
+        Predictive maintenance is all about sticking to an oil sampling routine with the backhoes OEM dealer, Young adds. Do this as required to establish a trend on how parts within a major component are wearing.
+        If a particular element is jumping up highin the particle count it could very well indicate that a certain part inside alarge component is wearing out and that can be fixed before a major failurethat could damage more parts within a component or destroy the entire componentitself.
+        
+        MAKE RECORDKEEPING A TOP MAINTENANCEPRIORITY
+        Good recordkeeping and proper documentationare essential aspects of backhoe maintenance, a philosophy shared by eachbackhoe OEM.
+        This helps ensure that all preventivemaintenance activities are done in the timeframe they are meant to be done andthat the machine will continue to work as intended, says MacIntyre of CASE. Telematics makesthat easier than ever, alerting fleet managers to when service intervals areapproaching and helping simplify recordkeeping and proof that preventivemaintenance activities were performed as intended and on schedule.
+        Whats more, adds Caterpillars Young,recordkeeping and documentation ensure preventive maintenance is done on time,which is especially important for critical systems like the engine,transmission, and hydraulics. It also assists with predicting machine issuesthat are developing. For example, when oil samples are done as required, it canhelp determine if a problem is coming with a component.
+        Recordkeeping and documentation can helpsupport warranty-related repairs; he points out. It is also very valuable whenit comes time to sell or trade in a machine, as it adds value.
+        
+        READ THE MANUAL, STICKERS, AND WARNINGLABELS
+        Backhoe manufacturers recommend thatmaintenance personnel always refer to the backhoe owners manual to familiarizethemselves with all the manufacturer-recommended maintenance procedures andintervals. All of the information to properly perform maintenance is locatedin the manual, says Deeres Steger.
+        Anderson of New Holland adds: Manufacturershave designed and engineered these machines to perform and be serviced. Theowners manual provides a basic checklist and identifies the location of theservice points on the machine.
+         
+        IT STARTS WITH THE BACKHOE OPERATOR
+        The backhoe manufacturers agree that goodpreventive maintenance starts with the backhoe operator performing aninspection of the entire machine before putting it to work.
+        The operator should know that particularmachine fully to understand what to check, and more importantly, be able toidentify when something doesnt look right or might need attention based on theinspection, says Young of Caterpillar. Also, it is about having andunderstanding the maintenance interval schedule for their machine and followingthat schedule as closely as possible. Cat dealers can help by providingdocuments that help track and understand the maintenance items.
+        CASEs MacIntyre says of the inspection isso important, that the company has done entire educational sessions on thetopic, see NorthAmerica: The Daily Equipment Walkaround, and written extensively aboutit; The Equipment Walkaround. 
+        Telematics is another place  besides themachine  that will inform the owners and operators about error codes or aboutsensor readings that are outside of the normal range, notes MacIntyre. Accessto telematics data can also be shared with dealers and manufacturers to providea second set of eyes on equipment performance.
+        
+        DO NOT SKIP DAILY WALKAROUNDS
+        Every time an inspection is done, theoperator should start in the same spot and complete the inspection around themachine ending where they started, he recommends. This routine makes it easierto spot what is normal vs. abnormal and makes sure nothing gets missed.
+        When performing the walk-around, visuallyinspect the machines appearance and look for damage, check fluid levels andlook for leaks, and take a close look at worn items that could prevent themachine from efficiently doing its job, advises Steger. Key inspection pointswill vary between machine forms, but the concept is the same.
+        New Hollands Anderson provides the belowchecklist for the typical backhoe walk-around inspection:
+        � Check all tire pressures.
+        � Check all fluid levelsincluding engine oil, hydraulic oil, fuel, and coolant.
+        � Check all filters including airintake and cab filter.
+        � Inspect all structuralcomponents such as loader arms for any stress fractures or weldment failures.
+        � Ensure cab doors and seatbeltare in good working order.
+        In addition, it is important that alloperators verify the backhoes safety features are working prior to operationand that all the controls are clearly labeled.
+        
+        END OF WORKDAY TASKS
+        It is crucial for backhoe operators toperform a walk-around at the end of the workday as well, emphasizes Andersonof New Holland, because machine condition at the beginning of the day isusually not the same as at the end of the day. Machine damage may haveoccurred, fluid levels may have changed, and other parts of the machine mayhave additional wear and fatigue.
+        At the end of the day, operators shouldalso make sure that the work tool, such as bucket teeth, are intact and notdull, adds John Deeres Steger. For auxiliary attachments, make sure thatpressures and flows are set correctly to avoid damage to the attachment ormachine.
+        
+        Aboutthe Association of Equipment Manufacturers (AEM)
+        AEM is the NorthAmerica-based international trade group representing off-road equipmentmanufacturers and suppliers with more than 1,000 companies and more than 200product lines in the agriculture and construction-related industry sectorsworldwide. The equipment manufacturing industry in the United States supports2.8 million jobs and contributes roughly $288 billion to the economy everyyear.
+        
+        About CONEXPO-CON/AGG
+        Held every three years, CONEXPO-CON/AGG is the must-attend event forconstruction industry professionals. The show features the latest equipment,products, services and technologies for the construction industry, as well asindustry-leading education. The next CONEXPO-CON/AGG will be held March 14-18,2023 in Las Vegas, Nevada. For more information on CONEXPO-CON/AGG, visit https://www.conexpoconagg.com. Learnmore about excavatortech here.
+        
+        </p>        
+    </div>
+    <div id="magazine" style="height: 1000px; width: 200px;">
+        <button id="previous" onclick="previous()" style="z-index: 199; position: relative;">previous</button>
+        <button id="next" onclick="next()" style="z-index: 199; position: relative;">next</button>
+    
+    <script>
+        var x="",i;
+        for(i=94;i>=1;i--)
+        {
+             x+="<img class=\"previous\" src=\"Feb 22_page-00"+i+".jpg\" style=\"position:absolute;\">";
+        }
+        document.getElementById("magazine").innerHTML+=x;
+        var j=95;
+        function btn_chk()
+        {
+            if(j==95)
+        {
+            document.getElementById("previous").disabled=true;
+        }
+        else{
+            document.getElementById("previous").disabled=false;
+        }
+        if(j==2)
+        {
+            document.getElementById("next").disabled=true;
+        }
+        else{
+            document.getElementById("next").disabled=false;
+        }
+        }
+        function next()
+        {console.log(document.querySelectorAll("img")[j]);
+            document.querySelectorAll("img")[j].className="next";
+            j--;
+         btn_chk();
+        }
+        function previous()
+        {
+            j++;
+            document.querySelectorAll("img")[j].className="previous";
+            btn_chk();
+        }
+        btn_chk();
+    </script>
+    
+    </div>
+</div>
+</body>
+</html>
