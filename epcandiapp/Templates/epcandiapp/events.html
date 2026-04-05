@@ -1,0 +1,29 @@
+{% extends "epcandiapp/base.html" %}
+{% block page_title %}EPC&I EVENTS{% endblock %}
+{% block content %}
+<div id="latestarticle" style="width:512px; margin:21px 26px 0px 26px; text-align:left;">
+    <div id="titleimage" style="background:none; width:512px; height:32px; font-size:11px; text-align:right; vertical-align:middle;">
+        EVENTS PER PAGE:&nbsp;<select name="page_size" id="page_size" class="articles-per-page">
+            <option value="2">2</option>
+            <option value="10">10</option>
+            <option selected="selected" value="20">20</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+    <div id="repeater">
+        {% for event in events %}
+        <div class="list-event-header">{{ event.name|upper }}</div>
+        <div class="list-event-details">
+            <b>{{ event.start_date|date:"d/m/Y" }} - {{ event.end_date|date:"d/m/Y" }}</b><br><br>
+            <u>Venue</u>: {{ event.venue }}<br><br>
+            <u>Timing</u>: {{ event.timings }}<br><br>
+            <u>Contact</u>: {{ event.contact_details }}<br><br>
+            <a href="{{ event.website }}" target="_blank" rel="noopener noreferrer">{{ event.website }}</a>
+        </div>
+        {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+        {% empty %}
+        <div class="list-event-header">No Events Available</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

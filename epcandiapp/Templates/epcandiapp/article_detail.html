@@ -1,0 +1,13 @@
+{% extends "epcandiapp/base.html" %}
+{% block page_title %}{{ article.heading }} | EPC&I{% endblock %}
+{% block content %}
+<div class="list-toolbar">ARTICLES</div>
+<div class="list-article-header">{{ article.heading }}</div>
+<div class="list-article-presci">
+    {{ article.article|linebreaks }}
+</div>
+<div class="list-seperator">*****</div>
+<div class="list-article-presci">
+    <a href="{% url 'articles' %}" class="list-read-more">Back to Articles</a>
+</div>
+{% endblock %}

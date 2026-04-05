@@ -1,12 +1,12 @@
-{% extends "epcandiapp/Inder.html" %}
-{% load mathfilters %}
+{% extends "epcandiapp/base.html" %}
+{% block page_title %}EPC&I NEWS{% endblock %}
 {% block content %}
-<h1 style="opacity: 0; animation: mymove 1s; animation-fill-mode: forwards; animation-delay: 3.2s;">NEWS</h1>
+<div class="list-toolbar">NEWS</div>
 {% for i in News %}
-<div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px;opacity: 0; margin-top: 10px; animation: mymove 1s; animation-fill-mode: forwards; animation-delay: {{ i.id|mul:0.2|add:3.2 }}s;">
-<h2>{{ i.heading }}</h2>
-<br>
-{{ i.news }}
-</div>
+<div class="list-article-header">{{ i.heading }}</div>
+<div class="list-article-presci">{{ i.news|linebreaks }}</div>
+{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+{% empty %}
+<div class="list-article-presci">No news available.</div>
 {% endfor %}
 {% endblock %}

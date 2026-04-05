@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block page_title %}EPC&amp;I - complete and verified news, views and opinions on construction and infrastructure development{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'epcandiapp/site.css' %}">
+</head>
+<body>
+    <center>
+        <div id="main" class="main-div">
+            <div id="topbar" class="topbar-div">
+                <a href="/" class="logo-link" aria-label="EPC and I home">
+                    <img src="{% static 'epcandiapp/logo.png' %}" alt="EPC and I" class="tb_logo">
+                </a>
+            </div>
+
+            <div id="menubar" class="menu-div">
+                <a href="{% url 'news' %}">NEWS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'articles' %}">ARTICLES</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'interview' %}">INTERVIEWS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'equipment' %}">EQUIPMENT NEWS</a><span class="menu-pipe"> | </span>
+                <a href="#">TENDERS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'events' %}">EVENTS</a><span class="menu-pipe"> | </span>
+                <a href="#">CATALOGS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'subscribe' %}">SUBSCRIBE</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'contact' %}">CONTACT US</a>
+            </div>
+
+            <div id="contentwrapper" class="contentwrapper-div">
+                <table border="0" cellpadding="0" cellspacing="0" width="984px">
+                    <tbody>
+                    <tr>
+                        <td valign="top">
+                            <div id="leftpanel" class="leftpanel-div">
+                                <div id="latestissue" class="lp_issue">
+                                    <a href="#">
+                                        LATEST ISSUE - DECEMBER 2025- EXCON<br class="zerospacer">
+                                        DECEMBER 2025- EXCON
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                        <td valign="top">
+                            <div id="content" class="content-div">
+                                {% block content %}{% endblock %}
+                            </div>
+                        </td>
+                        <td valign="top">
+                            <div id="rightpanel" style="width:220px;">
+                                {% for banner in advertisement_banners %}
+                                <div class="banner">
+                                    <a href="{{ banner.link }}" target="_blank" rel="noopener noreferrer">
+                                        <img src="{{ banner.image.url }}" alt="{{ banner.name }}" class="side-banner-img">
+                                    </a>
+                                </div>
+                                {% empty %}
+                                <div class="banner banner-empty">Advertisement</div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="footer" class="footer-div">
+                <a href="/">HOME</a><span class="footer-link-spacer"></span>
+                <a href="#">ABOUT US</a><span class="footer-link-spacer"></span>
+                <a href="#">DISCLAIMER</a><span class="footer-link-spacer"></span>
+                <a href="#">PRIVACY</a><span class="footer-link-spacer"></span>
+                <a href="#">JOBS</a><span class="footer-link-spacer"></span>
+                <a href="#">ADVERTISE</a><span class="footer-link-spacer"></span>
+                <a href="#">MEDIA KIT</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'contact' %}">CONTACT US</a>
+                <br>
+                <p>
+                    ©2010 NORTHERN LIGHTS COMMUNICATIONS<br>
+                    Anand Sagar Chs , Plot 121, Sector 1, Charkop, Kandivali (W), Mumbai - 400 067<br>
+                    Mobile No. - +91 9820131960 / 9892313338<br>
+                    Email: mktgepci@gmail.com / epcandi@gmail.com<br><br>
+                    For Editorial, call: +91 9820324234 <br> Email: editor.epcandi@gmail.com
+                </p>
+            </div>
+        </div>
+    </center>
+</body>
+</html>

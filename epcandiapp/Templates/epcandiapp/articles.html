@@ -1,12 +1,15 @@
-{% extends "epcandiapp/Inder.html" %}
-{% load mathfilters %}
+{% extends "epcandiapp/base.html" %}
+{% block page_title %}EPC&I ARTICLES{% endblock %}
 {% block content %}
-<h1 style="opacity: 0; animation: mymove 1s; animation-fill-mode: forwards; animation-delay:3.2s;">ARTICLES</h1>
+<div class="list-toolbar">ARTICLES</div>
 {% for i in Articles %}
-<div style="background-color:azure; border-radius: 20px; border-color: aqua;border-style: solid;border-width: 2px; margin-top: 10px; opacity: 0; animation: mymove 1s; animation-fill-mode: forwards; animation-delay: {{ i.id|mul:0.2|add:3.2 }}s;">
-<h2>{{ i.heading }}</h2>
-<br>
-{{ i.article }}
+<div class="list-article-header">{{ i.heading }}</div>
+<div class="list-article-presci">
+    {{ i.article|truncatechars:280|linebreaks }}
+    <a href="{% url 'article-detail' i.id %}" class="list-read-more">Read More</a>
 </div>
+{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+{% empty %}
+<div class="list-article-presci">No articles available.</div>
 {% endfor %}
 {% endblock %}
