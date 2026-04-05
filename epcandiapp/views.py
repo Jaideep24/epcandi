@@ -17,14 +17,8 @@ def _render_static_page(request, template_name, extra_context=None):
     return render(request, template_name, context)
 
 def home_page(request):
-    context = {
-        "News": News.objects.all().values(),
-        "Articles": Articles.objects.all().values(),
-        "Interviews": Interview.objects.all().values(),
-        "Equipment_News": Equipment_News.objects.all().values(),
-    }
-    context.update(_base_context())
-    return render(request, "epcandiapp/index.html", context)
+    # Home should show the News listing page.
+    return news_page(request)
 
 
 def news_page(request):
