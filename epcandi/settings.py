@@ -25,7 +25,7 @@ SECRET_KEY = '-8g%agqonts2jmnxg63k_*wki7k8b)m(8wr=q%539qk^-+cx_n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['epcandi.pythonanywhere.com', 'www.epcandi.pythonanywhere.com', 'localhost',]
 
 
 # Application definition
