@@ -8,6 +8,14 @@ def _base_context():
         "advertisement_banners": AdvertisementBanner.objects.filter(is_active=True)
     }
 
+
+def _render_static_page(request, template_name, extra_context=None):
+    context = {}
+    if extra_context:
+        context.update(extra_context)
+    context.update(_base_context())
+    return render(request, template_name, context)
+
 def home_page(request):
     context = {
         "News": News.objects.all().values(),
@@ -141,3 +149,35 @@ def contact_page(request):
         context = {}
         context.update(_base_context())
         return render(request, "epcandiapp/contact.html", context)
+
+
+def tenders_page(request):
+    return _render_static_page(request, "epcandiapp/tenders.html")
+
+
+def catalogs_page(request):
+    return _render_static_page(request, "epcandiapp/catalogs.html")
+
+
+def about_page(request):
+    return _render_static_page(request, "epcandiapp/about.html")
+
+
+def disclaimer_page(request):
+    return _render_static_page(request, "epcandiapp/disclaimer.html")
+
+
+def privacy_page(request):
+    return _render_static_page(request, "epcandiapp/privacy.html")
+
+
+def jobs_page(request):
+    return _render_static_page(request, "epcandiapp/jobs.html")
+
+
+def advertise_page(request):
+    return _render_static_page(request, "epcandiapp/advertise.html")
+
+
+def media_kit_page(request):
+    return _render_static_page(request, "epcandiapp/media_kit.html")

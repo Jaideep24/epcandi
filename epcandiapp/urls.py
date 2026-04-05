@@ -13,6 +13,14 @@ urlpatterns=[
     path("events/", events_page, name="events"),
     path("subscribe/", subscribe_page, name="subscribe"),
     path("contact/", contact_page, name="contact"),
+    path("tenders/", tenders_page, name="tenders"),
+    path("catalogs/", catalogs_page, name="catalogs"),
+    path("about/", about_page, name="about"),
+    path("disclaimer/", disclaimer_page, name="disclaimer"),
+    path("privacy/", privacy_page, name="privacy"),
+    path("jobs/", jobs_page, name="jobs"),
+    path("advertise/", advertise_page, name="advertise"),
+    path("media-kit/", media_kit_page, name="media-kit"),
 
     # Legacy routes retained for backward compatibility
     path("News", news_page),
@@ -23,4 +31,12 @@ urlpatterns=[
     path("Events", events_page),
     path("Subscribe", subscribe_page),
     path("Contact", contact_page),
+    path("Tenders", tenders_page),
+    path("Catalogs", catalogs_page),
+    path("About", about_page),
+    path("Disclaimer", disclaimer_page),
+    path("Privacy", privacy_page),
+    path("Jobs", jobs_page),
+    path("Advertise", advertise_page),
+    path("MediaKit", media_kit_page),
 ]

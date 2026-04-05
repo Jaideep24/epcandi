@@ -21,9 +21,9 @@
                 <a href="{% url 'articles' %}">ARTICLES</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'interview' %}">INTERVIEWS</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'equipment' %}">EQUIPMENT NEWS</a><span class="menu-pipe"> | </span>
-                <a href="#">TENDERS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'tenders' %}">TENDERS</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'events' %}">EVENTS</a><span class="menu-pipe"> | </span>
-                <a href="#">CATALOGS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'catalogs' %}">CATALOGS</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'subscribe' %}">SUBSCRIBE</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'contact' %}">CONTACT US</a>
             </div>
@@ -67,12 +67,12 @@
 
             <div id="footer" class="footer-div">
                 <a href="/">HOME</a><span class="footer-link-spacer"></span>
-                <a href="#">ABOUT US</a><span class="footer-link-spacer"></span>
-                <a href="#">DISCLAIMER</a><span class="footer-link-spacer"></span>
-                <a href="#">PRIVACY</a><span class="footer-link-spacer"></span>
-                <a href="#">JOBS</a><span class="footer-link-spacer"></span>
-                <a href="#">ADVERTISE</a><span class="footer-link-spacer"></span>
-                <a href="#">MEDIA KIT</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'about' %}">ABOUT US</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'disclaimer' %}">DISCLAIMER</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'privacy' %}">PRIVACY</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'jobs' %}">JOBS</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'advertise' %}">ADVERTISE</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'media-kit' %}">MEDIA KIT</a><span class="footer-link-spacer"></span>
                 <a href="{% url 'contact' %}">CONTACT US</a>
                 <br>
                 <p>
