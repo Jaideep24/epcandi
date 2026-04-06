@@ -1,7 +1,10 @@
 {% extends "epcandiapp/base.html" %}
-{% block page_title %}EPC&I ARTICLES{% endblock %}
+{% block page_title %}EPC&amp;I Articles | Construction &amp; Infrastructure Insights{% endblock %}
+{% block meta_description %}Read in-depth EPC&amp;I articles on engineering, procurement, construction, infrastructure projects, and market developments.{% endblock %}
+{% block meta_keywords %}EPC&amp;I articles, construction articles, infrastructure insights, engineering analysis, procurement strategy{% endblock %}
 {% block content %}
 <div class="list-toolbar">ARTICLES</div>
+{% include "epcandiapp/partials/list_controls.html" %}
 {% for i in Articles %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-presci">
@@ -12,4 +15,5 @@
 {% empty %}
 <div class="list-article-presci">No articles available.</div>
 {% endfor %}
+{% include "epcandiapp/partials/pagination.html" %}
 {% endblock %}

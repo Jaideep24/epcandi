@@ -1,0 +1,16 @@
+{% extends "epcandiapp/base.html" %}
+{% block page_title %}EPC&amp;I Focus | Strategic Infrastructure Perspectives{% endblock %}
+{% block meta_description %}EPC&amp;I Focus brings strategic perspectives, expert viewpoints, and sector-focused commentary on infrastructure development.{% endblock %}
+{% block meta_keywords %}EPC focus, infrastructure strategy, construction perspectives, engineering insights, EPC&amp;I focus{% endblock %}
+{% block content %}
+<div class="list-toolbar">FOCUS</div>
+{% include "epcandiapp/partials/list_controls.html" %}
+{% for i in Interviews %}
+<div class="list-article-header">{{ i.heading }}</div>
+<div class="list-article-presci">{{ i.Interview|truncatechars:280|linebreaks }} <a href="{% url 'interview-detail' i.id %}" class="list-read-more">Read More</a></div>
+{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+{% empty %}
+<div class="list-article-presci">No focus articles available.</div>
+{% endfor %}
+{% include "epcandiapp/partials/pagination.html" %}
+{% endblock %}

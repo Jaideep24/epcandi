@@ -1,0 +1,19 @@
+{% extends "epcandiapp/base.html" %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ detail_body|striptags|truncatechars:170 }}{% endblock %}
+{% block meta_keywords %}EPC&I, {{ toolbar_title }}, {{ detail_title }}{% endblock %}
+{% block content %}
+<div class="list-toolbar">{{ toolbar_title }}</div>
+<div class="list-article-header">{{ detail_title }}</div>
+<div class="list-article-presci">
+    {% if detail_is_html %}
+        {{ detail_body|safe }}
+    {% else %}
+        {{ detail_body|linebreaks }}
+    {% endif %}
+</div>
+<div class="list-seperator">*****</div>
+<div class="list-article-presci">
+    <a href="{% url back_url %}" class="list-read-more">{{ back_label }}</a>
+</div>
+{% endblock %}

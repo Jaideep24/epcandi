@@ -305,6 +305,52 @@ a
     float:none;
     clear:both;     
 }
+.list-filter-form
+{
+    margin:10px 12px 6px 12px;
+    padding:8px 10px;
+    border:1px solid #cfcfcf;
+    background:#f7f7f7;
+    text-align:left;
+    font-size:11px;
+}
+.list-filter-line
+{
+    margin:4px 0px;
+}
+.list-filter-input
+{
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size:11px;
+    margin:0px 5px;
+    padding:2px 4px;
+}
+.list-filter-sep
+{
+    margin:0px 8px;
+    font-weight:bold;
+}
+.list-filter-button
+{
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size:11px;
+    padding:3px 10px;
+    cursor:pointer;
+}
+.pagination-wrap
+{
+    margin:14px 12px 12px 12px;
+    padding:6px 8px;
+    border:1px solid #cfcfcf;
+    text-align:center;
+    font-size:11px;
+}
+.pagination-wrap a,
+.pagination-wrap span
+{
+    display:inline-block;
+    margin:0px 3px;
+}
 .article-header
 {
     border-left:4px solid #c9252b;

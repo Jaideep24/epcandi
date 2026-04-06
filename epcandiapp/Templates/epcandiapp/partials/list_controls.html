@@ -1,0 +1,16 @@
+<form method="get" class="list-filter-form">
+    <div class="list-filter-line">
+        <label for="page_size"><strong>ARTICLES PER PAGE:</strong></label>
+        <select name="page_size" id="page_size" class="articles-per-page">
+            {% for size in page_size_options %}
+            <option value="{{ size }}" {% if page_size == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="list-filter-line"><strong>FILTER YOUR RESULTS</strong></div>
+    <div class="list-filter-line">
+        <label for="q">Title:</label>
+        <input type="text" id="q" name="q" value="{{ q }}" class="list-filter-input">
+        <button type="submit" class="list-filter-button">Submit</button>
+    </div>
+</form>

@@ -1,5 +1,7 @@
 {% extends "epcandiapp/base.html" %}
-{% block page_title %}{{ article.heading }} | EPC&I{% endblock %}
+{% block page_title %}{{ article.heading }} | EPC&amp;I Articles{% endblock %}
+{% block meta_description %}{{ article.article|striptags|truncatechars:170 }}{% endblock %}
+{% block meta_keywords %}EPC&amp;I article, engineering article, procurement, construction, infrastructure analysis{% endblock %}
 {% block content %}
 <div class="list-toolbar">ARTICLES</div>
 <div class="list-article-header">{{ article.heading }}</div>

@@ -1,5 +1,7 @@
 {% extends 'epcandiapp/base.html' %}
-{% block page_title %}EPC&I - Contact Us{% endblock %}
+{% block page_title %}Contact EPC&amp;I | Engineering, Procurement, Construction &amp; Infrastructure{% endblock %}
+{% block meta_description %}Contact EPC&amp;I for editorial, advertising, subscription, and business inquiries related to Engineering, Procurement, Construction and Infrastructure.{% endblock %}
+{% block meta_keywords %}contact EPC&amp;I, infrastructure magazine contact, construction media, engineering publication contact{% endblock %}
 {% block content %}
 <div id="latestarticle" style="width:512px; margin:21px 26px 0px 26px; text-align:left;">
     <h2>CONTACT US</h2>
@@ -15,7 +17,14 @@
                 <p style="height:25px;">Nature Of Query:</p><p style="height:25px;">Your Name:</p><p style="height:25px;">Email:</p><p style="height:25px;">Organisation:</p><p style="height:25px;">Subject:</p><p style="height:65px;">Message:</p>
             </div>
             <div>
-                <p style="height:25px;"><select name="query_type" class="form-text" required><option value="Feedback / Suggestions" selected>Feedback / Suggestions</option><option value="Sales">Sales</option><option value="Customer Care">Customer Care</option></select></p>
+                <p style="height:25px;">
+                    <select name="query_type" class="form-text" required>
+                        <option value="Feedback / Suggestions" {% if selected_query_type == 'Feedback / Suggestions' %}selected{% endif %}>Feedback / Suggestions</option>
+                        <option value="Sales" {% if selected_query_type == 'Sales' %}selected{% endif %}>Sales</option>
+                        <option value="Customer Care" {% if selected_query_type == 'Customer Care' %}selected{% endif %}>Customer Care</option>
+                        <option value="Advertise" {% if selected_query_type == 'Advertise' %}selected{% endif %}>Advertise</option>
+                    </select>
+                </p>
                 <p style="height:25px;"><input name="name" type="text" maxlength="250" class="form-text" required></p>
                 <p style="height:25px;"><input name="email" type="email" maxlength="256" class="form-text" required></p>
                 <p style="height:25px;"><input name="organisation" type="text" maxlength="100" class="form-text" required></p>

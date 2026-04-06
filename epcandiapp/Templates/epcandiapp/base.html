@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block page_title %}EPC&amp;I - complete and verified news, views and opinions on construction and infrastructure development{% endblock %}</title>
+    <title>{% block page_title %}Engineering, Procurement, Construction &amp; Infrastructure News | EPC&amp;I{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'epcandiapp/logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'epcandiapp/logo.png' %}">
+    <meta name="description" content="{% block meta_description %}EPC&amp;I delivers Engineering, Procurement, Construction and Infrastructure news, analysis, events, equipment updates, interviews, and industry insights for India and Asia-Pacific.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}Engineering, Procurement, Construction &amp; Infrastructure, EPC&amp;I, EPCI, infrastructure news India, construction industry, project management, highways, airports, ports, railways, telecom, power, oil and gas, real estate, cement, aviation{% endblock %}">
+    <meta name="robots" content="index, follow">
     <link rel="stylesheet" type="text/css" href="{% static 'epcandiapp/site.css' %}">
 </head>
 <body>
@@ -18,12 +23,12 @@
 
             <div id="menubar" class="menu-div">
                 <a href="{% url 'news' %}">NEWS</a><span class="menu-pipe"> | </span>
-                <a href="{% url 'articles' %}">ARTICLES</a><span class="menu-pipe"> | </span>
-                <a href="{% url 'interview' %}">INTERVIEWS</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'equipment' %}">EQUIPMENT NEWS</a><span class="menu-pipe"> | </span>
-                <a href="{% url 'tenders' %}">TENDERS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'focus' %}">FOCUS</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'shopping_cart' %}">SHOPPING CART</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'guest_article' %}">GUEST ARTICLE</a><span class="menu-pipe"> | </span>
+                <a href="{% url 'square_foot' %}">SQUARE FOOT</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'events' %}">EVENTS</a><span class="menu-pipe"> | </span>
-                <a href="{% url 'catalogs' %}">CATALOGS</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'subscribe' %}">SUBSCRIBE</a><span class="menu-pipe"> | </span>
                 <a href="{% url 'contact' %}">CONTACT US</a>
             </div>
@@ -66,13 +71,11 @@
             </div>
 
             <div id="footer" class="footer-div">
-                <a href="/">HOME</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'news' %}">HOME</a><span class="footer-link-spacer"></span>
                 <a href="{% url 'about' %}">ABOUT US</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'disclaimer' %}">DISCLAIMER</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'privacy' %}">PRIVACY</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'jobs' %}">JOBS</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'advertise' %}">ADVERTISE</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'media-kit' %}">MEDIA KIT</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'disclaimer' %}">DISCLAIMER (SOON)</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'privacy' %}">PRIVACY (SOON)</a><span class="footer-link-spacer"></span>
+                <a href="{% url 'contact' %}?query_type=Advertise">ADVERTISE</a><span class="footer-link-spacer"></span>
                 <a href="{% url 'contact' %}">CONTACT US</a>
                 <br>
                 <p>
@@ -80,7 +83,9 @@
                     Anand Sagar Chs , Plot 121, Sector 1, Charkop, Kandivali (W), Mumbai - 400 067<br>
                     Mobile No. - +91 9820131960 / 9892313338<br>
                     Email: mktgepci@gmail.com / epcandi@gmail.com<br><br>
-                    For Editorial, call: +91 9820324234 <br> Email: editor.epcandi@gmail.com
+                    For Editorial, call: +91 9820324234 <br> Email: editor.epcandi@gmail.com<br><br>
+                    Website developed by
+                    <a href="https://technographix.pythonanywhere.com/" target="_blank" rel="noopener noreferrer">Techno Graphix</a>
                 </p>
             </div>
         </div>

@@ -1,0 +1,21 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}EPC&I Admin | Content Management{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="icon" type="image/png" href="{% static 'epcandiapp/logo.png' %}">
+<link rel="apple-touch-icon" href="{% static 'epcandiapp/logo.png' %}">
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}" style="display:inline-flex; align-items:center; gap:10px;">
+        <img src="{% static 'epcandiapp/logo.png' %}" alt="EPC&I" style="height:28px; width:auto;">
+        <span>EPC&I Administration</span>
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

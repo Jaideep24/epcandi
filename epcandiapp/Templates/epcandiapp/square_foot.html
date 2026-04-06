@@ -1,16 +1,16 @@
 {% extends "epcandiapp/base.html" %}
-{% block page_title %}EPC&amp;I Equipment News | Construction Machinery &amp; Technology{% endblock %}
-{% block meta_description %}Get updates on construction equipment, machinery, technology, and product launches relevant to infrastructure and EPC projects.{% endblock %}
-{% block meta_keywords %}equipment news, construction machinery, EPC technology, infrastructure equipment, EPC&amp;I equipment{% endblock %}
+{% block page_title %}EPC&amp;I Square Foot | Building and Project Space Updates{% endblock %}
+{% block meta_description %}EPC&amp;I Square Foot covers project-space developments, construction updates, and practical infrastructure execution insights.{% endblock %}
+{% block meta_keywords %}square foot, project space, building updates, infrastructure execution, construction developments{% endblock %}
 {% block content %}
-<div class="list-toolbar">EQUIPMENT NEWS</div>
+<div class="list-toolbar">SQUARE FOOT</div>
 {% include "epcandiapp/partials/list_controls.html" %}
 {% for i in Equipment_News %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-presci">{{ i.equipment_news|truncatechars:280|linebreaks }} <a href="{% url 'equipment-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
-<div class="list-article-presci">No equipment news available.</div>
+<div class="list-article-presci">No square foot items available.</div>
 {% endfor %}
 {% include "epcandiapp/partials/pagination.html" %}
 {% endblock %}

@@ -1,12 +1,16 @@
 {% extends "epcandiapp/base.html" %}
-{% block page_title %}EPC&I INTERVIEWS{% endblock %}
+{% block page_title %}EPC&amp;I Interviews | Leaders in Infrastructure &amp; Construction{% endblock %}
+{% block meta_description %}Interviews with industry leaders, policymakers, and experts in Engineering, Procurement, Construction and Infrastructure sectors.{% endblock %}
+{% block meta_keywords %}EPC&amp;I interviews, infrastructure leaders, construction experts, engineering leadership, industry voices{% endblock %}
 {% block content %}
 <div class="list-toolbar">INTERVIEWS</div>
+{% include "epcandiapp/partials/list_controls.html" %}
 {% for i in Interviews %}
 <div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.Interview|linebreaks }}</div>
+<div class="list-article-presci">{{ i.Interview|truncatechars:280|linebreaks }} <a href="{% url 'interview-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
 <div class="list-article-presci">No interviews available.</div>
 {% endfor %}
+{% include "epcandiapp/partials/pagination.html" %}
 {% endblock %}

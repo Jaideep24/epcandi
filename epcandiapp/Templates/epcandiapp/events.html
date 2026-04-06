@@ -1,15 +1,10 @@
 {% extends "epcandiapp/base.html" %}
-{% block page_title %}EPC&I EVENTS{% endblock %}
+{% block page_title %}EPC&amp;I Events | Infrastructure &amp; Construction Conferences{% endblock %}
+{% block meta_description %}Explore EPC&amp;I events, conferences, and exhibitions for Engineering, Procurement, Construction and Infrastructure professionals.{% endblock %}
+{% block meta_keywords %}infrastructure events, construction conferences, EPC events, engineering exhibitions, EPC&amp;I events{% endblock %}
 {% block content %}
 <div id="latestarticle" style="width:512px; margin:21px 26px 0px 26px; text-align:left;">
-    <div id="titleimage" style="background:none; width:512px; height:32px; font-size:11px; text-align:right; vertical-align:middle;">
-        EVENTS PER PAGE:&nbsp;<select name="page_size" id="page_size" class="articles-per-page">
-            <option value="2">2</option>
-            <option value="10">10</option>
-            <option selected="selected" value="20">20</option>
-            <option value="50">50</option>
-        </select>
-    </div>
+    {% include "epcandiapp/partials/list_controls.html" %}
     <div id="repeater">
         {% for event in events %}
         <div class="list-event-header">{{ event.name|upper }}</div>
@@ -19,11 +14,13 @@
             <u>Timing</u>: {{ event.timings }}<br><br>
             <u>Contact</u>: {{ event.contact_details }}<br><br>
             <a href="{{ event.website }}" target="_blank" rel="noopener noreferrer">{{ event.website }}</a>
+            <br><br><a href="{% url 'event-detail' event.id %}" class="list-read-more">Read More</a>
         </div>
         {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
         {% empty %}
         <div class="list-event-header">No Events Available</div>
         {% endfor %}
     </div>
+    {% include "epcandiapp/partials/pagination.html" %}
 </div>
 {% endblock %}
