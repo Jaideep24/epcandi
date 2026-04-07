@@ -1,25 +1,86 @@
 {% extends "epcandiapp/base.html" %}
-{% block page_title %}EPC&amp;I Guest Article | Interviews &amp; Guest Articles{% endblock %}
+{% block page_title %}EPC&amp;I Interviews &amp; Guest Article{% endblock %}
 {% block meta_description %}Read interviews and guest articles by industry professionals on engineering, procurement, construction and infrastructure trends and opportunities.{% endblock %}
 {% block meta_keywords %}guest articles, interviews, EPC&amp;I opinions, infrastructure thought leadership, construction expert articles{% endblock %}
 {% block content %}
-<div class="list-toolbar">GUEST ARTICLE</div>
-<div class="list-article-header">INTERVIEWS</div>
-{% for i in interviews %}
-<div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.Interview|truncatechars:280|linebreaks }} <a href="{% url 'interview-detail' i.id %}" class="list-read-more">Read More</a></div>
-{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
-{% empty %}
-<div class="list-article-presci">No interviews available.</div>
-{% endfor %}
+<div class="list-toolbar">INTERVIEWS &amp; GUEST ARTICLE</div>
 
-<div class="list-seperator">*****</div>
-<div class="list-article-header">GUEST ARTICLES</div>
-{% for i in guest_articles %}
-<div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.article|truncatechars:280|linebreaks }} <a href="{% url 'article-detail' i.id %}" class="list-read-more">Read More</a></div>
-{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
-{% empty %}
-<div class="list-article-presci">No guest articles available.</div>
-{% endfor %}
+<div class="content-switch" role="tablist" aria-label="Content Type Switch">
+    <a
+        href="?section=interviews&q={{ q|urlencode }}&page_size={{ page_size }}"
+        class="content-switch-link {% if section == 'interviews' %}is-active{% endif %}"
+        role="tab"
+        aria-selected="{% if section == 'interviews' %}true{% else %}false{% endif %}"
+    >
+        INTERVIEWS
+    </a>
+    <a
+        href="?section=guest-articles&q={{ q|urlencode }}&page_size={{ page_size }}"
+        class="content-switch-link {% if section == 'guest-articles' %}is-active{% endif %}"
+        role="tab"
+        aria-selected="{% if section == 'guest-articles' %}true{% else %}false{% endif %}"
+    >
+        GUEST ARTICLE
+    </a>
+</div>
+
+<form method="get" class="list-filter-form">
+    <input type="hidden" name="section" value="{{ section }}">
+    <div class="list-filter-line">
+        <label for="page_size"><strong>ARTICLES PER PAGE:</strong></label>
+        <select name="page_size" id="page_size" class="articles-per-page">
+            {% for size in page_size_options %}
+            <option value="{{ size }}" {% if page_size == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="list-filter-line"><strong>FILTER YOUR RESULTS</strong></div>
+    <div class="list-filter-line">
+        <label for="q">Title:</label>
+        <input type="text" id="q" name="q" value="{{ q }}" class="list-filter-input">
+        <button type="submit" class="list-filter-button">Submit</button>
+    </div>
+</form>
+
+<div class="list-article-header">
+    {% if section == 'guest-articles' %}GUEST ARTICLE{% else %}INTERVIEWS{% endif %}
+</div>
+
+{% if section == 'guest-articles' %}
+    {% for i in items %}
+    <div class="list-article-header">{{ i.heading }}</div>
+    <div class="list-article-presci">{{ i.article|truncatechars:280|linebreaks }} <a href="{% url 'guest-article-detail' i.id %}" class="list-read-more">Read More</a></div>
+    {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+    {% empty %}
+    <div class="list-article-presci">No guest articles available.</div>
+    {% endfor %}
+{% else %}
+    {% for i in items %}
+    <div class="list-article-header">{{ i.heading }}</div>
+    <div class="list-article-presci">{{ i.Interview|truncatechars:280|linebreaks }} <a href="{% url 'interview-detail' i.id %}" class="list-read-more">Read More</a></div>
+    {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+    {% empty %}
+    <div class="list-article-presci">No interviews available.</div>
+    {% endfor %}
+{% endif %}
+
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
+<div class="pagination-wrap">
+    {% if page_obj.has_previous %}
+    <a href="?section={{ section }}&q={{ q|urlencode }}&page_size={{ page_size }}&page={{ page_obj.previous_page_number }}" class="pager-link">Previous</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <span class="pager-selected">{{ num }}</span>
+        {% else %}
+        <a href="?section={{ section }}&q={{ q|urlencode }}&page_size={{ page_size }}&page={{ num }}" class="pager-link">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?section={{ section }}&q={{ q|urlencode }}&page_size={{ page_size }}&page={{ page_obj.next_page_number }}" class="pager-link">Next</a>
+    {% endif %}
+</div>
+{% endif %}
 {% endblock %}

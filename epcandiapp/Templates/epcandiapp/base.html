@@ -16,58 +16,56 @@
     <center>
         <div id="main" class="main-div">
             <div id="topbar" class="topbar-div">
-                <a href="/" class="logo-link" aria-label="EPC and I home">
-                    <img src="{% static 'epcandiapp/logo.png' %}" alt="EPC and I" class="tb_logo">
-                </a>
+                <div class="topbar-inner">
+                    <a href="/" class="logo-link" aria-label="EPC and I home">
+                        <img src="{% static 'epcandiapp/logo.png' %}" alt="EPC and I" class="tb_logo">
+                    </a>
+                    <div class="topbar-meta">
+                        <div class="topbar-title">Engineering, Procurement, Construction &amp; Infrastructure</div>
+                        <div class="topbar-subtitle">Industry intelligence, project updates, equipment insights, and leadership voices</div>
+                    </div>
+                </div>
             </div>
 
-            <div id="menubar" class="menu-div">
+            <nav id="menubar" class="menu-div">
                 <a href="{% url 'news' %}">NEWS</a><span class="menu-pipe">|</span>
                 <a href="{% url 'equipment' %}">EQUIPMENT NEWS</a><span class="menu-pipe">|</span>
                 <a href="{% url 'focus' %}">FOCUS</a><span class="menu-pipe">|</span>
                 <a href="{% url 'shopping_cart' %}">SHOPPING CART</a><span class="menu-pipe">|</span>
-                <a href="{% url 'guest_article' %}">GUEST ARTICLE</a><span class="menu-pipe">|</span>
+                <a href="{% url 'guest_article' %}">INTERVIEWS &amp; GUEST ARTICLE</a><span class="menu-pipe">|</span>
                 <a href="{% url 'square_foot' %}">SQUARE FOOT</a><span class="menu-pipe">|</span>
                 <a href="{% url 'events' %}">EVENTS</a><span class="menu-pipe">|</span>
                 <a href="{% url 'subscribe' %}">SUBSCRIBE</a><span class="menu-pipe">|</span>
                 <a href="{% url 'contact' %}">CONTACT US</a>
-            </div>
+            </nav>
 
             <div id="contentwrapper" class="contentwrapper-div">
-                <table border="0" cellpadding="0" cellspacing="0" width="984px">
-                    <tbody>
-                    <tr>
-                        <td valign="top">
-                            <div id="leftpanel" class="leftpanel-div">
-                                <div id="latestissue" class="lp_issue">
-                                    <a href="#">
-                                        LATEST ISSUE - DECEMBER 2025- EXCON<br class="zerospacer">
-                                        DECEMBER 2025- EXCON
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                        <td valign="top">
-                            <div id="content" class="content-div">
-                                {% block content %}{% endblock %}
-                            </div>
-                        </td>
-                        <td valign="top">
-                            <div id="rightpanel" style="width:220px;">
-                                {% for banner in advertisement_banners %}
-                                <div class="banner">
-                                    <a href="{{ banner.link }}" target="_blank" rel="noopener noreferrer">
-                                        <img src="{{ banner.image.url }}" alt="{{ banner.name }}" class="side-banner-img">
-                                    </a>
-                                </div>
-                                {% empty %}
-                                <div class="banner banner-empty">Advertisement</div>
-                                {% endfor %}
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="layout-grid">
+                    <aside id="leftpanel" class="leftpanel-div">
+                        <div id="latestissue" class="lp_issue">
+                            <a href="#">
+                                LATEST ISSUE - DECEMBER 2025- EXCON<br class="zerospacer">
+                                DECEMBER 2025- EXCON
+                            </a>
+                        </div>
+                    </aside>
+
+                    <main id="content" class="content-div">
+                        {% block content %}{% endblock %}
+                    </main>
+
+                    <aside id="rightpanel" class="rightpanel-div">
+                        {% for banner in advertisement_banners %}
+                        <div class="banner">
+                            <a href="{{ banner.link }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ banner.image.url }}" alt="{{ banner.name }}" class="side-banner-img">
+                            </a>
+                        </div>
+                        {% empty %}
+                        <div class="banner banner-empty">Advertisement</div>
+                        {% endfor %}
+                    </aside>
+                </div>
             </div>
 
             <div id="footer" class="footer-div">

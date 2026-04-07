@@ -22,6 +22,13 @@ class ArticlesAdmin(admin.ModelAdmin):
 	ordering = ("-id",)
 
 
+@admin.register(GuestArticle)
+class GuestArticleAdmin(admin.ModelAdmin):
+	list_display = ("heading",)
+	search_fields = ("heading", "article")
+	ordering = ("-id",)
+
+
 @admin.register(Interview)
 class InterviewAdmin(admin.ModelAdmin):
 	list_display = ("heading",)

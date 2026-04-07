@@ -116,6 +116,13 @@ def article_detail_page(request, article_id):
     return render(request, "epcandiapp/article_detail.html", context)
 
 
+def guest_article_detail_page(request, guest_article_id):
+    article = get_object_or_404(GuestArticle, id=guest_article_id)
+    context = {"article": article}
+    context.update(_base_context())
+    return render(request, "epcandiapp/article_detail.html", context)
+
+
 def interview_detail_page(request, interview_id):
     item = get_object_or_404(Interview, id=interview_id)
     return _render_detail_page(
@@ -125,7 +132,7 @@ def interview_detail_page(request, interview_id):
         detail_title=item.heading,
         detail_body=item.Interview,
         back_url="guest_article",
-        back_label="Back to Guest Article",
+        back_label="Back to Interviews & Guest Article",
     )
 
 
@@ -293,11 +300,31 @@ def shopping_cart_page(request):
 
 
 def guest_article_page(request):
-    articles_queryset = Articles.objects.order_by("-id")
+    page_size = _safe_page_size(request.GET.get("page_size"))
+    query_text = request.GET.get("q", "").strip()
+    section = request.GET.get("section", "interviews").strip().lower()
+    if section not in {"interviews", "guest-articles"}:
+        section = "interviews"
+
     interviews_queryset = Interview.objects.order_by("-id")
+    guest_articles_queryset = GuestArticle.objects.order_by("-id")
+
+    if query_text:
+        interviews_queryset = interviews_queryset.filter(heading__icontains=query_text)
+        guest_articles_queryset = guest_articles_queryset.filter(heading__icontains=query_text)
+
+    if section == "guest-articles":
+        page_obj = Paginator(guest_articles_queryset, page_size).get_page(request.GET.get("page"))
+    else:
+        page_obj = Paginator(interviews_queryset, page_size).get_page(request.GET.get("page"))
+
     context = {
-        "guest_articles": articles_queryset,
-        "interviews": interviews_queryset,
+        "section": section,
+        "items": page_obj.object_list,
+        "page_obj": page_obj,
+        "page_size": page_size,
+        "page_size_options": PAGE_SIZE_OPTIONS,
+        "q": query_text,
     }
     context.update(_base_context())
     return render(request, "epcandiapp/guest_article.html", context)

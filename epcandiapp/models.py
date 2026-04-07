@@ -27,6 +27,18 @@ class Articles(models.Model):
         return self.heading
 
 
+class GuestArticle(models.Model):
+    heading=models.CharField(max_length=200)
+    article=models.TextField()
+
+    class Meta:
+        verbose_name = "Guest Article"
+        verbose_name_plural = "Guest Articles"
+
+    def __str__(self):
+        return self.heading
+
+
 class Interview(models.Model):
     heading=models.CharField(max_length=200)
     Interview=models.TextField()
