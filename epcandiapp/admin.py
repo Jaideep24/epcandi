@@ -56,16 +56,6 @@ class AboutPageAdmin(PageContentAdmin):
 	pass
 
 
-@admin.register(TendersPage)
-class TendersPageAdmin(PageContentAdmin):
-	pass
-
-
-@admin.register(CatalogsPage)
-class CatalogsPageAdmin(PageContentAdmin):
-	pass
-
-
 @admin.register(DisclaimerPage)
 class DisclaimerPageAdmin(PageContentAdmin):
 	pass
@@ -73,21 +63,6 @@ class DisclaimerPageAdmin(PageContentAdmin):
 
 @admin.register(PrivacyPage)
 class PrivacyPageAdmin(PageContentAdmin):
-	pass
-
-
-@admin.register(JobsPage)
-class JobsPageAdmin(PageContentAdmin):
-	pass
-
-
-@admin.register(AdvertisePage)
-class AdvertisePageAdmin(PageContentAdmin):
-	pass
-
-
-@admin.register(MediaKitPage)
-class MediaKitPageAdmin(PageContentAdmin):
 	pass
 
 

@@ -3,43 +3,47 @@
 {% block meta_description %}Subscribe to EPC&amp;I for regular updates on Engineering, Procurement, Construction and Infrastructure news, analysis, and special reports.{% endblock %}
 {% block meta_keywords %}subscribe EPC&amp;I, infrastructure magazine subscription, construction news subscription, engineering publication{% endblock %}
 {% block content %}
-<div id="latestarticle" style="width:512px; margin:21px 26px 0px 26px; text-align:left;">
-    <h2>USER REGISTRATION</h2>
-    <div id="rates" style="text-align:center; margin:15px 0px 15px 0px;">
+<div class="page-panel">
+    <h2 class="panel-title">USER REGISTRATION</h2>
+    <div class="panel-note">
         <b>Register Now for a free copy of EPC&I.</b><sup>*CONDITIONS APPLY.</sup><br>
-        {% if message %}<span style="color:green;">{{ message }}</span>{% endif %}
-        {% if errors %}<span style="color:red;">{{ errors }}</span>{% endif %}
+        {% if message %}<span class="panel-success">{{ message }}</span>{% endif %}
+        {% if errors %}<span class="panel-error">{{ errors }}</span>{% endif %}
     </div>
-    <div id="subscriptionform" class="form-content">
+    <div class="form-content">
         <form method="post" action="{% url 'subscribe' %}">
             {% csrf_token %}
-            <div style="float:left;width:240px; margin:0;">
-                <p style="height:25px;">First Name:</p><p style="height:25px;">Last Name:</p><p style="height:25px;">Designation:</p><p style="height:25px;">Organisation:</p><p style="height:45px;">Address:</p><p style="height:25px;">City:</p><p style="height:25px;">State:</p><p style="height:25px;">Pincode:</p><p style="height:25px;">Telephone No.:</p><p style="height:25px;">Mobile:</p><p style="height:25px;">Email:</p><p style="height:25px;">Password:</p><p style="height:25px;">Confirm Password:</p>
+            <div class="form-grid">
+                <div class="form-labels">
+                    <p>First Name:</p><p>Last Name:</p><p>Designation:</p><p>Organisation:</p><p>Address:</p><p>City:</p><p>State:</p><p>Pincode:</p><p>Telephone No.:</p><p>Mobile:</p><p>Email:</p><p>Password:</p><p>Confirm Password:</p>
+                </div>
+                <div class="form-fields">
+                    <p><input name="first_name" type="text" maxlength="50" class="form-text" required></p>
+                    <p><input name="last_name" type="text" maxlength="100" class="form-text" required></p>
+                    <p><input name="designation" type="text" maxlength="50" class="form-text" required></p>
+                    <p><input name="organisation" type="text" maxlength="100" class="form-text" required></p>
+                    <p><textarea name="address" rows="3" cols="20" class="form-text" required></textarea></p>
+                    <p><input name="city" type="text" maxlength="50" class="form-text" required></p>
+                    <p><input name="state" type="text" maxlength="50" class="form-text" required></p>
+                    <p><input name="pincode" type="text" maxlength="10" class="form-text" required></p>
+                    <p><input name="telephone" type="text" maxlength="50" class="form-text" required></p>
+                    <p><input name="mobile" type="text" maxlength="50" class="form-text" required></p>
+                    <p><input name="email" type="email" maxlength="256" class="form-text" required></p>
+                    <p><input name="password" type="password" maxlength="50" class="form-text" required></p>
+                    <p><input name="confirm_password" type="password" maxlength="50" class="form-text" required></p>
+                </div>
             </div>
-            <div>
-                <p style="height:25px;"><input name="first_name" type="text" maxlength="50" class="form-text" required></p>
-                <p style="height:25px;"><input name="last_name" type="text" maxlength="100" class="form-text" required></p>
-                <p style="height:25px;"><input name="designation" type="text" maxlength="50" class="form-text" required></p>
-                <p style="height:25px;"><input name="organisation" type="text" maxlength="100" class="form-text" required></p>
-                <p style="height:45px;"><textarea name="address" rows="2" cols="20" class="form-text" required></textarea></p>
-                <p style="height:25px;"><input name="city" type="text" maxlength="50" class="form-text" required></p>
-                <p style="height:25px;"><input name="state" type="text" maxlength="50" class="form-text" required></p>
-                <p style="height:25px;"><input name="pincode" type="text" maxlength="10" class="form-text" required></p>
-                <p style="height:25px;"><input name="telephone" type="text" maxlength="50" class="form-text" required></p>
-                <p style="height:25px;"><input name="mobile" type="text" maxlength="50" class="form-text" required></p>
-                <p style="height:25px;"><input name="email" type="email" maxlength="256" class="form-text" required></p>
-                <p style="height:25px;"><input name="password" type="password" maxlength="50" class="form-text" required></p>
-                <p style="height:25px;"><input name="confirm_password" type="password" maxlength="50" class="form-text" required></p>
+            <div class="pricing-wrap">
+                <div class="pricing-table-scroll">
+                    <table class="pricing-table" border="1" cellpadding="2" cellspacing="1" width="512">
+                        <tr><td align="center"><b>PERIOD</b></td><td align="center"><b>STAND PRICE</b></td><td align="center" style="color:#c9252b; background-color:#d1d3d4;"><b>YOU PAY</b></td><td align="center"><b>SAVE</b></td></tr>
+                        <tr><td style="padding-left:15px;">1 Year (12 Issues)</td><td style="padding-left:15px;">Rs. 720.00</td><td style="padding-left:15px; color:#c9252b; background-color:#d1d3d4;">Rs. 600.00</td><td style="padding-left:15px;">Rs. 120.00</td></tr>
+                        <tr><td style="padding-left:15px;">2 Years (24 Issues)</td><td style="padding-left:15px;">Rs. 1440.00</td><td style="padding-left:15px; color:#c9252b; background-color:#d1d3d4;">Rs. 1200.00</td><td style="padding-left:15px;">Rs. 240.00</td></tr>
+                        <tr><td colspan="4" align="left"><p>I would also like to subscribe to EPC&I - <select name="subscription_type" class="form-text"><option value="0" selected>No Thanks</option><option value="1 Year">1 Year</option><option value="2 Years">2 Years</option></select></p></td></tr>
+                    </table>
+                </div>
             </div>
-            <div style="text-align:center; margin:15px 0; width:512px; clear:both;">
-                <table border="1" cellpadding="2" cellspacing="1" width="512">
-                    <tr><td align="center"><b>PERIOD</b></td><td align="center"><b>STAND PRICE</b></td><td align="center" style="color:#c9252b; background-color:#d1d3d4;"><b>YOU PAY</b></td><td align="center"><b>SAVE</b></td></tr>
-                    <tr><td style="padding-left:15px;">1 Year (12 Issues)</td><td style="padding-left:15px;">Rs. 720.00</td><td style="padding-left:15px; color:#c9252b; background-color:#d1d3d4;">Rs. 600.00</td><td style="padding-left:15px;">Rs. 120.00</td></tr>
-                    <tr><td style="padding-left:15px;">2 Years (24 Issues)</td><td style="padding-left:15px;">Rs. 1440.00</td><td style="padding-left:15px; color:#c9252b; background-color:#d1d3d4;">Rs. 1200.00</td><td style="padding-left:15px;">Rs. 240.00</td></tr>
-                    <tr><td colspan="4" align="left"><p>I would also like to subscribe to EPC&I - <select name="subscription_type" class="form-text"><option value="0" selected>No Thanks</option><option value="1 Year">1 Year</option><option value="2 Years">2 Years</option></select></p></td></tr>
-                </table>
-            </div>
-            <div style="text-align:center;"><input type="submit" value="SUBMIT" style="padding:5px 15px; cursor:pointer;"></div>
+            <div class="form-submit"><input type="submit" value="SUBMIT"></div>
         </form>
     </div>
 </div>

@@ -1,16 +1,25 @@
 {% extends "epcandiapp/base.html" %}
-{% block page_title %}EPC&amp;I Guest Articles | Expert Construction &amp; Infrastructure Opinions{% endblock %}
-{% block meta_description %}Read guest articles by industry professionals on Engineering, Procurement, Construction and Infrastructure trends and opportunities.{% endblock %}
-{% block meta_keywords %}guest articles, EPC&amp;I opinions, infrastructure thought leadership, construction expert articles{% endblock %}
+{% block page_title %}EPC&amp;I Guest Article | Interviews &amp; Guest Articles{% endblock %}
+{% block meta_description %}Read interviews and guest articles by industry professionals on engineering, procurement, construction and infrastructure trends and opportunities.{% endblock %}
+{% block meta_keywords %}guest articles, interviews, EPC&amp;I opinions, infrastructure thought leadership, construction expert articles{% endblock %}
 {% block content %}
 <div class="list-toolbar">GUEST ARTICLE</div>
-{% include "epcandiapp/partials/list_controls.html" %}
-{% for i in Articles %}
+<div class="list-article-header">INTERVIEWS</div>
+{% for i in interviews %}
+<div class="list-article-header">{{ i.heading }}</div>
+<div class="list-article-presci">{{ i.Interview|truncatechars:280|linebreaks }} <a href="{% url 'interview-detail' i.id %}" class="list-read-more">Read More</a></div>
+{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+{% empty %}
+<div class="list-article-presci">No interviews available.</div>
+{% endfor %}
+
+<div class="list-seperator">*****</div>
+<div class="list-article-header">GUEST ARTICLES</div>
+{% for i in guest_articles %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-presci">{{ i.article|truncatechars:280|linebreaks }} <a href="{% url 'article-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
 <div class="list-article-presci">No guest articles available.</div>
 {% endfor %}
-{% include "epcandiapp/partials/pagination.html" %}
 {% endblock %}

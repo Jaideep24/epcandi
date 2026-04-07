@@ -41,14 +41,6 @@ def _paginated_listing_context(request, queryset, title_field):
     }
 
 
-def _render_static_page(request, template_name, extra_context=None):
-    context = {}
-    if extra_context:
-        context.update(extra_context)
-    context.update(_base_context())
-    return render(request, template_name, context)
-
-
 def _render_page_model(request, model_class):
     page = model_class.objects.filter(is_published=True).order_by("-updated_at", "-id").first()
     if page is None:
@@ -80,6 +72,17 @@ def _render_detail_page(request, *, page_title, toolbar_title, detail_title, det
     context.update(_base_context())
     return render(request, "epcandiapp/detail_page.html", context)
 
+
+def _render_error_page(request, *, status_code, page_title, heading, message):
+    context = {
+        "status_code": status_code,
+        "page_title": page_title,
+        "heading": heading,
+        "message": message,
+    }
+    context.update(_base_context())
+    return render(request, "epcandiapp/error_page.html", context, status=status_code)
+
 def home_page(request):
     # Home should show the News listing page.
     return news_page(request)
@@ -106,27 +109,11 @@ def news_detail_page(request, news_id):
     )
 
 
-def article_page(request):
-    queryset = Articles.objects.order_by("-id")
-    context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["Articles"] = context["page_obj"].object_list
-    context.update(_base_context())
-    return render(request, "epcandiapp/articles.html", context)
-
-
 def article_detail_page(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
     context = {"article": article}
     context.update(_base_context())
     return render(request, "epcandiapp/article_detail.html", context)
-
-
-def interview_page(request):
-    queryset = Interview.objects.order_by("-id")
-    context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["Interviews"] = context["page_obj"].object_list
-    context.update(_base_context())
-    return render(request, "epcandiapp/interview.html", context)
 
 
 def interview_detail_page(request, interview_id):
@@ -137,8 +124,8 @@ def interview_detail_page(request, interview_id):
         toolbar_title="INTERVIEWS",
         detail_title=item.heading,
         detail_body=item.Interview,
-        back_url="interview",
-        back_label="Back to Interviews",
+        back_url="guest_article",
+        back_label="Back to Guest Article",
     )
 
 
@@ -281,14 +268,6 @@ def contact_page(request):
         return render(request, "epcandiapp/contact.html", context)
 
 
-def tenders_page(request):
-    return _render_page_model(request, TendersPage)
-
-
-def catalogs_page(request):
-    return _render_page_model(request, CatalogsPage)
-
-
 def about_page(request):
     return _render_page_model(request, AboutPage)
 
@@ -301,22 +280,10 @@ def privacy_page(request):
     return _render_page_model(request, PrivacyPage)
 
 
-def jobs_page(request):
-    return _render_page_model(request, JobsPage)
-
-
-def advertise_page(request):
-    return _render_page_model(request, AdvertisePage)
-
-
-def media_kit_page(request):
-    return _render_page_model(request, MediaKitPage)
-
-
 def focus_page(request):
-    queryset = Interview.objects.order_by("-id")
+    queryset = Articles.objects.order_by("-id")
     context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["Interviews"] = context["page_obj"].object_list
+    context["Articles"] = context["page_obj"].object_list
     context.update(_base_context())
     return render(request, "epcandiapp/focus.html", context)
 
@@ -326,16 +293,63 @@ def shopping_cart_page(request):
 
 
 def guest_article_page(request):
-    queryset = Articles.objects.order_by("-id")
-    context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["Articles"] = context["page_obj"].object_list
+    articles_queryset = Articles.objects.order_by("-id")
+    interviews_queryset = Interview.objects.order_by("-id")
+    context = {
+        "guest_articles": articles_queryset,
+        "interviews": interviews_queryset,
+    }
     context.update(_base_context())
     return render(request, "epcandiapp/guest_article.html", context)
 
 
 def square_foot_page(request):
-    queryset = Equipment_News.objects.order_by("-id")
-    context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["Equipment_News"] = context["page_obj"].object_list
+    context = {
+        "page": {
+            "title": "Square Foot",
+            "heading": "SQUARE FOOT",
+            "content": "Square Foot content will be added soon.",
+        }
+    }
     context.update(_base_context())
-    return render(request, "epcandiapp/square_foot.html", context)
+    return render(request, "epcandiapp/site_page.html", context)
+
+
+def bad_request_page(request, exception):
+    return _render_error_page(
+        request,
+        status_code=400,
+        page_title="Bad Request | EPC&I",
+        heading="BAD REQUEST",
+        message="The request could not be understood. Please try again.",
+    )
+
+
+def permission_denied_page(request, exception):
+    return _render_error_page(
+        request,
+        status_code=403,
+        page_title="Permission Denied | EPC&I",
+        heading="PERMISSION DENIED",
+        message="You do not have permission to access this page.",
+    )
+
+
+def page_not_found_page(request, exception):
+    return _render_error_page(
+        request,
+        status_code=404,
+        page_title="Page Not Found | EPC&I",
+        heading="PAGE NOT FOUND",
+        message="The page you are looking for does not exist or has been moved.",
+    )
+
+
+def server_error_page(request):
+    return _render_error_page(
+        request,
+        status_code=500,
+        page_title="Server Error | EPC&I",
+        heading="SERVER ERROR",
+        message="Something went wrong on our side. Please try again later.",
+    )

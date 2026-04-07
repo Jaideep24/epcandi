@@ -1,15 +1,10 @@
-from django.contrib import admin
 from django.urls import path
 from .views import *
-from django.conf import settings
-from django.conf.urls.static import static
 urlpatterns=[
     path("", home_page, name="home"),
     path("news/", news_page, name="news"),
     path("news/<int:news_id>/", news_detail_page, name="news-detail"),
-    path("articles/", article_page, name="articles"),
     path("articles/<int:article_id>/", article_detail_page, name="article-detail"),
-    path("interview/", interview_page, name="interview"),
     path("interview/<int:interview_id>/", interview_detail_page, name="interview-detail"),
     path("equipment/", equipment_page, name="equipment"),
     path("equipment/<int:equipment_id>/", equipment_detail_page, name="equipment-detail"),
@@ -21,38 +16,8 @@ urlpatterns=[
     path("shopping-cart/", shopping_cart_page, name="shopping_cart"),
     path("guest-article/", guest_article_page, name="guest_article"),
     path("square-foot/", square_foot_page, name="square_foot"),
-    path("tenders/", tenders_page, name="tenders"),
-    path("catalogs/", catalogs_page, name="catalogs"),
     path("about/", about_page, name="about"),
     path("disclaimer/", disclaimer_page, name="disclaimer"),
     path("privacy/", privacy_page, name="privacy"),
-    path("jobs/", jobs_page, name="jobs"),
-    path("advertise/", advertise_page, name="advertise"),
-    path("media-kit/", media_kit_page, name="media-kit"),
 
-    # Legacy routes retained for backward compatibility
-    path("News", news_page),
-    path("News/<int:news_id>", news_detail_page),
-    path("Articles", article_page),
-    path("Articles/<int:article_id>", article_detail_page),
-    path("Interview", interview_page),
-    path("Interview/<int:interview_id>", interview_detail_page),
-    path("Equipment", equipment_page),
-    path("Equipment/<int:equipment_id>", equipment_detail_page),
-    path("Events", events_page),
-    path("Events/<int:event_id>", event_detail_page),
-    path("Subscribe", subscribe_page),
-    path("Contact", contact_page),
-    path("Focus", focus_page),
-    path("ShoppingCart", shopping_cart_page),
-    path("GuestArticle", guest_article_page),
-    path("SquareFoot", square_foot_page),
-    path("Tenders", tenders_page),
-    path("Catalogs", catalogs_page),
-    path("About", about_page),
-    path("Disclaimer", disclaimer_page),
-    path("Privacy", privacy_page),
-    path("Jobs", jobs_page),
-    path("Advertise", advertise_page),
-    path("MediaKit", media_kit_page),
 ]

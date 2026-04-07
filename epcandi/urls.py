@@ -23,5 +23,10 @@ urlpatterns = [
     path('',include('epcandiapp.urls'),)
 ]
 
+handler400 = 'epcandiapp.views.bad_request_page'
+handler403 = 'epcandiapp.views.permission_denied_page'
+handler404 = 'epcandiapp.views.page_not_found_page'
+handler500 = 'epcandiapp.views.server_error_page'
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

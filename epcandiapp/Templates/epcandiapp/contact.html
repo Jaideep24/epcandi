@@ -3,35 +3,37 @@
 {% block meta_description %}Contact EPC&amp;I for editorial, advertising, subscription, and business inquiries related to Engineering, Procurement, Construction and Infrastructure.{% endblock %}
 {% block meta_keywords %}contact EPC&amp;I, infrastructure magazine contact, construction media, engineering publication contact{% endblock %}
 {% block content %}
-<div id="latestarticle" style="width:512px; margin:21px 26px 0px 26px; text-align:left;">
-    <h2>CONTACT US</h2>
-    <div id="rates" style="text-align:center; margin:15px 0px 15px 0px;">
+<div class="page-panel">
+    <h2 class="panel-title">CONTACT US</h2>
+    <div class="panel-note">
         <b>Please fill in the form below and we will get back to you ASAP.</b><br>
-        {% if message %}<span style="color:green;">{{ message }}</span>{% endif %}
-        {% if errors %}<span style="color:red;">{{ errors }}</span>{% endif %}
+        {% if message %}<span class="panel-success">{{ message }}</span>{% endif %}
+        {% if errors %}<span class="panel-error">{{ errors }}</span>{% endif %}
     </div>
-    <div id="subscriptionform" class="form-content">
+    <div class="form-content">
         <form method="post" action="{% url 'contact' %}">
             {% csrf_token %}
-            <div style="float:left;width:240px; margin:0;">
-                <p style="height:25px;">Nature Of Query:</p><p style="height:25px;">Your Name:</p><p style="height:25px;">Email:</p><p style="height:25px;">Organisation:</p><p style="height:25px;">Subject:</p><p style="height:65px;">Message:</p>
+            <div class="form-grid">
+                <div class="form-labels">
+                    <p>Nature Of Query:</p><p>Your Name:</p><p>Email:</p><p>Organisation:</p><p>Subject:</p><p>Message:</p>
+                </div>
+                <div class="form-fields">
+                    <p>
+                        <select name="query_type" class="form-text" required>
+                            <option value="Feedback / Suggestions" {% if selected_query_type == 'Feedback / Suggestions' %}selected{% endif %}>Feedback / Suggestions</option>
+                            <option value="Sales" {% if selected_query_type == 'Sales' %}selected{% endif %}>Sales</option>
+                            <option value="Customer Care" {% if selected_query_type == 'Customer Care' %}selected{% endif %}>Customer Care</option>
+                            <option value="Advertise" {% if selected_query_type == 'Advertise' %}selected{% endif %}>Advertise</option>
+                        </select>
+                    </p>
+                    <p><input name="name" type="text" maxlength="250" class="form-text" required></p>
+                    <p><input name="email" type="email" maxlength="256" class="form-text" required></p>
+                    <p><input name="organisation" type="text" maxlength="100" class="form-text" required></p>
+                    <p><input name="subject" type="text" maxlength="250" class="form-text" required></p>
+                    <p><textarea name="message" rows="3" cols="20" class="form-text" required></textarea></p>
+                </div>
             </div>
-            <div>
-                <p style="height:25px;">
-                    <select name="query_type" class="form-text" required>
-                        <option value="Feedback / Suggestions" {% if selected_query_type == 'Feedback / Suggestions' %}selected{% endif %}>Feedback / Suggestions</option>
-                        <option value="Sales" {% if selected_query_type == 'Sales' %}selected{% endif %}>Sales</option>
-                        <option value="Customer Care" {% if selected_query_type == 'Customer Care' %}selected{% endif %}>Customer Care</option>
-                        <option value="Advertise" {% if selected_query_type == 'Advertise' %}selected{% endif %}>Advertise</option>
-                    </select>
-                </p>
-                <p style="height:25px;"><input name="name" type="text" maxlength="250" class="form-text" required></p>
-                <p style="height:25px;"><input name="email" type="email" maxlength="256" class="form-text" required></p>
-                <p style="height:25px;"><input name="organisation" type="text" maxlength="100" class="form-text" required></p>
-                <p style="height:25px;"><input name="subject" type="text" maxlength="250" class="form-text" required></p>
-                <p style="height:65px;"><textarea name="message" rows="2" cols="20" class="form-text" required></textarea></p>
-            </div>
-            <div style="text-align:center; clear:both;"><input type="submit" value="SUBMIT" style="padding:5px 15px; cursor:pointer;"></div>
+            <div class="form-submit"><input type="submit" value="SUBMIT"></div>
         </form>
     </div>
 </div>

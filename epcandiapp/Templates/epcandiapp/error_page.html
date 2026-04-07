@@ -1,0 +1,21 @@
+{% extends "epcandiapp/base.html" %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ heading }}{% endblock %}
+{% block meta_keywords %}EPC&I, error page, {{ status_code }}{% endblock %}
+{% block content %}
+<div class="list-toolbar">SYSTEM MESSAGE</div>
+<div class="error-shell">
+    <div class="error-badge">Error {{ status_code }}</div>
+    <h1 class="error-title">{{ heading }}</h1>
+    <p class="error-message">{{ message }}</p>
+    <p class="error-help">
+        If this keeps happening, please contact our team from the contact page.
+    </p>
+    <div class="error-actions">
+        <a href="{% url 'news' %}" class="error-btn">Go To News</a>
+        <a href="{% url 'contact' %}" class="error-btn error-btn-outline">Contact Us</a>
+    </div>
+    <div class="list-seperator">*****</div>
+    <div class="error-note">EPC&amp;I keeps you connected to trusted infrastructure and construction updates.</div>
+</div>
+{% endblock %}

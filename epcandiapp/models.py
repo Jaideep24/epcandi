@@ -85,56 +85,26 @@ class PageContentBase(models.Model):
 
 class AboutPage(PageContentBase):
     class Meta(PageContentBase.Meta):
-        verbose_name = "About Page"
-        verbose_name_plural = "About Page"
-
-
-class TendersPage(PageContentBase):
-    class Meta(PageContentBase.Meta):
-        verbose_name = "Tenders Page"
-        verbose_name_plural = "Tenders Page"
-
-
-class CatalogsPage(PageContentBase):
-    class Meta(PageContentBase.Meta):
-        verbose_name = "Catalogs Page"
-        verbose_name_plural = "Catalogs Page"
+        verbose_name = "About"
+        verbose_name_plural = "About"
 
 
 class DisclaimerPage(PageContentBase):
     class Meta(PageContentBase.Meta):
-        verbose_name = "Disclaimer Page"
-        verbose_name_plural = "Disclaimer Page"
+        verbose_name = "Disclaimer"
+        verbose_name_plural = "Disclaimer"
 
 
 class PrivacyPage(PageContentBase):
     class Meta(PageContentBase.Meta):
-        verbose_name = "Privacy Page"
-        verbose_name_plural = "Privacy Page"
-
-
-class JobsPage(PageContentBase):
-    class Meta(PageContentBase.Meta):
-        verbose_name = "Jobs Page"
-        verbose_name_plural = "Jobs Page"
-
-
-class AdvertisePage(PageContentBase):
-    class Meta(PageContentBase.Meta):
-        verbose_name = "Advertise Page"
-        verbose_name_plural = "Advertise Page"
-
-
-class MediaKitPage(PageContentBase):
-    class Meta(PageContentBase.Meta):
-        verbose_name = "Media Kit Page"
-        verbose_name_plural = "Media Kit Page"
+        verbose_name = "Privacy"
+        verbose_name_plural = "Privacy"
 
 
 class ShoppingCartPage(PageContentBase):
     class Meta(PageContentBase.Meta):
-        verbose_name = "Shopping Cart Page"
-        verbose_name_plural = "Shopping Cart Page"
+        verbose_name = "Shopping Cart"
+        verbose_name_plural = "Shopping Cart"
 
 
 class AdvertisementBanner(models.Model):
