@@ -4,6 +4,7 @@ urlpatterns=[
     path("", home_page, name="home"),
     path("news/", news_page, name="news"),
     path("news/<int:news_id>/", news_detail_page, name="news-detail"),
+    path("focus/<int:focus_id>/", focus_detail_page, name="focus-detail"),
     path("articles/<int:article_id>/", article_detail_page, name="article-detail"),
     path("guest-articles/<int:guest_article_id>/", guest_article_detail_page, name="guest-article-detail"),
     path("interview/<int:interview_id>/", interview_detail_page, name="interview-detail"),

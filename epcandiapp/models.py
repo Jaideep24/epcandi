@@ -15,13 +15,13 @@ class News(models.Model):
         return self.heading
 
 
-class Articles(models.Model):
+class Focus(models.Model):
     heading=models.CharField(max_length=200)
     article=models.TextField()
 
     class Meta:
-        verbose_name = "Article"
-        verbose_name_plural = "Articles"
+        verbose_name = "Focus"
+        verbose_name_plural = "Focus"
 
     def __str__(self):
         return self.heading
@@ -41,7 +41,7 @@ class GuestArticle(models.Model):
 
 class Interview(models.Model):
     heading=models.CharField(max_length=200)
-    Interview=models.TextField()
+    interview=models.TextField()
 
     def __str__(self):
         return self.heading
@@ -51,7 +51,7 @@ class Interview(models.Model):
         verbose_name_plural = "Interviews"
 
 
-class Equipment_News(models.Model):
+class EquipmentNews(models.Model):
     heading=models.CharField(max_length=200)
     equipment_news=models.TextField()
 

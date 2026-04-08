@@ -5,9 +5,9 @@
 {% block content %}
 <div class="list-toolbar">FOCUS</div>
 {% include "epcandiapp/partials/list_controls.html" %}
-{% for i in Articles %}
+{% for i in focus_items %}
 <div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.article|truncatechars:280|linebreaks }} <a href="{% url 'article-detail' i.id %}" class="list-read-more">Read More</a></div>
+<div class="list-article-presci">{{ i.article|truncatechars:280|linebreaks }} <a href="{% url 'focus-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
 <div class="list-article-presci">No articles available.</div>

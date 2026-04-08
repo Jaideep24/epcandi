@@ -15,8 +15,8 @@ class NewsAdmin(admin.ModelAdmin):
 	ordering = ("-top_news", "-id")
 
 
-@admin.register(Articles)
-class ArticlesAdmin(admin.ModelAdmin):
+@admin.register(Focus)
+class FocusAdmin(admin.ModelAdmin):
 	list_display = ("heading",)
 	search_fields = ("heading", "article")
 	ordering = ("-id",)
@@ -32,11 +32,11 @@ class GuestArticleAdmin(admin.ModelAdmin):
 @admin.register(Interview)
 class InterviewAdmin(admin.ModelAdmin):
 	list_display = ("heading",)
-	search_fields = ("heading", "Interview")
+	search_fields = ("heading", "interview")
 	ordering = ("-id",)
 
 
-@admin.register(Equipment_News)
+@admin.register(EquipmentNews)
 class EquipmentNewsAdmin(admin.ModelAdmin):
 	list_display = ("heading",)
 	search_fields = ("heading", "equipment_news")

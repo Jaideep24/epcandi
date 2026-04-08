@@ -1,6 +1,7 @@
 {% extends "epcandiapp/base.html" %}
+{% load content_filters %}
 {% block page_title %}{{ page_title }}{% endblock %}
-{% block meta_description %}{{ detail_body|striptags|truncatechars:170 }}{% endblock %}
+{% block meta_description %}{{ detail_body|render_richtext|striptags|truncatechars:170 }}{% endblock %}
 {% block meta_keywords %}EPC&I, {{ toolbar_title }}, {{ detail_title }}{% endblock %}
 {% block content %}
 <div class="list-toolbar">{{ toolbar_title }}</div>
@@ -9,7 +10,7 @@
     {% if detail_is_html %}
         {{ detail_body|safe }}
     {% else %}
-        {{ detail_body|linebreaks }}
+        {{ detail_body|render_richtext }}
     {% endif %}
 </div>
 <div class="list-seperator">*****</div>

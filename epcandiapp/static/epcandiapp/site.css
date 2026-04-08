@@ -516,6 +516,36 @@ a
     clear:both;
     line-height:1.55;
 }
+.list-article-presci p
+{
+    margin:0px 0px 12px 0px;
+}
+.list-article-presci ul,
+.list-article-presci ol
+{
+    margin:8px 0px 12px 22px;
+    padding:0px;
+}
+.list-article-presci ul
+{
+    list-style:disc;
+}
+.list-article-presci ol
+{
+    list-style:decimal;
+}
+.list-article-presci li
+{
+    margin:0px 0px 8px 0px;
+}
+.list-article-presci img
+{
+    display:block;
+    max-width:100%;
+    height:auto;
+    margin:10px auto;
+    border-radius:6px;
+}
 .list-read-more
 {
     display:inline-block;

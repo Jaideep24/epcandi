@@ -1,12 +1,13 @@
 {% extends "epcandiapp/base.html" %}
+{% load content_filters %}
 {% block page_title %}{{ article.heading }} | EPC&amp;I Articles{% endblock %}
-{% block meta_description %}{{ article.article|striptags|truncatechars:170 }}{% endblock %}
+{% block meta_description %}{{ article.article|render_richtext|striptags|truncatechars:170 }}{% endblock %}
 {% block meta_keywords %}EPC&amp;I article, engineering article, procurement, construction, infrastructure analysis{% endblock %}
 {% block content %}
 <div class="list-toolbar">ARTICLES</div>
 <div class="list-article-header">{{ article.heading }}</div>
 <div class="list-article-presci">
-    {{ article.article|linebreaks }}
+    {{ article.article|render_richtext }}
 </div>
 <div class="list-seperator">*****</div>
 <div class="list-article-presci">

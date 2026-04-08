@@ -1,0 +1,299 @@
+/* Shared admin edit-page theme for all model add/edit forms. */
+html {
+    --epci-bg: #f3f3f3;
+    --epci-panel: #ffffff;
+    --epci-panel-soft: #eef1f6;
+    --epci-border: #d7dbe2;
+    --epci-border-strong: #d6dce5;
+    --epci-ink: #1f2b3d;
+    --epci-ink-soft: #2d3f57;
+    --epci-accent: #2f6fed;
+}
+
+html[data-theme="light"] {
+    --epci-bg: #f3f3f3;
+    --epci-panel: #ffffff;
+    --epci-panel-soft: #eef1f6;
+    --epci-border: #d7dbe2;
+    --epci-border-strong: #d6dce5;
+    --epci-ink: #1f2b3d;
+    --epci-ink-soft: #2d3f57;
+    --epci-accent: #2f6fed;
+}
+
+html[data-theme="dark"] {
+    --epci-bg: #0f141c;
+    --epci-panel: #161d29;
+    --epci-panel-soft: #1c2431;
+    --epci-border: #2b3546;
+    --epci-border-strong: #334155;
+    --epci-ink: #edf3ff;
+    --epci-ink-soft: #d7e2f4;
+    --epci-accent: #78a6ff;
+}
+
+html[data-theme="auto"] {
+    --epci-bg: #f3f3f3;
+    --epci-panel: #ffffff;
+    --epci-panel-soft: #eef1f6;
+    --epci-border: #d7dbe2;
+    --epci-border-strong: #d6dce5;
+    --epci-ink: #1f2b3d;
+    --epci-ink-soft: #2d3f57;
+    --epci-accent: #2f6fed;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] {
+        --epci-bg: #0f141c;
+        --epci-panel: #161d29;
+        --epci-panel-soft: #1c2431;
+        --epci-border: #2b3546;
+        --epci-border-strong: #334155;
+        --epci-ink: #edf3ff;
+        --epci-ink-soft: #d7e2f4;
+        --epci-accent: #78a6ff;
+    }
+}
+
+body {
+    background: var(--epci-bg);
+    color: var(--epci-ink);
+}
+
+html[data-theme="light"] #header,
+html[data-theme="auto"] #header {
+    background: #182234;
+    color: #ffffff;
+}
+
+html[data-theme="dark"] #header {
+    background: #0c1118;
+    color: #edf3ff;
+}
+
+#header a:link,
+#header a:visited {
+    color: #ffffff;
+}
+
+#nav-sidebar,
+.module,
+.dashboard .module table,
+#changelist-filter,
+.results,
+#content-main {
+    background: var(--epci-panel);
+    color: var(--epci-ink);
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: var(--epci-panel-soft);
+    color: var(--epci-ink);
+}
+
+a:link,
+a:visited {
+    color: var(--epci-accent);
+}
+
+#content-main .model-news .addlink::before,
+#content-main .model-news .changelink::before,
+#content-main .model-focus .addlink::before,
+#content-main .model-focus .changelink::before,
+#content-main .model-guestarticle .addlink::before,
+#content-main .model-guestarticle .changelink::before,
+#content-main .model-interview .addlink::before,
+#content-main .model-interview .changelink::before,
+#content-main .model-equipmentnews .addlink::before,
+#content-main .model-equipmentnews .changelink::before,
+#content-main .model-events .addlink::before,
+#content-main .model-events .changelink::before,
+#content-main .model-aboutpage .addlink::before,
+#content-main .model-aboutpage .changelink::before,
+#content-main .model-disclaimerpage .addlink::before,
+#content-main .model-disclaimerpage .changelink::before,
+#content-main .model-privacypage .addlink::before,
+#content-main .model-privacypage .changelink::before,
+#content-main .model-shoppingcartpage .addlink::before,
+#content-main .model-shoppingcartpage .changelink::before,
+#content-main .model-advertisementbanner .addlink::before,
+#content-main .model-advertisementbanner .changelink::before,
+#content-main .model-subscribeform .addlink::before,
+#content-main .model-subscribeform .changelink::before,
+#content-main .model-contactform .addlink::before,
+#content-main .model-contactform .changelink::before {
+    content: "M";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: var(--epci-accent);
+    color: #ffffff;
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    font-weight: 700;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+#content-main .model-news .addlink::before,
+#content-main .model-news .changelink::before { content: "N"; }
+#content-main .model-focus .addlink::before,
+#content-main .model-focus .changelink::before { content: "F"; }
+#content-main .model-guestarticle .addlink::before,
+#content-main .model-guestarticle .changelink::before { content: "G"; }
+#content-main .model-interview .addlink::before,
+#content-main .model-interview .changelink::before { content: "I"; }
+#content-main .model-equipmentnews .addlink::before,
+#content-main .model-equipmentnews .changelink::before { content: "E"; }
+#content-main .model-events .addlink::before,
+#content-main .model-events .changelink::before { content: "V"; }
+#content-main .model-aboutpage .addlink::before,
+#content-main .model-aboutpage .changelink::before { content: "A"; }
+#content-main .model-disclaimerpage .addlink::before,
+#content-main .model-disclaimerpage .changelink::before { content: "D"; }
+#content-main .model-privacypage .addlink::before,
+#content-main .model-privacypage .changelink::before { content: "P"; }
+#content-main .model-shoppingcartpage .addlink::before,
+#content-main .model-shoppingcartpage .changelink::before { content: "S"; }
+#content-main .model-advertisementbanner .addlink::before,
+#content-main .model-advertisementbanner .changelink::before { content: "B"; }
+#content-main .model-subscribeform .addlink::before,
+#content-main .model-subscribeform .changelink::before { content: "R"; }
+#content-main .model-contactform .addlink::before,
+#content-main .model-contactform .changelink::before { content: "C"; }
+
+.change-form #content-main form {
+    background: var(--epci-bg);
+    border: 1px solid var(--epci-border);
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.change-form .aligned .form-row {
+    border-bottom: 0;
+    padding: 10px 0;
+}
+
+.change-form .aligned label {
+    font-weight: 600;
+    color: var(--epci-ink);
+}
+
+.change-form .aligned input[type="text"],
+.change-form .aligned input[type="url"],
+.change-form .aligned input[type="email"],
+.change-form .aligned input[type="number"],
+.change-form .aligned input[type="password"],
+.change-form .aligned input[type="date"],
+.change-form .aligned input[type="datetime-local"],
+.change-form .aligned select,
+.change-form .aligned textarea,
+.change-form .aligned input[type="file"] {
+    width: min(100%, 980px);
+    max-width: 100%;
+    border: 2px solid var(--epci-border-strong);
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    background: var(--epci-panel);
+    color: var(--epci-ink);
+}
+
+.change-form .aligned textarea {
+    min-height: 220px;
+}
+
+.change-form .submit-row {
+    border-radius: 10px;
+    background: var(--epci-panel-soft);
+}
+
+.epci-richtext-wrap {
+    width: min(100%, 980px);
+    border: 2px solid var(--epci-border-strong);
+    border-radius: 10px;
+    background: var(--epci-panel);
+    overflow: hidden;
+}
+
+.epci-richtext-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px;
+    border-bottom: 1px solid var(--epci-border);
+    background: var(--epci-panel-soft);
+}
+
+.epci-richtext-btn {
+    min-width: 34px;
+    height: 32px;
+    border: 1px solid var(--epci-border-strong);
+    border-radius: 6px;
+    background: var(--epci-panel);
+    color: var(--epci-ink-soft);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.epci-richtext-btn:hover {
+    background: rgba(47, 111, 237, 0.12);
+}
+
+.epci-richtext-btn.is-active {
+    background: #5b5ce1;
+    border-color: #5b5ce1;
+    color: #ffffff;
+}
+
+.epci-richtext-separator {
+    width: 1px;
+    height: 26px;
+    background: var(--epci-border);
+    margin: 3px 6px;
+}
+
+.epci-richtext-editor {
+    min-height: 250px;
+    padding: 14px;
+    outline: none;
+    overflow: auto;
+    color: var(--epci-ink);
+}
+
+.epci-richtext-editor ul,
+.epci-richtext-editor ol {
+    margin: 8px 0 10px 24px;
+    padding: 0;
+}
+
+.epci-richtext-editor ul {
+    list-style: disc;
+}
+
+.epci-richtext-editor ol {
+    list-style: decimal;
+}
+
+.epci-richtext-editor li {
+    margin: 0 0 6px 0;
+}
+
+@media (max-width: 768px) {
+    .change-form #content-main form {
+        padding: 12px;
+    }
+
+    .epci-richtext-editor {
+        min-height: 180px;
+    }
+}

@@ -57,7 +57,7 @@
 {% else %}
     {% for i in items %}
     <div class="list-article-header">{{ i.heading }}</div>
-    <div class="list-article-presci">{{ i.Interview|truncatechars:280|linebreaks }} <a href="{% url 'interview-detail' i.id %}" class="list-read-more">Read More</a></div>
+    <div class="list-article-presci">{{ i.interview|truncatechars:280|linebreaks }} <a href="{% url 'interview-detail' i.id %}" class="list-read-more">Read More</a></div>
     {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
     {% empty %}
     <div class="list-article-presci">No interviews available.</div>

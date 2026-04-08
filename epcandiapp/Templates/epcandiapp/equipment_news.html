@@ -5,7 +5,7 @@
 {% block content %}
 <div class="list-toolbar">EQUIPMENT NEWS</div>
 {% include "epcandiapp/partials/list_controls.html" %}
-{% for i in Equipment_News %}
+{% for i in equipment_items %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-presci">{{ i.equipment_news|truncatechars:280|linebreaks }} <a href="{% url 'equipment-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}

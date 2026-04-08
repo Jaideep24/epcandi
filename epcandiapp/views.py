@@ -109,11 +109,16 @@ def news_detail_page(request, news_id):
     )
 
 
-def article_detail_page(request, article_id):
-    article = get_object_or_404(Articles, id=article_id)
-    context = {"article": article}
+def focus_detail_page(request, focus_id):
+    focus_item = get_object_or_404(Focus, id=focus_id)
+    context = {"article": focus_item}
     context.update(_base_context())
     return render(request, "epcandiapp/article_detail.html", context)
+
+
+def article_detail_page(request, article_id):
+    # Backward-compatible alias for the old route name.
+    return focus_detail_page(request, article_id)
 
 
 def guest_article_detail_page(request, guest_article_id):
@@ -130,22 +135,22 @@ def interview_detail_page(request, interview_id):
         page_title=f"{item.heading} | EPC&I Interviews",
         toolbar_title="INTERVIEWS",
         detail_title=item.heading,
-        detail_body=item.Interview,
+        detail_body=item.interview,
         back_url="guest_article",
         back_label="Back to Interviews & Guest Article",
     )
 
 
 def equipment_page(request):
-    queryset = Equipment_News.objects.order_by("-id")
+    queryset = EquipmentNews.objects.order_by("-id")
     context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["Equipment_News"] = context["page_obj"].object_list
+    context["equipment_items"] = context["page_obj"].object_list
     context.update(_base_context())
     return render(request, "epcandiapp/equipment_news.html", context)
 
 
 def equipment_detail_page(request, equipment_id):
-    item = get_object_or_404(Equipment_News, id=equipment_id)
+    item = get_object_or_404(EquipmentNews, id=equipment_id)
     return _render_detail_page(
         request,
         page_title=f"{item.heading} | EPC&I Equipment News",
@@ -288,9 +293,9 @@ def privacy_page(request):
 
 
 def focus_page(request):
-    queryset = Articles.objects.order_by("-id")
+    queryset = Focus.objects.order_by("-id")
     context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["Articles"] = context["page_obj"].object_list
+    context["focus_items"] = context["page_obj"].object_list
     context.update(_base_context())
     return render(request, "epcandiapp/focus.html", context)
 
