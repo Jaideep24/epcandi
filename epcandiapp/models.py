@@ -204,6 +204,75 @@ class ContactForm(models.Model):
         return f"{self.name} - {self.query_type}"
 
 
+class AnalyticsUser(models.Model):
+    user_id = models.CharField(max_length=64, unique=True)
+    anonymized_ip = models.CharField(max_length=64, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    device_type = models.CharField(max_length=20, blank=True)
+    browser = models.CharField(max_length=100, blank=True)
+    operating_system = models.CharField(max_length=100, blank=True)
+    language = models.CharField(max_length=32, blank=True)
+    first_seen = models.DateTimeField(auto_now_add=True)
+    last_seen = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-last_seen"]
+        verbose_name = "Analytics User"
+        verbose_name_plural = "Analytics Users"
+
+    def __str__(self):
+        return self.user_id
+
+
+class AnalyticsSession(models.Model):
+    session_id = models.CharField(max_length=64, unique=True)
+    user = models.ForeignKey(AnalyticsUser, on_delete=models.CASCADE, related_name="sessions")
+    entry_page = models.CharField(max_length=400, blank=True)
+    exit_page = models.CharField(max_length=400, blank=True)
+    referrer = models.CharField(max_length=400, blank=True)
+    source = models.CharField(max_length=120, blank=True)
+    utm_source = models.CharField(max_length=120, blank=True)
+    utm_medium = models.CharField(max_length=120, blank=True)
+    utm_campaign = models.CharField(max_length=120, blank=True)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    is_bounced = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["-start_time"]
+        verbose_name = "Analytics Session"
+        verbose_name_plural = "Analytics Sessions"
+
+    def __str__(self):
+        return self.session_id
+
+
+class AnalyticsEvent(models.Model):
+    event_type = models.CharField(max_length=80)
+    user = models.ForeignKey(AnalyticsUser, on_delete=models.CASCADE, related_name="events")
+    session = models.ForeignKey(AnalyticsSession, on_delete=models.CASCADE, related_name="events")
+    page_url = models.CharField(max_length=400, blank=True)
+    referrer = models.CharField(max_length=400, blank=True)
+    event_name = models.CharField(max_length=120, blank=True)
+    metadata_json = models.TextField(default="{}", blank=True)
+    duration_ms = models.PositiveIntegerField(blank=True, null=True)
+    scroll_depth = models.PositiveSmallIntegerField(blank=True, null=True)
+    ttfb_ms = models.PositiveIntegerField(blank=True, null=True)
+    lcp_ms = models.PositiveIntegerField(blank=True, null=True)
+    fid_ms = models.PositiveIntegerField(blank=True, null=True)
+    cls = models.FloatField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-timestamp"]
+        verbose_name = "Analytics Event"
+        verbose_name_plural = "Analytics Events"
+
+    def __str__(self):
+        return f"{self.event_type} @ {self.timestamp:%Y-%m-%d %H:%M}"
+
+
 class SquareFoot(models.Model):
     heading = models.CharField(max_length=200)
     square_foot = models.TextField()
