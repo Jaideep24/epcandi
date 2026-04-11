@@ -9,12 +9,25 @@
         {% for event in events %}
         <div class="list-event-header">{{ event.name|upper }}</div>
         <div class="list-event-details">
-            <b>{{ event.start_date|date:"d/m/Y" }} - {{ event.end_date|date:"d/m/Y" }}</b><br><br>
-            <u>Venue</u>: {{ event.venue }}<br><br>
-            <u>Timing</u>: {{ event.timings }}<br><br>
-            <u>Contact</u>: {{ event.contact_details }}<br><br>
-            <a href="{{ event.website }}" target="_blank" rel="noopener noreferrer">{{ event.website }}</a>
-            <br><br><a href="{% url 'event-detail' event.id %}" class="list-read-more">Read More</a>
+            <div class="event-list-split">
+                <div class="event-list-media">
+                    <div class="event-list-media-box">
+                        {% if event.banner %}
+                        <a href="{{ event.website }}" target="_blank" rel="noopener noreferrer" class="event-list-media-link">
+                            <img src="{{ event.banner.url }}" alt="{{ event.name }} banner" class="list-event-image">
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="event-list-content">
+                    <p><b>{{ event.start_date|date:"d/m/Y" }} - {{ event.end_date|date:"d/m/Y" }}</b></p>
+                    <p><u>Venue</u>: {{ event.venue }}</p>
+                    <p><u>Timing</u>: {{ event.timings }}</p>
+                    <p><u>Contact</u>: {{ event.contact_details }}</p>
+                    <p><a href="{{ event.website }}" target="_blank" rel="noopener noreferrer">{{ event.website }}</a></p>
+                    <p><a href="{% url 'event-detail' event.id %}" class="list-read-more">Read More</a></p>
+                </div>
+            </div>
         </div>
         {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
         {% empty %}

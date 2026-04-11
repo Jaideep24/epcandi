@@ -89,9 +89,11 @@ def home_page(request):
 
 
 def news_page(request):
-    queryset = News.objects.order_by("-top_news", "-id")
+    top_news_items = News.objects.filter(top_news=True).order_by("-id")[:5]
+    queryset = News.objects.filter(top_news=False).order_by("-id")
     context = _paginated_listing_context(request, queryset, title_field="heading")
     context["News"] = context["page_obj"].object_list
+    context["top_news_items"] = top_news_items
     context.update(_base_context())
     return render(request, "epcandiapp/news.html", context)
 
@@ -172,12 +174,26 @@ def events_page(request):
 
 def event_detail_page(request, event_id):
     item = get_object_or_404(Events, id=event_id)
+    if item.banner:
+        media_html = (
+            '<div class="event-detail-media-box">'
+            f'<img src="{item.banner.url}" alt="{item.name} banner" class="list-event-image">'
+            "</div>"
+        )
+    else:
+        media_html = '<div class="event-detail-media-box event-detail-media-empty">No banner available</div>'
+
     detail_body = (
-        f"<b>Dates:</b> {item.start_date:%d/%m/%Y} - {item.end_date:%d/%m/%Y}<br><br>"
-        f"<b>Venue:</b> {item.venue}<br><br>"
-        f"<b>Timing:</b> {item.timings}<br><br>"
-        f"<b>Contact:</b> {item.contact_details}<br><br>"
-        f"<b>Website:</b> {item.website}"
+        '<div class="event-detail-split">'
+        f'<div class="event-detail-media">{media_html}</div>'
+        '<div class="event-detail-content">'
+        f"<p><b>Dates:</b> {item.start_date:%d/%m/%Y} - {item.end_date:%d/%m/%Y}</p>"
+        f"<p><b>Venue:</b> {item.venue}</p>"
+        f"<p><b>Timing:</b> {item.timings}</p>"
+        f"<p><b>Contact:</b> {item.contact_details}</p>"
+        f'<p><b>Website:</b> <a href="{item.website}" target="_blank" rel="noopener noreferrer">{item.website}</a></p>'
+        "</div>"
+        "</div>"
     )
     context = {
         "detail_title": item.name,
@@ -301,7 +317,24 @@ def focus_page(request):
 
 
 def shopping_cart_page(request):
-    return _render_page_model(request, ShoppingCartPage)
+    queryset = ShoppingCart.objects.order_by("-id")
+    context = _paginated_listing_context(request, queryset, title_field="heading")
+    context["shopping_cart_items"] = context["page_obj"].object_list
+    context.update(_base_context())
+    return render(request, "epcandiapp/shopping_cart.html", context)
+
+
+def shopping_cart_detail_page(request, shopping_cart_id):
+    item = get_object_or_404(ShoppingCart, id=shopping_cart_id)
+    return _render_detail_page(
+        request,
+        page_title=f"{item.heading} | EPC&I Shopping Cart",
+        toolbar_title="SHOPPING CART",
+        detail_title=item.heading,
+        detail_body=item.shopping_cart,
+        back_url="shopping_cart",
+        back_label="Back to Shopping Cart",
+    )
 
 
 def guest_article_page(request):
@@ -336,15 +369,24 @@ def guest_article_page(request):
 
 
 def square_foot_page(request):
-    context = {
-        "page": {
-            "title": "Square Foot",
-            "heading": "SQUARE FOOT",
-            "content": "Square Foot content will be added soon.",
-        }
-    }
+    queryset = SquareFoot.objects.order_by("-id")
+    context = _paginated_listing_context(request, queryset, title_field="heading")
+    context["square_foot_items"] = context["page_obj"].object_list
     context.update(_base_context())
-    return render(request, "epcandiapp/site_page.html", context)
+    return render(request, "epcandiapp/square_foot.html", context)
+
+
+def square_foot_detail_page(request, square_foot_id):
+    item = get_object_or_404(SquareFoot, id=square_foot_id)
+    return _render_detail_page(
+        request,
+        page_title=f"{item.heading} | EPC&I Square Foot",
+        toolbar_title="SQUARE FOOT",
+        detail_title=item.heading,
+        detail_body=item.square_foot,
+        back_url="square_foot",
+        back_label="Back to Square Foot",
+    )
 
 
 def bad_request_page(request, exception):

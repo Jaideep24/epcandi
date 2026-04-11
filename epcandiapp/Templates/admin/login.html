@@ -1,0 +1,83 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}EPC&I Admin Login{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body.login .toggle-nav-sidebar,
+body.login #nav-sidebar,
+body.login .nav-sidebar-toggle,
+body.login .nav-sidebar {
+    display: none !important;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.body.classList.remove("nav-sidebar-enabled");
+    var toggle = document.querySelector(".toggle-nav-sidebar");
+    if (toggle) {
+        toggle.remove();
+    }
+    var sidebar = document.getElementById("nav-sidebar");
+    if (sidebar) {
+        sidebar.remove();
+    }
+});
+</script>
+{% endblock %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content %}
+<div class="epci-login-shell">
+    <div class="epci-login-card">
+        <div class="epci-login-brand">
+            <img src="{% static 'epcandiapp/logo.png' %}" alt="EPC&I" class="epci-login-logo">
+            <div>
+                <h1>EPC&I Administration Page</h1>
+            </div>
+        </div>
+
+        {% if form.errors and not form.non_field_errors %}
+            <p class="errornote">Please enter a correct username and password.</p>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p class="errornote">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" action="{{ app_path }}" id="login-form" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <div class="epci-login-row">
+                <label for="id_username">Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="epci-login-row">
+                <label for="id_password">Password</label>
+                <div class="epci-password-wrap">
+                    {{ form.password }}
+                    <button type="button" class="epci-password-toggle" aria-label="Show password" aria-pressed="false">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="submit-row epci-login-submit">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

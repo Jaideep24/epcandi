@@ -3,44 +3,109 @@
 {% block meta_description %}Subscribe to EPC&amp;I for regular updates on Engineering, Procurement, Construction and Infrastructure news, analysis, and special reports.{% endblock %}
 {% block meta_keywords %}subscribe EPC&amp;I, infrastructure magazine subscription, construction news subscription, engineering publication{% endblock %}
 {% block content %}
-<div class="page-panel">
+<div class="page-panel subscribe-panel">
     <h2 class="panel-title">USER REGISTRATION</h2>
-    <div class="panel-note">
-        <b>Register Now for a free copy of EPC&I.</b><sup>*CONDITIONS APPLY.</sup><br>
+    <div class="panel-note subscribe-note">
+        <b>Subscribe to EPC&I - Print or Soft Copy version.</b><br>
+        Select your preferred plan from the options below before submitting the form.<br>
         {% if message %}<span class="panel-success">{{ message }}</span>{% endif %}
         {% if errors %}<span class="panel-error">{{ errors }}</span>{% endif %}
     </div>
-    <div class="form-content">
-        <form method="post" action="{% url 'subscribe' %}">
+    <div class="form-content subscribe-form-shell">
+        <form method="post" action="{% url 'subscribe' %}" class="subscribe-form" novalidate>
             {% csrf_token %}
-            <div class="form-grid">
-                <div class="form-labels">
-                    <p>First Name:</p><p>Last Name:</p><p>Designation:</p><p>Organisation:</p><p>Address:</p><p>City:</p><p>State:</p><p>Pincode:</p><p>Telephone No.:</p><p>Mobile:</p><p>Email:</p><p>Password:</p><p>Confirm Password:</p>
+
+            <div class="subscribe-grid">
+                <div class="subscribe-field">
+                    <label for="first_name">First Name:</label>
+                    <input id="first_name" name="first_name" type="text" maxlength="50" class="form-text" required>
                 </div>
-                <div class="form-fields">
-                    <p><input name="first_name" type="text" maxlength="50" class="form-text" required></p>
-                    <p><input name="last_name" type="text" maxlength="100" class="form-text" required></p>
-                    <p><input name="designation" type="text" maxlength="50" class="form-text" required></p>
-                    <p><input name="organisation" type="text" maxlength="100" class="form-text" required></p>
-                    <p><textarea name="address" rows="3" cols="20" class="form-text" required></textarea></p>
-                    <p><input name="city" type="text" maxlength="50" class="form-text" required></p>
-                    <p><input name="state" type="text" maxlength="50" class="form-text" required></p>
-                    <p><input name="pincode" type="text" maxlength="10" class="form-text" required></p>
-                    <p><input name="telephone" type="text" maxlength="50" class="form-text" required></p>
-                    <p><input name="mobile" type="text" maxlength="50" class="form-text" required></p>
-                    <p><input name="email" type="email" maxlength="256" class="form-text" required></p>
-                    <p><input name="password" type="password" maxlength="50" class="form-text" required></p>
-                    <p><input name="confirm_password" type="password" maxlength="50" class="form-text" required></p>
+                <div class="subscribe-field">
+                    <label for="last_name">Last Name:</label>
+                    <input id="last_name" name="last_name" type="text" maxlength="100" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="designation">Designation:</label>
+                    <input id="designation" name="designation" type="text" maxlength="50" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="organisation">Organisation:</label>
+                    <input id="organisation" name="organisation" type="text" maxlength="100" class="form-text" required>
+                </div>
+                <div class="subscribe-field subscribe-field-wide">
+                    <label for="address">Address:</label>
+                    <textarea id="address" name="address" rows="3" cols="20" class="form-text" required></textarea>
+                </div>
+                <div class="subscribe-field">
+                    <label for="city">City:</label>
+                    <input id="city" name="city" type="text" maxlength="50" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="state">State:</label>
+                    <input id="state" name="state" type="text" maxlength="50" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="pincode">Pincode:</label>
+                    <input id="pincode" name="pincode" type="text" maxlength="10" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="telephone">Telephone No.:</label>
+                    <input id="telephone" name="telephone" type="text" maxlength="50" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="mobile">Mobile:</label>
+                    <input id="mobile" name="mobile" type="text" maxlength="50" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="email">Email:</label>
+                    <input id="email" name="email" type="email" maxlength="256" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="password">Password:</label>
+                    <input id="password" name="password" type="password" maxlength="50" class="form-text" required>
+                </div>
+                <div class="subscribe-field">
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input id="confirm_password" name="confirm_password" type="password" maxlength="50" class="form-text" required>
                 </div>
             </div>
+
             <div class="pricing-wrap">
-                <div class="pricing-table-scroll">
-                    <table class="pricing-table" border="1" cellpadding="2" cellspacing="1" width="512">
-                        <tr><td align="center"><b>PERIOD</b></td><td align="center"><b>STAND PRICE</b></td><td align="center" style="color:#c9252b; background-color:#d1d3d4;"><b>YOU PAY</b></td><td align="center"><b>SAVE</b></td></tr>
-                        <tr><td style="padding-left:15px;">1 Year (12 Issues)</td><td style="padding-left:15px;">Rs. 720.00</td><td style="padding-left:15px; color:#c9252b; background-color:#d1d3d4;">Rs. 600.00</td><td style="padding-left:15px;">Rs. 120.00</td></tr>
-                        <tr><td style="padding-left:15px;">2 Years (24 Issues)</td><td style="padding-left:15px;">Rs. 1440.00</td><td style="padding-left:15px; color:#c9252b; background-color:#d1d3d4;">Rs. 1200.00</td><td style="padding-left:15px;">Rs. 240.00</td></tr>
-                        <tr><td colspan="4" align="left"><p>I would also like to subscribe to EPC&I - <select name="subscription_type" class="form-text"><option value="0" selected>No Thanks</option><option value="1 Year">1 Year</option><option value="2 Years">2 Years</option></select></p></td></tr>
-                    </table>
+                <div class="pricing-table-scroll subscribe-pricing-grid">
+                    <div class="subscribe-pricing-card">
+                        <table class="pricing-table subscribe-pricing-table">
+                            <tr><th colspan="2" class="subscribe-pricing-section">Print Version</th></tr>
+                            <tr><th>Period</th><th>You Pay</th></tr>
+                            <tr><td>1 Year (12 Issues)</td><td>Rs. 1,920</td></tr>
+                            <tr><td>2 Years (24 Issues)</td><td>Rs. 3,400</td></tr>
+                            <tr><td>3 Years (36 Issues)</td><td>Rs. 5,000</td></tr>
+                        </table>
+                        <div class="subscribe-pricing-note">Note: 5% GST extra on Print version invoice.</div>
+                    </div>
+
+                    <div class="subscribe-pricing-card">
+                        <table class="pricing-table subscribe-pricing-table">
+                            <tr><th colspan="2" class="subscribe-pricing-section">Soft Copy Version</th></tr>
+                            <tr><th>Period</th><th>You Pay</th></tr>
+                            <tr><td>1 Year (12 Issues)</td><td>Rs. 500</td></tr>
+                            <tr><td>2 Years (24 Issues)</td><td>Rs. 1,000</td></tr>
+                            <tr><td>3 Years (36 Issues)</td><td>Rs. 1,500</td></tr>
+                        </table>
+                        <div class="subscribe-pricing-note">Delivery via WhatsApp or Email.</div>
+                    </div>
+                </div>
+
+                <div class="subscribe-plan-row">
+                    <span>Select your subscription plan:</span>
+                    <select name="subscription_type" class="form-text subscribe-plan-select">
+                        <option value="0" selected>No Thanks</option>
+                        <option value="print_1y">Print - 1 Year (12 Issues) - Rs. 1,920</option>
+                        <option value="print_2y">Print - 2 Years (24 Issues) - Rs. 3,400</option>
+                        <option value="print_3y">Print - 3 Years (36 Issues) - Rs. 5,000</option>
+                        <option value="soft_1y">Soft Copy - 1 Year (12 Issues) - Rs. 500</option>
+                        <option value="soft_2y">Soft Copy - 2 Years (24 Issues) - Rs. 1,000</option>
+                        <option value="soft_3y">Soft Copy - 3 Years (36 Issues) - Rs. 1,500</option>
+                    </select>
                 </div>
             </div>
             <div class="form-submit"><input type="submit" value="SUBMIT"></div>

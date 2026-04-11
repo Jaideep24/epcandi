@@ -1,4 +1,33 @@
 (function () {
+    function initLoginPasswordToggle() {
+        if (!document.body.classList.contains("login")) {
+            return;
+        }
+
+        var toggle = document.querySelector(".epci-password-toggle");
+        var passwordInput = document.getElementById("id_password");
+        if (!toggle || !passwordInput) {
+            return;
+        }
+
+        var icon = toggle.querySelector("i");
+
+        function setState(isVisible) {
+            passwordInput.type = isVisible ? "text" : "password";
+            toggle.setAttribute("aria-pressed", isVisible ? "true" : "false");
+            toggle.setAttribute("aria-label", isVisible ? "Hide password" : "Show password");
+            if (icon) {
+                icon.className = isVisible ? "fa fa-eye-slash" : "fa fa-eye";
+            }
+        }
+
+        setState(false);
+        toggle.addEventListener("click", function () {
+            var isVisible = passwordInput.type === "text";
+            setState(!isVisible);
+        });
+    }
+
     function createButton(label, title, action, commandName) {
         var button = document.createElement("button");
         button.type = "button";
@@ -134,5 +163,8 @@
         });
     }
 
-    document.addEventListener("DOMContentLoaded", initEditors);
+    document.addEventListener("DOMContentLoaded", function () {
+        initLoginPasswordToggle();
+        initEditors();
+    });
 })();

@@ -1,8 +1,9 @@
 {% extends "epcandiapp/base.html" %}
+{% load content_filters %}
 {% block page_title %}{{ page.title }} | EPC&amp;I{% endblock %}
 {% block meta_description %}{{ page.content|striptags|truncatechars:170 }}{% endblock %}
 {% block meta_keywords %}Engineering, Procurement, Construction &amp; Infrastructure, EPC&amp;I, {{ page.heading }}{% endblock %}
 {% block content %}
 <div class="list-toolbar">{{ page.heading }}</div>
-<div class="list-article-presci">{{ page.content|linebreaks }}</div>
+<div class="list-article-presci">{{ page.content|render_richtext }}</div>
 {% endblock %}

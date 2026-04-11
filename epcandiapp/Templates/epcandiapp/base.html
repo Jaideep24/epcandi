@@ -69,19 +69,22 @@
             </div>
 
             <div id="footer" class="footer-div">
-                <a href="{% url 'news' %}">HOME</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'about' %}">ABOUT US</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'disclaimer' %}">DISCLAIMER (SOON)</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'privacy' %}">PRIVACY (SOON)</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'contact' %}?query_type=Advertise">ADVERTISE</a><span class="footer-link-spacer"></span>
-                <a href="{% url 'contact' %}">CONTACT US</a>
-                <br>
-                <p>
-                    ©2010 NORTHERN LIGHTS COMMUNICATIONS<br>
-                    Anand Sagar Chs , Plot 121, Sector 1, Charkop, Kandivali (W), Mumbai - 400 067<br>
-                    Mobile No. - +91 9820131960 / 9892313338<br>
-                    Email: mktgepci@gmail.com / epcandi@gmail.com<br><br>
-                    For Editorial, call: +91 9820324234 <br> Email: editor.epcandi@gmail.com<br><br>
+                <div class="footer-links" aria-label="Footer links">
+                    <a href="{% url 'news' %}">HOME</a>
+                    <a href="{% url 'about' %}">ABOUT US</a>
+                    <a href="{% url 'disclaimer' %}">DISCLAIMER</a>
+                    <a href="{% url 'privacy' %}">PRIVACY</a>
+                    <a href="{% url 'contact' %}?query_type=Advertise">ADVERTISE</a>
+                    <a href="{% url 'contact' %}">CONTACT US</a>
+                </div>
+                <div class="footer-contact-grid">
+                    <p class="footer-company">©2010 NORTHERN LIGHTS COMMUNICATIONS</p>
+                    <p>Anand Sagar Chs , Plot 121, Sector 1, Charkop, Kandivali (W), Mumbai - 400 067</p>
+                    <p>Mobile No. - +91 9820131960 / 9892313338</p>
+                    <p>Email: mktgepci@gmail.com / epcandi@gmail.com</p>
+                    <p>For Editorial, call: +91 9820324234 | Email: editor.epcandi@gmail.com</p>
+                </div>
+                <p class="footer-credit">
                     Website developed by
                     <a href="https://technographix.pythonanywhere.com/" target="_blank" rel="noopener noreferrer">Techno Graphix</a>
                 </p>

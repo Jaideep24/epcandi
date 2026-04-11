@@ -1,15 +1,27 @@
 {% extends "epcandiapp/base.html" %}
+{% load content_filters %}
 {% block page_title %}EPC&amp;I News | Engineering, Procurement, Construction &amp; Infrastructure{% endblock %}
 {% block meta_description %}Latest Engineering, Procurement, Construction and Infrastructure news from EPC&amp;I, including top stories and sector updates across India.{% endblock %}
 {% block meta_keywords %}EPC&amp;I news, Engineering Procurement Construction Infrastructure, infrastructure news India, construction updates, top news{% endblock %}
 {% block content %}
 <div class="list-toolbar">NEWS</div>
+
+{% if top_news_items %}
+<div class="top-news-wrap">
+	<div class="top-news-title">TOP NEWS</div>
+	{% for top_item in top_news_items %}
+	<div class="top-news-item">
+		<a href="{% url 'news-detail' top_item.id %}" class="top-news-link">{{ top_item.heading }}</a>
+	</div>
+	{% endfor %}
+</div>
+{% endif %}
+
 {% include "epcandiapp/partials/list_controls.html" %}
 {% for i in News %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-presci">
-	{% if i.top_news %}<strong>TOP NEWS</strong><br>{% endif %}
-	{{ i.news|truncatechars:280|linebreaks }}
+	{{ i.news|render_richtext|striptags|truncatechars:280 }}
     <a href="{% url 'news-detail' i.id %}" class="list-read-more">Read More</a>
 </div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}

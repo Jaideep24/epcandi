@@ -1,0 +1,17 @@
+{% extends "epcandiapp/base.html" %}
+{% load content_filters %}
+{% block page_title %}EPC&amp;I Shopping Cart{% endblock %}
+{% block meta_description %}Browse Shopping Cart updates and announcements from EPC&amp;I.{% endblock %}
+{% block meta_keywords %}EPC shopping cart, construction marketplace, infrastructure buying updates{% endblock %}
+{% block content %}
+<div class="list-toolbar">SHOPPING CART</div>
+{% include "epcandiapp/partials/list_controls.html" %}
+{% for i in shopping_cart_items %}
+<div class="list-article-header">{{ i.heading }}</div>
+<div class="list-article-presci">{{ i.shopping_cart|render_richtext|striptags|truncatechars:280 }} <a href="{% url 'shopping-cart-detail' i.id %}" class="list-read-more">Read More</a></div>
+{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+{% empty %}
+<div class="list-article-presci">No shopping cart entries available.</div>
+{% endfor %}
+{% include "epcandiapp/partials/pagination.html" %}
+{% endblock %}

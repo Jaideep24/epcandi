@@ -1,4 +1,5 @@
 {% extends "epcandiapp/base.html" %}
+{% load content_filters %}
 {% block page_title %}EPC&amp;I Focus | Articles{% endblock %}
 {% block meta_description %}EPC&amp;I Focus presents Articles and expert commentary on engineering, procurement, construction, and infrastructure developments.{% endblock %}
 {% block meta_keywords %}EPC focus, articles, construction articles, infrastructure articles, engineering insights, EPC&amp;I focus{% endblock %}
@@ -7,7 +8,8 @@
 {% include "epcandiapp/partials/list_controls.html" %}
 {% for i in focus_items %}
 <div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.article|truncatechars:280|linebreaks }} <a href="{% url 'focus-detail' i.id %}" class="list-read-more">Read More</a></div>
+<div class="focus-category">Category: {{ i.get_category_display }}</div>
+<div class="list-article-presci">{{ i.article|render_richtext|striptags|truncatechars:280 }} <a href="{% url 'focus-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
 <div class="list-article-presci">No articles available.</div>

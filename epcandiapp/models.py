@@ -1,9 +1,19 @@
 from django.db import models
 
 # Create your models here.
+SECTOR_CHOICES = [
+    ("A", "Aviation"),
+    ("C", "Cement"),
+    ("I", "Infrastructure"),
+    ("IT", "IT and Telecom"),
+    ("O", "Oil and Gas"),
+    ("P", "Power"),
+    ("R", "Real Estate"),
+]
+
+
 class News(models.Model):
     heading=models.CharField(max_length=200)
-    category=models.CharField(max_length=200, choices=[("A","Aviation"),("C","Cement"),("I","Infrastructure"),("IT","IT and Telecom"),("O","Oil and Gas"),("P","Power"),("R","Real Estate")])
     top_news = models.BooleanField(default=False, help_text="Display this item first on the news landing page")
     news=models.TextField()
 
@@ -17,6 +27,7 @@ class News(models.Model):
 
 class Focus(models.Model):
     heading=models.CharField(max_length=200)
+    category=models.CharField(max_length=200, choices=SECTOR_CHOICES, default="I")
     article=models.TextField()
 
     class Meta:
@@ -67,6 +78,7 @@ class Events(models.Model):
     name=models.CharField(max_length=200)
     start_date=models.DateField()
     end_date=models.DateField()
+    banner=models.FileField(upload_to="event_banners/", blank=True, null=True)
     venue=models.CharField(max_length=200)
     timings=models.CharField(max_length=200)
     contact_details=models.CharField(max_length=200)
@@ -149,7 +161,20 @@ class SubscribeForm(models.Model):
     mobile = models.CharField(max_length=50)
     email = models.EmailField(max_length=256)
     password = models.CharField(max_length=50)
-    subscription_type = models.CharField(max_length=50, choices=[("0", "No Thanks"), ("1 Year", "1 Year"), ("2 Years", "2 Years")])
+    subscription_type = models.CharField(
+        max_length=50,
+        choices=[
+            ("0", "No Thanks"),
+            ("print_1y", "Print - 1 Year (12 Issues) - Rs. 1,920"),
+            ("print_2y", "Print - 2 Years (24 Issues) - Rs. 3,400"),
+            ("print_3y", "Print - 3 Years (36 Issues) - Rs. 5,000"),
+            ("soft_1y", "Soft Copy - 1 Year (12 Issues) - Rs. 500"),
+            ("soft_2y", "Soft Copy - 2 Years (24 Issues) - Rs. 1,000"),
+            ("soft_3y", "Soft Copy - 3 Years (36 Issues) - Rs. 1,500"),
+            ("1 Year", "Legacy - 1 Year"),
+            ("2 Years", "Legacy - 2 Years"),
+        ],
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -177,3 +202,27 @@ class ContactForm(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.query_type}"
+
+
+class SquareFoot(models.Model):
+    heading = models.CharField(max_length=200)
+    square_foot = models.TextField()
+
+    class Meta:
+        verbose_name = "Square Foot"
+        verbose_name_plural = "Square Foot"
+
+    def __str__(self):
+        return self.heading
+
+
+class ShoppingCart(models.Model):
+    heading = models.CharField(max_length=200)
+    shopping_cart = models.TextField()
+
+    class Meta:
+        verbose_name = "Shopping Cart"
+        verbose_name_plural = "Shopping Cart"
+
+    def __str__(self):
+        return self.heading
