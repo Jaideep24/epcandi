@@ -1,0 +1,281 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Analytics Group | EPC&I Admin{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'epcandiapp/admin_analytics_group.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="analytics-admin-shell">
+    <h1>Analytics Group</h1>
+    <p>All analytics database records are grouped here with section-specific filters.</p>
+
+    <div class="analytics-admin-actions">
+        <a href="{% url 'admin-analytics' %}">Open Analytics Dashboard</a>
+        <a href="{% url 'admin-analytics-group' %}">Refresh Group Data</a>
+    </div>
+
+    <div class="analytics-admin-summary">
+        <div class="analytics-admin-card"><strong>{{ users_total }}</strong><span>Total Users</span></div>
+        <div class="analytics-admin-card"><strong>{{ sessions_total }}</strong><span>Total Sessions</span></div>
+        <div class="analytics-admin-card"><strong>{{ events_total }}</strong><span>Total Events</span></div>
+    </div>
+
+    <section class="analytics-admin-section">
+        <h2>Users (Latest 200)</h2>
+        <form method="get" class="analytics-group-filter-form">
+            <div class="analytics-group-filter-grid">
+                <label>
+                    <span>Window</span>
+                    <select name="u_days">
+                        {% for day in analytics_window_options %}
+                        <option value="{{ day }}" {% if user_filters.days == day %}selected{% endif %}>Last {{ day }} Days</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Device</span>
+                    <select name="u_device">
+                        <option value="">All Devices</option>
+                        {% for d in user_filter_options.devices %}
+                        <option value="{{ d }}" {% if user_filters.device == d %}selected{% endif %}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Country</span>
+                    <select name="u_country">
+                        <option value="">All Countries</option>
+                        {% for c in user_filter_options.countries %}
+                        <option value="{{ c }}" {% if user_filters.country == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Browser</span>
+                    <select name="u_browser">
+                        <option value="">All Browsers</option>
+                        {% for b in user_filter_options.browsers %}
+                        <option value="{{ b }}" {% if user_filters.browser == b %}selected{% endif %}>{{ b }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Operating System</span>
+                    <select name="u_operating_system">
+                        <option value="">All Operating Systems</option>
+                        {% for os in user_filter_options.operating_systems %}
+                        <option value="{{ os }}" {% if user_filters.operating_system == os %}selected{% endif %}>{{ os }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>User Search</span>
+                    <input type="text" name="u_q" value="{{ user_filters.q }}" placeholder="User id contains...">
+                </label>
+            </div>
+            <div class="analytics-group-filter-actions">
+                <button type="submit">Apply User Filters</button>
+                <a href="{% url 'admin-analytics-group' %}">Reset Users</a>
+            </div>
+        </form>
+        <table class="analytics-admin-table">
+            <thead><tr><th>User ID</th><th>Device</th><th>Country</th><th>Last Seen</th></tr></thead>
+            <tbody>
+                {% for row in users %}
+                <tr>
+                    <td>{{ row.user_id }}</td>
+                    <td>{{ row.device_type|default:"-" }}</td>
+                    <td>{{ row.country|default:"-" }}</td>
+                    <td>{{ row.last_seen }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4">No analytics users found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="analytics-admin-section">
+        <h2>Sessions (Latest 200)</h2>
+        <form method="get" class="analytics-group-filter-form">
+            <div class="analytics-group-filter-grid">
+                <label>
+                    <span>Window</span>
+                    <select name="s_days">
+                        {% for day in analytics_window_options %}
+                        <option value="{{ day }}" {% if session_filters.days == day %}selected{% endif %}>Last {{ day }} Days</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Source</span>
+                    <select name="s_source">
+                        <option value="">All Sources</option>
+                        {% for s in session_filter_options.sources %}
+                        <option value="{{ s }}" {% if session_filters.source == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Device</span>
+                    <select name="s_device">
+                        <option value="">All Devices</option>
+                        {% for d in session_filter_options.devices %}
+                        <option value="{{ d }}" {% if session_filters.device == d %}selected{% endif %}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Country</span>
+                    <select name="s_country">
+                        <option value="">All Countries</option>
+                        {% for c in session_filter_options.countries %}
+                        <option value="{{ c }}" {% if session_filters.country == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Browser</span>
+                    <select name="s_browser">
+                        <option value="">All Browsers</option>
+                        {% for b in session_filter_options.browsers %}
+                        <option value="{{ b }}" {% if session_filters.browser == b %}selected{% endif %}>{{ b }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Operating System</span>
+                    <select name="s_operating_system">
+                        <option value="">All Operating Systems</option>
+                        {% for os in session_filter_options.operating_systems %}
+                        <option value="{{ os }}" {% if session_filters.operating_system == os %}selected{% endif %}>{{ os }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Session Search</span>
+                    <input type="text" name="s_q" value="{{ session_filters.q }}" placeholder="Session id contains...">
+                </label>
+            </div>
+            <div class="analytics-group-filter-actions">
+                <button type="submit">Apply Session Filters</button>
+                <a href="{% url 'admin-analytics-group' %}">Reset Sessions</a>
+            </div>
+        </form>
+        <table class="analytics-admin-table">
+            <thead><tr><th>Session ID</th><th>User</th><th>Source</th><th>Entry Page</th><th>Start</th></tr></thead>
+            <tbody>
+                {% for row in sessions %}
+                <tr>
+                    <td>{{ row.session_id }}</td>
+                    <td>{{ row.user.user_id }}</td>
+                    <td>{{ row.source|default:"direct" }}</td>
+                    <td>{{ row.entry_page|default:"-" }}</td>
+                    <td>{{ row.start_time }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No analytics sessions found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="analytics-admin-section">
+        <h2>Events (Latest 400)</h2>
+        <form method="get" class="analytics-group-filter-form">
+            <div class="analytics-group-filter-grid">
+                <label>
+                    <span>Window</span>
+                    <select name="e_days">
+                        {% for day in analytics_window_options %}
+                        <option value="{{ day }}" {% if event_filters.days == day %}selected{% endif %}>Last {{ day }} Days</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Event Type</span>
+                    <select name="e_event_type">
+                        <option value="">All Event Types</option>
+                        {% for et in event_filter_options.event_types %}
+                        <option value="{{ et }}" {% if event_filters.event_type == et %}selected{% endif %}>{{ et }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Source</span>
+                    <select name="e_source">
+                        <option value="">All Sources</option>
+                        {% for s in event_filter_options.sources %}
+                        <option value="{{ s }}" {% if event_filters.source == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Device</span>
+                    <select name="e_device">
+                        <option value="">All Devices</option>
+                        {% for d in event_filter_options.devices %}
+                        <option value="{{ d }}" {% if event_filters.device == d %}selected{% endif %}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Country</span>
+                    <select name="e_country">
+                        <option value="">All Countries</option>
+                        {% for c in event_filter_options.countries %}
+                        <option value="{{ c }}" {% if event_filters.country == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Browser</span>
+                    <select name="e_browser">
+                        <option value="">All Browsers</option>
+                        {% for b in event_filter_options.browsers %}
+                        <option value="{{ b }}" {% if event_filters.browser == b %}selected{% endif %}>{{ b }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Operating System</span>
+                    <select name="e_operating_system">
+                        <option value="">All Operating Systems</option>
+                        {% for os in event_filter_options.operating_systems %}
+                        <option value="{{ os }}" {% if event_filters.operating_system == os %}selected{% endif %}>{{ os }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    <span>Event Search</span>
+                    <input type="text" name="e_q" value="{{ event_filters.q }}" placeholder="Page url contains...">
+                </label>
+            </div>
+            <div class="analytics-group-filter-actions">
+                <button type="submit">Apply Event Filters</button>
+                <a href="{% url 'admin-analytics-group' %}">Reset Events</a>
+            </div>
+        </form>
+        <table class="analytics-admin-table">
+            <thead><tr><th>Timestamp</th><th>Type</th><th>Name</th><th>Page</th><th>Session</th></tr></thead>
+            <tbody>
+                {% for row in events %}
+                <tr>
+                    <td>{{ row.timestamp }}</td>
+                    <td>{{ row.event_type }}</td>
+                    <td>{{ row.event_name|default:"-" }}</td>
+                    <td>{{ row.page_url|default:"-" }}</td>
+                    <td>{{ row.session.session_id }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No analytics events found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}

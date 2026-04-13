@@ -4,7 +4,7 @@
     var SESSION_TS_KEY = "epci_session_ts";
     var SCROLL_MARK_KEY = "epci_scroll_marks";
     var SESSION_TIMEOUT_MS = 30 * 60 * 1000;
-    var TRACK_ENDPOINT = "/track/";
+    var TRACK_ENDPOINT = "/api/track/";
     var DOWNLOAD_EXTENSIONS = [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip", ".rar", ".csv", ".ppt", ".pptx"];
 
     function uid(prefix) {
@@ -134,7 +134,7 @@
                 if (depth >= mark && marked.indexOf(String(mark)) === -1) {
                     marked.push(String(mark));
                     sessionStorage.setItem(SCROLL_MARK_KEY, marked.join(","));
-                    sendEvent("scroll_depth", { scroll_depth: mark });
+                    sendEvent("scroll_percentage", { scroll_depth: mark });
                 }
             });
         }
@@ -276,6 +276,18 @@
         };
     }
 
+    function trackSessionHeartbeat() {
+        function beat() {
+            if (document.visibilityState === "visible") {
+                sendEvent("session_heartbeat", {
+                    event_name: "session_heartbeat"
+                });
+            }
+        }
+
+        setInterval(beat, 30000);
+    }
+
     var pageStart = Date.now();
     sendEvent("page_view");
     trackScrollDepth();
@@ -284,6 +296,7 @@
     trackVideoPlays();
     trackFirstInputDelay();
     trackPerformance();
+    trackSessionHeartbeat();
     exposeCustomTrackers();
 
     window.addEventListener("beforeunload", function () {

@@ -471,6 +471,7 @@ body:not(.login) {
 }
 
 #nav-sidebar {
+    display: block !important;
     background: var(--admin-panel);
     border-right: 1px solid var(--admin-border-light);
     padding-top: 8px;
@@ -628,6 +629,69 @@ body:not(.login) {
     box-sizing: border-box;
 }
 
+.epci-admin-shortcuts {
+    margin: 0 0 14px 0;
+}
+
+.epci-admin-shortcut-link {
+    display: inline-block;
+    border: 1px solid var(--admin-border-light);
+    border-radius: 8px;
+    background: var(--admin-panel-soft);
+    color: var(--admin-text) !important;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.epci-admin-shortcut-link:hover {
+    background: color-mix(in srgb, var(--admin-accent) 20%, var(--admin-panel-soft));
+    color: #ffffff !important;
+    border-color: var(--admin-accent);
+    text-decoration: none;
+}
+
+/* Keep Django dashboard layout with right-side recent actions panel. */
+.dashboard #content {
+    display: block !important;
+    overflow: hidden;
+}
+
+.dashboard #content > h1 {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.dashboard #content-main {
+    width: calc(100% - 320px) !important;
+    max-width: none !important;
+    min-width: 0;
+    float: left !important;
+}
+
+.dashboard #content-related {
+    width: 300px !important;
+    margin: 0;
+    float: right !important;
+    min-width: 0;
+    clear: right !important;
+    align-self: start;
+}
+
+@media (max-width: 1024px) {
+    .dashboard #content-main,
+    .dashboard #content-related {
+        float: none !important;
+        width: 100% !important;
+        clear: both !important;
+    }
+
+    .dashboard #content-related {
+        margin-top: 16px;
+    }
+}
+
 .dashboard {
     background: transparent;
 }
@@ -643,6 +707,24 @@ body:not(.login) {
     background: linear-gradient(135deg, var(--admin-accent) 0%, var(--admin-accent-hover) 100%);
     color: #ffffff;
     border-radius: 12px 12px 0 0;
+}
+
+/* Keep dashboard rows on one line like previous layout. */
+.dashboard .module table th,
+.dashboard .module table td {
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+.dashboard .module table th a,
+.dashboard .module table td a {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.dashboard .module tbody th {
+    width: 68%;
 }
 
 .module {
@@ -1255,6 +1337,14 @@ input[type="checkbox"] {
         padding: 16px;
     }
 
+    .dashboard #content {
+        grid-template-columns: 1fr !important;
+    }
+
+    .dashboard #content-related {
+        grid-column: auto;
+    }
+
     .change-form .aligned .form-row {
         display: block;
     }
@@ -1273,4 +1363,21 @@ input[type="checkbox"] {
     .submit-row {
         padding: 0;
     }
+}
+
+body:not(.login) .toggle-nav-sidebar {
+    display: none !important;
+}
+
+body:not(.login).nav-sidebar-enabled #nav-sidebar {
+    left: 0 !important;
+}
+
+#nav-sidebar .model-analytics th a {
+    color: var(--admin-text-soft);
+    font-weight: 600;
+}
+
+#nav-sidebar .model-analytics th a:hover {
+    color: var(--admin-accent);
 }

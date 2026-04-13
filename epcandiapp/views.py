@@ -7,6 +7,8 @@ from django.core.cache import cache
 from django.db.models import Avg
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import admin
 from django.utils import timezone
 from datetime import timedelta
 from urllib.parse import urlparse
@@ -25,13 +27,41 @@ ALLOWED_TRACK_EVENT_TYPES = {
     "button_click",
     "form_submit",
     "scroll_depth",
+    "scroll_percentage",
     "performance",
     "session_end",
+    "session_heartbeat",
     "video_play",
     "download_click",
     "custom_event",
     "conversion",
 }
+
+SENSITIVE_METADATA_KEYS = {
+    "password",
+    "pass",
+    "passwd",
+    "pwd",
+    "secret",
+    "token",
+    "access_token",
+    "refresh_token",
+    "authorization",
+    "auth",
+    "cookie",
+    "set-cookie",
+    "csrf",
+    "session",
+    "email",
+    "phone",
+    "mobile",
+    "otp",
+    "credit_card",
+    "card_number",
+    "cvv",
+}
+
+MAX_METADATA_STRING_LENGTH = 300
 
 
 def _base_context():
@@ -355,6 +385,33 @@ def _safe_float(value, default=None):
         return default
 
 
+def _sanitize_metadata(value, depth=0):
+    if depth > 4:
+        return "[truncated]"
+
+    if isinstance(value, dict):
+        clean = {}
+        for key, val in value.items():
+            key_str = str(key)[:80]
+            if key_str.lower() in SENSITIVE_METADATA_KEYS:
+                clean[key_str] = "[redacted]"
+                continue
+            clean[key_str] = _sanitize_metadata(val, depth + 1)
+        return clean
+
+    if isinstance(value, list):
+        return [_sanitize_metadata(item, depth + 1) for item in value[:50]]
+
+    if isinstance(value, (str, bytes)):
+        as_text = value.decode("utf-8", errors="ignore") if isinstance(value, bytes) else value
+        return as_text[:MAX_METADATA_STRING_LENGTH]
+
+    if isinstance(value, (int, float, bool)) or value is None:
+        return value
+
+    return str(value)[:MAX_METADATA_STRING_LENGTH]
+
+
 def _analytics_filter_options(window_start):
     devices = list(
         AnalyticsUser.objects.filter(last_seen__date__gte=window_start)
@@ -374,10 +431,31 @@ def _analytics_filter_options(window_start):
         .values_list("country", flat=True)
         .distinct()
     )
+    browsers = list(
+        AnalyticsUser.objects.filter(last_seen__date__gte=window_start)
+        .exclude(browser="")
+        .values_list("browser", flat=True)
+        .distinct()
+    )
+    operating_systems = list(
+        AnalyticsUser.objects.filter(last_seen__date__gte=window_start)
+        .exclude(operating_system="")
+        .values_list("operating_system", flat=True)
+        .distinct()
+    )
+    event_types = list(
+        AnalyticsEvent.objects.filter(timestamp__date__gte=window_start)
+        .exclude(event_type="")
+        .values_list("event_type", flat=True)
+        .distinct()
+    )
     return {
         "devices": sorted(devices),
         "sources": sorted(sources),
         "countries": sorted(countries),
+        "browsers": sorted(browsers),
+        "operating_systems": sorted(operating_systems),
+        "event_types": sorted(event_types),
     }
 
 
@@ -395,6 +473,10 @@ def _analytics_request_filters(request):
         "device": (request.GET.get("device") or "").strip()[:20],
         "source": (request.GET.get("source") or "").strip()[:120],
         "country": (request.GET.get("country") or "").strip()[:100],
+        "browser": (request.GET.get("browser") or "").strip()[:100],
+        "operating_system": (request.GET.get("operating_system") or "").strip()[:100],
+        "event_type": (request.GET.get("event_type") or "").strip()[:80],
+        "q": (request.GET.get("q") or "").strip()[:120],
     }
 
 
@@ -414,6 +496,23 @@ def _build_analytics_scopes(filters):
         users_qs = users_qs.filter(country=filters["country"])
         sessions_qs = sessions_qs.filter(user__country=filters["country"])
         events_qs = events_qs.filter(user__country=filters["country"])
+    if filters["browser"]:
+        users_qs = users_qs.filter(browser=filters["browser"])
+        sessions_qs = sessions_qs.filter(user__browser=filters["browser"])
+        events_qs = events_qs.filter(user__browser=filters["browser"])
+    if filters["operating_system"]:
+        users_qs = users_qs.filter(operating_system=filters["operating_system"])
+        sessions_qs = sessions_qs.filter(user__operating_system=filters["operating_system"])
+        events_qs = events_qs.filter(user__operating_system=filters["operating_system"])
+    if filters["event_type"]:
+        events_qs = events_qs.filter(event_type=filters["event_type"])
+        sessions_qs = sessions_qs.filter(events__event_type=filters["event_type"]).distinct()
+        users_qs = users_qs.filter(events__event_type=filters["event_type"]).distinct()
+    if filters["q"]:
+        q = filters["q"]
+        users_qs = users_qs.filter(user_id__icontains=q)
+        sessions_qs = sessions_qs.filter(session_id__icontains=q)
+        events_qs = events_qs.filter(page_url__icontains=q)
 
     return users_qs, sessions_qs, events_qs
 
@@ -435,14 +534,66 @@ def _detect_source(referrer):
     return host or "referral"
 
 
+def _derive_client_context(request):
+    ua = request.META.get("HTTP_USER_AGENT", "")
+    ua_lower = ua.lower()
+
+    browser = "Other"
+    if "edg/" in ua_lower:
+        browser = "Edge"
+    elif "chrome/" in ua_lower:
+        browser = "Chrome"
+    elif "firefox/" in ua_lower:
+        browser = "Firefox"
+    elif "safari/" in ua_lower:
+        browser = "Safari"
+
+    operating_system = "Other"
+    if "windows" in ua_lower:
+        operating_system = "Windows"
+    elif "mac os" in ua_lower or "macintosh" in ua_lower:
+        operating_system = "macOS"
+    elif "linux" in ua_lower:
+        operating_system = "Linux"
+    elif "android" in ua_lower:
+        operating_system = "Android"
+    elif "iphone" in ua_lower or "ipad" in ua_lower:
+        operating_system = "iOS"
+
+    device_type = "desktop"
+    if any(token in ua_lower for token in ["mobile", "iphone", "android"]):
+        device_type = "mobile"
+    elif "ipad" in ua_lower or "tablet" in ua_lower:
+        device_type = "tablet"
+
+    country = (
+        request.META.get("HTTP_CF_IPCOUNTRY")
+        or request.META.get("HTTP_X_COUNTRY")
+        or request.META.get("HTTP_X_COUNTRY_CODE")
+        or ""
+    )[:100]
+    city = (request.META.get("HTTP_X_CITY") or "")[:100]
+
+    return {
+        "browser": browser,
+        "operating_system": operating_system,
+        "device_type": device_type,
+        "language": (request.META.get("HTTP_ACCEPT_LANGUAGE", "").split(",")[0] or "")[:32],
+        "country": country,
+        "city": city,
+    }
+
+
 def _calculate_tracker_kpis(filters, users_qs, sessions_qs, events_qs):
     now = timezone.now()
     active_threshold = now - timedelta(minutes=30)
+    realtime_threshold = now - timedelta(minutes=5)
 
     total_users = users_qs.count()
     active_users = users_qs.filter(last_seen__gte=active_threshold).count()
     sessions_count = sessions_qs.count()
     page_views_count = events_qs.filter(event_type="page_view").count()
+    active_sessions_5m = events_qs.filter(timestamp__gte=realtime_threshold).values("session_id").distinct().count()
 
     bounced_sessions = sessions_qs.filter(is_bounced=True).count()
     bounce_rate = round((bounced_sessions / sessions_count) * 100, 2) if sessions_count else 0
@@ -464,6 +615,7 @@ def _calculate_tracker_kpis(filters, users_qs, sessions_qs, events_qs):
         "active_users": active_users,
         "sessions_count": sessions_count,
         "page_views_count": page_views_count,
+        "active_sessions_5m": active_sessions_5m,
         "bounce_rate": bounce_rate,
         "avg_session_seconds": avg_session_seconds,
         "new_users": new_users,
@@ -665,31 +817,32 @@ def track_event_api(request):
 
     ip_source = rate_ip
     anonymized_ip = _anonymize_ip(ip_source)
+    derived = _derive_client_context(request)
 
     analytics_user, _ = AnalyticsUser.objects.get_or_create(
         user_id=user_id,
         defaults={
             "anonymized_ip": anonymized_ip,
-            "country": (payload.get("country") or "")[:100],
-            "city": (payload.get("city") or "")[:100],
-            "device_type": (payload.get("device_type") or "")[:20],
-            "browser": (payload.get("browser") or "")[:100],
-            "operating_system": (payload.get("operating_system") or "")[:100],
-            "language": (payload.get("language") or "")[:32],
+            "country": ((payload.get("country") or derived["country"]) or "")[:100],
+            "city": ((payload.get("city") or derived["city"]) or "")[:100],
+            "device_type": ((payload.get("device_type") or derived["device_type"]) or "")[:20],
+            "browser": ((payload.get("browser") or derived["browser"]) or "")[:100],
+            "operating_system": ((payload.get("operating_system") or derived["operating_system"]) or "")[:100],
+            "language": ((payload.get("language") or derived["language"]) or "")[:32],
         },
     )
 
     analytics_user.anonymized_ip = anonymized_ip
-    analytics_user.country = (payload.get("country") or analytics_user.country or "")[:100]
-    analytics_user.city = (payload.get("city") or analytics_user.city or "")[:100]
-    analytics_user.device_type = (payload.get("device_type") or analytics_user.device_type or "")[:20]
-    analytics_user.browser = (payload.get("browser") or analytics_user.browser or "")[:100]
-    analytics_user.operating_system = (payload.get("operating_system") or analytics_user.operating_system or "")[:100]
-    analytics_user.language = (payload.get("language") or analytics_user.language or "")[:32]
+    analytics_user.country = (payload.get("country") or derived["country"] or analytics_user.country or "")[:100]
+    analytics_user.city = (payload.get("city") or derived["city"] or analytics_user.city or "")[:100]
+    analytics_user.device_type = (payload.get("device_type") or derived["device_type"] or analytics_user.device_type or "")[:20]
+    analytics_user.browser = (payload.get("browser") or derived["browser"] or analytics_user.browser or "")[:100]
+    analytics_user.operating_system = (payload.get("operating_system") or derived["operating_system"] or analytics_user.operating_system or "")[:100]
+    analytics_user.language = (payload.get("language") or derived["language"] or analytics_user.language or "")[:32]
     analytics_user.save()
 
-    referrer = (payload.get("referrer") or "")[:400]
-    page_url = (payload.get("page_url") or "")[:400]
+    referrer = (payload.get("referrer") or request.META.get("HTTP_REFERER") or "")[:400]
+    page_url = (payload.get("page_url") or request.path or "")[:400]
     source = ((payload.get("source") or "").strip() or _detect_source(referrer))[:120]
 
     session_defaults = {
@@ -738,6 +891,7 @@ def track_event_api(request):
         metadata = {}
     if not isinstance(metadata, dict):
         metadata = {"value": str(metadata)}
+    metadata = _sanitize_metadata(metadata)
     metadata_json = json.dumps(metadata, separators=(",", ":"))
     if len(metadata_json) > 5000:
         metadata_json = metadata_json[:5000]
@@ -762,6 +916,7 @@ def track_event_api(request):
 
 
 @require_http_methods(["GET"])
+@staff_member_required(login_url="/admin/login/")
 def analytics_data_api(request):
     filters = _analytics_request_filters(request)
     users_qs, sessions_qs, events_qs = _build_analytics_scopes(filters)
@@ -774,10 +929,15 @@ def analytics_data_api(request):
             "device": filters["device"],
             "source": filters["source"],
             "country": filters["country"],
+            "browser": filters["browser"],
+            "operating_system": filters["operating_system"],
+            "event_type": filters["event_type"],
+            "q": filters["q"],
         },
         "metrics": {
             "total_users": kpis["total_users"],
             "active_users": kpis["active_users"],
+            "active_sessions_5m": kpis["active_sessions_5m"],
             "sessions": kpis["sessions_count"],
             "page_views": kpis["page_views_count"],
             "bounce_rate": kpis["bounce_rate"],
@@ -798,7 +958,10 @@ def analytics_data_api(request):
     return JsonResponse(payload)
 
 
+@staff_member_required(login_url="/admin/login/")
 def analytics_page(request):
+    # Dashboard is intentionally restricted to admin/staff users.
+
     filters = _analytics_request_filters(request)
     users_qs, sessions_qs, events_qs = _build_analytics_scopes(filters)
     kpis = _calculate_tracker_kpis(filters, users_qs, sessions_qs, events_qs)
@@ -818,7 +981,7 @@ def analytics_page(request):
         {"label": "Subscribe Forms", "value": SubscribeForm.objects.count()},
         {"label": "Contact Forms", "value": ContactForm.objects.count()},
         {"label": "Active Banners", "value": AdvertisementBanner.objects.filter(is_active=True).count()},
-        {"label": "Published Pages", "value": AboutPage.objects.filter(is_published=True).count() + DisclaimerPage.objects.filter(is_published=True).count() + PrivacyPage.objects.filter(is_published=True).count() + ShoppingCartPage.objects.filter(is_published=True).count()},
+        {"label": "Published Pages", "value": AboutPage.objects.filter(is_published=True).count() + DisclaimerPage.objects.filter(is_published=True).count() + PrivacyPage.objects.filter(is_published=True).count()},
     ]
 
     recent_cards = [
@@ -830,6 +993,7 @@ def analytics_page(request):
     traffic_cards = [
         {"label": "Total Users", "value": kpis["total_users"]},
         {"label": "Active Users (30m)", "value": kpis["active_users"]},
+        {"label": "Active Sessions (5m)", "value": kpis["active_sessions_5m"]},
         {"label": f"Sessions ({filters['days']} Days)", "value": kpis["sessions_count"]},
         {"label": f"Page Views ({filters['days']} Days)", "value": kpis["page_views_count"]},
         {"label": "Bounce Rate %", "value": kpis["bounce_rate"]},
@@ -873,7 +1037,8 @@ def analytics_page(request):
     for item in source_breakdown:
         item["chart_percent"] = int((item["total"] / max_source_total) * 100) if max_source_total else 0
 
-    context = {
+    context = admin.site.each_context(request)
+    context.update({
         "content_cards": content_cards,
         "engagement_cards": engagement_cards,
         "recent_cards": recent_cards,
@@ -895,13 +1060,172 @@ def analytics_page(request):
         "selected_device": filters["device"],
         "selected_source": filters["source"],
         "selected_country": filters["country"],
+        "selected_browser": filters["browser"],
+        "selected_operating_system": filters["operating_system"],
+        "selected_event_type": filters["event_type"],
+        "selected_query": filters["q"],
         "analytics_filter_options": _analytics_filter_options(window_start),
         "analytics_window_options": ANALYTICS_WINDOW_OPTIONS,
         "window_start": window_start,
         "today": today,
+    })
+    return render(request, "admin/analytics_dashboard.html", context)
+
+
+@staff_member_required(login_url="/admin/login/")
+def analytics_group_page(request):
+    today = timezone.localdate()
+
+    def _section_filters(prefix):
+        days = _safe_int(request.GET.get(f"{prefix}_days"), 30)
+        if days not in ANALYTICS_WINDOW_OPTIONS:
+            days = 30
+        return {
+            "days": days,
+            "window_start": today - timedelta(days=days - 1),
+            "device": (request.GET.get(f"{prefix}_device") or "").strip()[:20],
+            "source": (request.GET.get(f"{prefix}_source") or "").strip()[:120],
+            "country": (request.GET.get(f"{prefix}_country") or "").strip()[:100],
+            "browser": (request.GET.get(f"{prefix}_browser") or "").strip()[:100],
+            "operating_system": (request.GET.get(f"{prefix}_operating_system") or "").strip()[:100],
+            "event_type": (request.GET.get(f"{prefix}_event_type") or "").strip()[:80],
+            "q": (request.GET.get(f"{prefix}_q") or "").strip()[:120],
+        }
+
+    user_filters = _section_filters("u")
+    session_filters = _section_filters("s")
+    event_filters = _section_filters("e")
+
+    users_base = AnalyticsUser.objects.filter(last_seen__date__gte=user_filters["window_start"])
+    sessions_base = AnalyticsSession.objects.filter(start_time__date__gte=session_filters["window_start"])
+    events_base = AnalyticsEvent.objects.filter(timestamp__date__gte=event_filters["window_start"])
+
+    user_filter_options = {
+        "devices": sorted(
+            users_base.exclude(device_type="").values_list("device_type", flat=True).distinct()
+        ),
+        "countries": sorted(
+            users_base.exclude(country="").values_list("country", flat=True).distinct()
+        ),
+        "browsers": sorted(
+            users_base.exclude(browser="").values_list("browser", flat=True).distinct()
+        ),
+        "operating_systems": sorted(
+            users_base.exclude(operating_system="").values_list("operating_system", flat=True).distinct()
+        ),
     }
-    context.update(_base_context())
-    return render(request, "epcandiapp/analytics.html", context)
+
+    session_filter_options = {
+        "sources": sorted(
+            sessions_base.exclude(source="").values_list("source", flat=True).distinct()
+        ),
+        "devices": sorted(
+            sessions_base.exclude(user__device_type="").values_list("user__device_type", flat=True).distinct()
+        ),
+        "countries": sorted(
+            sessions_base.exclude(user__country="").values_list("user__country", flat=True).distinct()
+        ),
+        "browsers": sorted(
+            sessions_base.exclude(user__browser="").values_list("user__browser", flat=True).distinct()
+        ),
+        "operating_systems": sorted(
+            sessions_base.exclude(user__operating_system="").values_list("user__operating_system", flat=True).distinct()
+        ),
+    }
+
+    event_filter_options = {
+        "event_types": sorted(
+            events_base.exclude(event_type="").values_list("event_type", flat=True).distinct()
+        ),
+        "sources": sorted(
+            events_base.exclude(session__source="").values_list("session__source", flat=True).distinct()
+        ),
+        "devices": sorted(
+            events_base.exclude(user__device_type="").values_list("user__device_type", flat=True).distinct()
+        ),
+        "countries": sorted(
+            events_base.exclude(user__country="").values_list("user__country", flat=True).distinct()
+        ),
+        "browsers": sorted(
+            events_base.exclude(user__browser="").values_list("user__browser", flat=True).distinct()
+        ),
+        "operating_systems": sorted(
+            events_base.exclude(user__operating_system="").values_list("user__operating_system", flat=True).distinct()
+        ),
+    }
+
+    users_qs = users_base
+    if user_filters["device"]:
+        users_qs = users_qs.filter(device_type=user_filters["device"])
+    if user_filters["country"]:
+        users_qs = users_qs.filter(country=user_filters["country"])
+    if user_filters["browser"]:
+        users_qs = users_qs.filter(browser=user_filters["browser"])
+    if user_filters["operating_system"]:
+        users_qs = users_qs.filter(operating_system=user_filters["operating_system"])
+    if user_filters["source"]:
+        users_qs = users_qs.filter(sessions__source=user_filters["source"]).distinct()
+    if user_filters["event_type"]:
+        users_qs = users_qs.filter(events__event_type=user_filters["event_type"]).distinct()
+    if user_filters["q"]:
+        q = user_filters["q"]
+        users_qs = users_qs.filter(user_id__icontains=q)
+
+    sessions_qs = sessions_base
+    if session_filters["device"]:
+        sessions_qs = sessions_qs.filter(user__device_type=session_filters["device"])
+    if session_filters["source"]:
+        sessions_qs = sessions_qs.filter(source=session_filters["source"])
+    if session_filters["country"]:
+        sessions_qs = sessions_qs.filter(user__country=session_filters["country"])
+    if session_filters["browser"]:
+        sessions_qs = sessions_qs.filter(user__browser=session_filters["browser"])
+    if session_filters["operating_system"]:
+        sessions_qs = sessions_qs.filter(user__operating_system=session_filters["operating_system"])
+    if session_filters["event_type"]:
+        sessions_qs = sessions_qs.filter(events__event_type=session_filters["event_type"]).distinct()
+    if session_filters["q"]:
+        q = session_filters["q"]
+        sessions_qs = sessions_qs.filter(session_id__icontains=q)
+
+    events_qs = events_base
+    if event_filters["device"]:
+        events_qs = events_qs.filter(user__device_type=event_filters["device"])
+    if event_filters["source"]:
+        events_qs = events_qs.filter(session__source=event_filters["source"])
+    if event_filters["country"]:
+        events_qs = events_qs.filter(user__country=event_filters["country"])
+    if event_filters["browser"]:
+        events_qs = events_qs.filter(user__browser=event_filters["browser"])
+    if event_filters["operating_system"]:
+        events_qs = events_qs.filter(user__operating_system=event_filters["operating_system"])
+    if event_filters["event_type"]:
+        events_qs = events_qs.filter(event_type=event_filters["event_type"])
+    if event_filters["q"]:
+        q = event_filters["q"]
+        events_qs = events_qs.filter(page_url__icontains=q)
+
+    users = users_qs.order_by("-last_seen")[:200]
+    sessions = sessions_qs.order_by("-start_time")[:200]
+    events = events_qs.order_by("-timestamp")[:400]
+
+    context = admin.site.each_context(request)
+    context.update({
+        "users": users,
+        "sessions": sessions,
+        "events": events,
+        "users_total": users_qs.count(),
+        "sessions_total": sessions_qs.count(),
+        "events_total": events_qs.count(),
+        "user_filters": user_filters,
+        "session_filters": session_filters,
+        "event_filters": event_filters,
+        "user_filter_options": user_filter_options,
+        "session_filter_options": session_filter_options,
+        "event_filter_options": event_filter_options,
+        "analytics_window_options": ANALYTICS_WINDOW_OPTIONS,
+    })
+    return render(request, "admin/analytics_group.html", context)
 
 
 def focus_page(request):

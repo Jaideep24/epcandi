@@ -1,0 +1,227 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Analytics Dashboard | EPC&I Admin{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'epcandiapp/admin_analytics_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="analytics-dashboard-page">
+    <div class="analytics-dashboard-head">
+        <div>
+            <h1>Analytics Dashboard</h1>
+            <p>Traffic, behavior, conversion, and performance analytics in one admin view.</p>
+        </div>
+        <div class="analytics-dashboard-actions">
+            <a href="{% url 'admin:index' %}">Back To Admin</a>
+            <a href="{% url 'admin-analytics-group' %}">Open Group Data</a>
+        </div>
+    </div>
+
+    <form method="get" class="analytics-filter-form">
+        <div class="analytics-filter-grid">
+            <label>
+                <span>Window</span>
+                <select name="days">
+                    {% for day in analytics_window_options %}
+                    <option value="{{ day }}" {% if selected_days == day %}selected{% endif %}>Last {{ day }} Days</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Device</span>
+                <select name="device">
+                    <option value="">All Devices</option>
+                    {% for d in analytics_filter_options.devices %}
+                    <option value="{{ d }}" {% if selected_device == d %}selected{% endif %}>{{ d }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Source</span>
+                <select name="source">
+                    <option value="">All Sources</option>
+                    {% for s in analytics_filter_options.sources %}
+                    <option value="{{ s }}" {% if selected_source == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Country</span>
+                <select name="country">
+                    <option value="">All Countries</option>
+                    {% for c in analytics_filter_options.countries %}
+                    <option value="{{ c }}" {% if selected_country == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Browser</span>
+                <select name="browser">
+                    <option value="">All Browsers</option>
+                    {% for b in analytics_filter_options.browsers %}
+                    <option value="{{ b }}" {% if selected_browser == b %}selected{% endif %}>{{ b }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Operating System</span>
+                <select name="operating_system">
+                    <option value="">All Operating Systems</option>
+                    {% for os in analytics_filter_options.operating_systems %}
+                    <option value="{{ os }}" {% if selected_operating_system == os %}selected{% endif %}>{{ os }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Event Type</span>
+                <select name="event_type">
+                    <option value="">All Event Types</option>
+                    {% for et in analytics_filter_options.event_types %}
+                    <option value="{{ et }}" {% if selected_event_type == et %}selected{% endif %}>{{ et }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Quick Search</span>
+                <input type="text" name="q" value="{{ selected_query }}" placeholder="User, session, or page contains...">
+            </label>
+        </div>
+        <div class="analytics-filter-actions">
+            <button type="submit">Apply Filters</button>
+            <a href="{% url 'admin-analytics' %}">Reset</a>
+        </div>
+    </form>
+
+    <div class="analytics-wrap">
+        <div class="analytics-section">
+            <div class="analytics-title">Traffic Overview (Tracked)</div>
+            <div class="analytics-cards analytics-cards-compact">
+                {% for card in traffic_cards %}
+                <div class="analytics-card">
+                    <div class="analytics-card-value">{{ card.value }}</div>
+                    <div class="analytics-card-label">{{ card.label }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="analytics-note">Window: {{ window_start|date:"d M Y" }} to {{ today|date:"d M Y" }}</div>
+        </div>
+
+        <div class="analytics-section">
+            <div class="analytics-title">Traffic Timeline (Daily Page Views)</div>
+            {% if timeline_page_views %}
+            <div class="timeline-chart-wrap">
+                {% for point in timeline_page_views %}
+                <div class="timeline-bar-col" title="{{ point.label }}: {{ point.total }} views">
+                    <div class="timeline-bar-value">{{ point.total }}</div>
+                    <div class="timeline-bar-track">
+                        <div class="timeline-bar-fill" style="height: {{ point.percent }}%"></div>
+                    </div>
+                    <div class="timeline-bar-label">{{ point.label }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="analytics-empty">No timeline data yet.</div>
+            {% endif %}
+        </div>
+
+        <div class="analytics-grid-two">
+            <div class="analytics-section">
+                <div class="analytics-title">Conversion Metrics</div>
+                <div class="analytics-cards analytics-cards-compact">
+                    {% for card in conversion_metrics %}
+                    <div class="analytics-card">
+                        <div class="analytics-card-value">{{ card.value }}</div>
+                        <div class="analytics-card-label">{{ card.label }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="analytics-section">
+                <div class="analytics-title">Performance Metrics</div>
+                <div class="analytics-cards analytics-cards-compact">
+                    {% for card in performance_metrics %}
+                    <div class="analytics-card">
+                        <div class="analytics-card-value">{{ card.value }}</div>
+                        <div class="analytics-card-label">{{ card.label }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="analytics-grid-two">
+            <div class="analytics-section">
+                <div class="analytics-title">Top Pages (Last {{ selected_days }} Days)</div>
+                {% if top_pages %}
+                <table class="analytics-table">
+                    <thead><tr><th>Page</th><th>Views</th></tr></thead>
+                    <tbody>
+                        {% for page in top_pages %}
+                        <tr><td>{{ page.page_url }}</td><td>{{ page.total }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="analytics-empty">No page view events captured yet.</div>
+                {% endif %}
+            </div>
+
+            <div class="analytics-section">
+                <div class="analytics-title">Top Events</div>
+                {% if top_events %}
+                <table class="analytics-table">
+                    <thead><tr><th>Event</th><th>Type</th><th>Count</th></tr></thead>
+                    <tbody>
+                        {% for item in top_events %}
+                        <tr><td>{{ item.label }}</td><td>{{ item.event_type }}</td><td>{{ item.total }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="analytics-empty">No tracked events yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="analytics-grid-two">
+            <div class="analytics-section">
+                <div class="analytics-title">Device Radial Chart</div>
+                {% if device_breakdown %}
+                <div class="radial-list">
+                    {% for item in device_breakdown %}
+                    <div class="radial-item">
+                        <div class="radial-ring" style="--p: {{ item.percent|floatformat:0 }}"><span>{{ item.percent }}%</span></div>
+                        <div class="radial-meta"><div class="radial-name">{{ item.label }}</div><div class="radial-count">{{ item.total }} users</div></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="analytics-empty">No device analytics yet.</div>
+                {% endif %}
+            </div>
+
+            <div class="analytics-section">
+                <div class="analytics-title">Source Radial Chart</div>
+                {% if source_breakdown %}
+                <div class="radial-list">
+                    {% for item in source_breakdown %}
+                    <div class="radial-item">
+                        <div class="radial-ring" style="--p: {{ item.percent|floatformat:0 }}"><span>{{ item.percent }}%</span></div>
+                        <div class="radial-meta"><div class="radial-name">{{ item.label }}</div><div class="radial-count">{{ item.total }} sessions</div></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="analytics-empty">No source analytics yet.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

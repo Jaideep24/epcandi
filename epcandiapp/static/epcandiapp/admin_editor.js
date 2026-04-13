@@ -1,4 +1,59 @@
 (function () {
+    function initSidebarAnalyticsLink() {
+        if (document.body.classList.contains("login")) {
+            return;
+        }
+
+        var navSidebar = document.getElementById("nav-sidebar");
+        if (!navSidebar) {
+            return;
+        }
+
+        var modules = navSidebar.querySelectorAll(".module");
+        var contentModule = null;
+        modules.forEach(function (module) {
+            if (contentModule) {
+                return;
+            }
+            var section = module.querySelector("caption .section, h2");
+            var name = (section && section.textContent ? section.textContent : "").toLowerCase();
+            if (name.indexOf("epc") !== -1 && name.indexOf("content") !== -1) {
+                contentModule = module;
+            }
+        });
+
+        if (!contentModule) {
+            return;
+        }
+
+        var hasAnalyticsLink = Array.prototype.some.call(contentModule.querySelectorAll("a"), function (link) {
+            var href = (link.getAttribute("href") || "").toLowerCase();
+            return href.indexOf("/admin/analytics/") !== -1 || (link.textContent || "").trim().toLowerCase() === "analytics";
+        });
+        if (hasAnalyticsLink) {
+            return;
+        }
+
+        var tableBody = contentModule.querySelector("table tbody") || contentModule.querySelector("tbody") || contentModule.querySelector("table");
+        if (!tableBody) {
+            return;
+        }
+
+        var row = document.createElement("tr");
+        row.className = "model-analytics";
+
+        var cell = document.createElement("th");
+        cell.scope = "row";
+
+        var link = document.createElement("a");
+        link.href = "/admin/analytics/";
+        link.textContent = "Analytics";
+
+        cell.appendChild(link);
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+    }
+
     function initLoginPasswordToggle() {
         if (!document.body.classList.contains("login")) {
             return;
@@ -164,6 +219,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
+        initSidebarAnalyticsLink();
         initLoginPasswordToggle();
         initEditors();
     });

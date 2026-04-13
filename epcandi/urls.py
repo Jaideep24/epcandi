@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from epcandiapp.views import analytics_group_page, analytics_page
 
 urlpatterns = [
+    path('analytics/', analytics_page, name='analytics'),
+    path('admin/analytics/', analytics_page, name='admin-analytics'),
+    path('admin/analytics/group/', analytics_group_page, name='admin-analytics-group'),
     path('admin/', admin.site.urls),
     path('',include('epcandiapp.urls'),)
 ]

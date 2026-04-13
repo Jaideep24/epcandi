@@ -125,12 +125,6 @@ class PrivacyPage(PageContentBase):
         verbose_name_plural = "Privacy"
 
 
-class ShoppingCartPage(PageContentBase):
-    class Meta(PageContentBase.Meta):
-        verbose_name = "Shopping Cart"
-        verbose_name_plural = "Shopping Cart"
-
-
 class AdvertisementBanner(models.Model):
     name = models.CharField(max_length=200)
     image = models.FileField(upload_to="advertisement_banners/")
