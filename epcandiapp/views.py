@@ -66,7 +66,10 @@ MAX_METADATA_STRING_LENGTH = 300
 
 def _base_context():
     return {
-        "advertisement_banners": AdvertisementBanner.objects.filter(is_active=True)
+        "right_advertisements": RightAdvertisement.objects.filter(is_active=True),
+        "left_advertisements": LeftAdvertisement.objects.filter(is_active=True),
+        "banner_advertisement": BannerAdvertisement.objects.filter(is_active=True).order_by("display_order", "id").first(),
+        "latest_issue": LatestIssue.objects.order_by("-updated_at", "-id").first(),
     }
 
 
@@ -980,7 +983,8 @@ def analytics_page(request):
     engagement_cards = [
         {"label": "Subscribe Forms", "value": SubscribeForm.objects.count()},
         {"label": "Contact Forms", "value": ContactForm.objects.count()},
-        {"label": "Active Banners", "value": AdvertisementBanner.objects.filter(is_active=True).count()},
+        {"label": "Right Ads", "value": RightAdvertisement.objects.filter(is_active=True).count()},
+        {"label": "Left Ads", "value": LeftAdvertisement.objects.filter(is_active=True).count()},
         {"label": "Published Pages", "value": AboutPage.objects.filter(is_published=True).count() + DisclaimerPage.objects.filter(is_published=True).count() + PrivacyPage.objects.filter(is_published=True).count()},
     ]
 

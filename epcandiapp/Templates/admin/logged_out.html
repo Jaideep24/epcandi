@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}EPC&I Admin Logout{% endblock %}
+
+{% block bodyclass %}login logged-out{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content %}
+<div class="epci-login-shell">
+    <div class="epci-login-card">
+        <div class="epci-login-brand" style="justify-content:center;">
+            <img src="{% static 'epcandiapp/logo.png' %}" alt="EPC&I" class="epci-login-logo">
+            <div>
+                <h1>EPC&I Administration</h1>
+            </div>
+        </div>
+
+        <h2 class="epci-login-title">Logged out</h2>
+        <p class="epci-login-note">You have been signed out successfully.</p>
+        <p class="epci-login-subnote">Sign in again to continue managing the admin panel.</p>
+
+        <div class="epci-logout-actions">
+            <a href="{% url 'admin:login' %}" class="epci-logout-link">Log in again</a>
+            <a href="/" class="epci-logout-link epci-logout-close">Close</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -60,12 +60,19 @@ class EventsAdmin(admin.ModelAdmin):
 
 
 class PageContentAdmin(admin.ModelAdmin):
-	list_display = ("title",)
-	list_filter = ("is_published", "updated_at")
-	search_fields = ("title", "heading", "content")
+	list_display = ("heading",)
+	list_filter = ("updated_at",)
+	search_fields = ("heading", "content")
 	ordering = ("-updated_at",)
 	readonly_fields = ("updated_at",)
+	exclude = ("title", "is_published")
 	list_per_page = 25
+
+	def save_model(self, request, obj, form, change):
+		# Keep data model compatibility while exposing only one label field in admin.
+		obj.title = obj.heading
+		obj.is_published = True
+		super().save_model(request, obj, form, change)
 
 
 @admin.register(AboutPage)
@@ -99,11 +106,33 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 	list_per_page = 25
 
 
-@admin.register(AdvertisementBanner)
-class AdvertisementBannerAdmin(admin.ModelAdmin):
+@admin.register(RightAdvertisement)
+class RightAdvertisementAdmin(admin.ModelAdmin):
 	list_display = ("name",)
 	list_filter = ("is_active",)
 	search_fields = ("name", "link")
+
+
+@admin.register(LeftAdvertisement)
+class LeftAdvertisementAdmin(admin.ModelAdmin):
+	list_display = ("name",)
+	list_filter = ("is_active",)
+	search_fields = ("name", "link")
+
+
+@admin.register(BannerAdvertisement)
+class BannerAdvertisementAdmin(admin.ModelAdmin):
+	list_display = ("name",)
+	list_filter = ("is_active",)
+	search_fields = ("name", "link")
+
+
+@admin.register(LatestIssue)
+class LatestIssueAdmin(admin.ModelAdmin):
+	list_display = ("title", "updated_at")
+	search_fields = ("title",)
+	readonly_fields = ("updated_at",)
+	list_per_page = 25
 
 
 @admin.register(SubscribeForm)

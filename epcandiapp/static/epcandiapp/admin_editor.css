@@ -204,6 +204,61 @@ body.login .epci-login-submit input[type="submit"]:hover {
     box-shadow: 0 8px 24px rgba(0, 136, 255, 0.32);
 }
 
+body.login.logged-out .epci-login-card {
+    max-width: 500px;
+    text-align: center;
+}
+
+body.login .epci-login-note {
+    margin: 8px 0 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+body.login .epci-login-subnote {
+    margin: 8px 0 0;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+}
+
+body.login .epci-logout-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+body.login .epci-logout-link {
+    display: inline-block;
+    min-width: 170px;
+    border: 0;
+    border-radius: 12px;
+    padding: 13px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #0088ff 0%, #0066dd 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+body.login .epci-logout-link:hover {
+    background: linear-gradient(135deg, #0077ee 0%, #0055cc 100%);
+    box-shadow: 0 8px 24px rgba(0, 136, 255, 0.32);
+    text-decoration: none;
+}
+
+body.login .epci-logout-close {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+body.login .epci-logout-close:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 8px 24px rgba(220, 38, 38, 0.32);
+}
+
 /* Admin page styling */
 :root {
     --admin-bg: #0a0e17;
@@ -472,26 +527,31 @@ body:not(.login) {
 
 #nav-sidebar {
     display: block !important;
-    background: var(--admin-panel);
-    border-right: 1px solid var(--admin-border-light);
+    background: var(--admin-bg);
+    border-right: 0;
     padding-top: 8px;
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
+    width: 252px;
+    min-width: 252px;
+    max-width: 252px;
     position: sticky;
     top: 0;
     height: 100dvh;
     overflow-y: auto;
-    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
+    overflow-x: hidden;
+    padding-bottom: 5px;
+    box-shadow: none !important;
 }
 
 #nav-sidebar .module {
-    background: color-mix(in srgb, var(--admin-panel-soft) 90%, transparent);
-    border: 1px solid color-mix(in srgb, var(--admin-border-light) 70%, transparent);
-    border-radius: 10px;
+    background: var(--admin-panel-soft);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
     margin: 8px;
     padding: 0;
     overflow: hidden;
+    width: calc(100% - 16px);
+    box-sizing: border-box;
+    box-shadow: none !important;
 }
 
 #nav-sidebar table {
@@ -517,7 +577,7 @@ body:not(.login) {
 }
 
 #nav-sidebar .module:last-of-type {
-    margin-bottom: 0;
+    margin-bottom: 5px;
 }
 
 #nav-sidebar .module h2 {
@@ -530,6 +590,11 @@ body:not(.login) {
     letter-spacing: 0.5px;
     padding: 8px 10px;
     margin: 0;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+    border-radius: 0;
 }
 
 #nav-sidebar .module caption {
@@ -538,6 +603,8 @@ body:not(.login) {
     padding: 7px 10px;
     border-bottom: 1px solid rgba(102, 171, 242, 0.65);
     background: linear-gradient(135deg, #7ec3ff 0%, #5aa9f7 100%);
+    border-radius: 12px 12px 0 0;
+    box-sizing: border-box;
 }
 
 #nav-sidebar .module caption .section,
@@ -668,6 +735,9 @@ body:not(.login) {
     max-width: none !important;
     min-width: 0;
     float: left !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
 }
 
 .dashboard #content-related {
@@ -677,6 +747,9 @@ body:not(.login) {
     min-width: 0;
     clear: right !important;
     align-self: start;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
 }
 
 @media (max-width: 1024px) {
@@ -700,7 +773,7 @@ body:not(.login) {
     background: var(--admin-panel-soft);
     border: 1px solid var(--admin-border);
     border-radius: 12px;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    box-shadow: none;
 }
 
 .dashboard .module h2 {
@@ -758,7 +831,7 @@ body:not(.login) {
 
 .results th,
 .results td {
-    padding: 14px 16px;
+    padding: 10px 14px;
     border-bottom: 1px solid var(--admin-border);
     text-align: left;
     font-size: 13px;
@@ -867,17 +940,94 @@ a:hover {
     width: 100% !important;
 }
 
+.change-list #changelist,
+.change-list #changelist .changelist-form-container,
+.change-list #changelist .changelist-form-container > div,
+.change-list #changelist-form,
+.change-list #changelist .results,
+.change-list #changelist .results table {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.change-list #changelist {
+    background: var(--admin-panel) !important;
+    border: 1px solid var(--admin-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14) !important;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.change-list #content-main {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.change-list #toolbar {
+    margin: 0;
+    padding: 8px 10px;
+    background: transparent;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+#nav-sidebar .filter,
+#nav-sidebar .nav-filter {
+    margin: 0 8px 8px;
+}
+
+#nav-sidebar .filter input,
+#nav-sidebar .nav-filter input,
+#nav-sidebar #nav-filter {
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--admin-border-light);
+    border-radius: 10px;
+    padding: 0 12px;
+    background: color-mix(in srgb, var(--admin-panel-soft) 90%, var(--admin-panel));
+    color: var(--admin-text);
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+#nav-sidebar .filter input::placeholder,
+#nav-sidebar .nav-filter input::placeholder,
+#nav-sidebar #nav-filter::placeholder {
+    color: color-mix(in srgb, var(--admin-text-soft) 86%, transparent);
+}
+
+#nav-sidebar .filter input:focus,
+#nav-sidebar .nav-filter input:focus,
+#nav-sidebar #nav-filter:focus {
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 3px rgba(91, 163, 255, 0.18);
+    background: var(--admin-panel);
+}
+
 #changelist-form .actions,
 #changelist .actions {
-    min-height: 42px;
-    padding: 8px 10px;
+    min-height: 36px;
+    padding: 6px 10px;
     display: flex;
     align-items: center;
     gap: 8px;
-    background: var(--admin-panel-soft);
+    background: transparent;
     border-top: 1px solid var(--admin-border);
     border-bottom: 1px solid var(--admin-border);
     box-sizing: border-box;
+}
+
+.change-list #changelist .paginator {
+    margin: 0;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
 }
 
 #changelist-form .actions select,
@@ -933,6 +1083,12 @@ a:hover {
 
 .change-form .form-row:focus-within {
     background: rgba(59, 130, 246, 0.08);
+}
+
+.change-form #content-main {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .change-form .form-row:last-child {
@@ -1376,6 +1532,7 @@ body:not(.login).nav-sidebar-enabled #nav-sidebar {
 #nav-sidebar .model-analytics th a {
     color: var(--admin-text-soft);
     font-weight: 600;
+    white-space: nowrap;
 }
 
 #nav-sidebar .model-analytics th a:hover {

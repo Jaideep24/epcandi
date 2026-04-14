@@ -125,7 +125,7 @@ class PrivacyPage(PageContentBase):
         verbose_name_plural = "Privacy"
 
 
-class AdvertisementBanner(models.Model):
+class RightAdvertisement(models.Model):
     name = models.CharField(max_length=200)
     image = models.FileField(upload_to="advertisement_banners/")
     link = models.URLField(help_text="Company URL opened when users click this banner")
@@ -135,11 +135,65 @@ class AdvertisementBanner(models.Model):
 
     class Meta:
         ordering = ["display_order", "id"]
-        verbose_name = "Advertisement Banner"
-        verbose_name_plural = "Advertisement Banners"
+        verbose_name = "RIGHT ADVERTISMENT"
+        verbose_name_plural = "RIGHT ADVERTISMENT"
 
     def __str__(self):
         return self.name
+
+
+class LeftAdvertisement(models.Model):
+    name = models.CharField(max_length=200)
+    image = models.FileField(upload_to="left_advertisement_banners/")
+    link = models.URLField(help_text="Company URL opened when users click this banner")
+    display_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        verbose_name = "LEFT ADVERTISMENT"
+        verbose_name_plural = "LEFT ADVERTISMENT"
+
+    def __str__(self):
+        return self.name
+
+
+class BannerAdvertisement(models.Model):
+    name = models.CharField(max_length=200)
+    image = models.FileField(
+        upload_to="banner_advertisement_banners/",
+        help_text="Use an image sized exactly 468x60 pixels.",
+    )
+    link = models.URLField(help_text="Company URL opened when users click this banner")
+    display_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        verbose_name = "Banner Advertisment"
+        verbose_name_plural = "Banner Advertisment"
+
+    def __str__(self):
+        return self.name
+
+
+class LatestIssue(models.Model):
+    title = models.CharField(
+        max_length=255,
+        help_text='Enter only the message part after "LATEST ISSUE -"',
+    )
+    image = models.FileField(upload_to="latest_issues/", blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at", "-id"]
+        verbose_name = "Latest Issue"
+        verbose_name_plural = "Latest Issue"
+
+    def __str__(self):
+        return f"LATEST ISSUE - {self.title}"
 
 
 class SubscribeForm(models.Model):

@@ -22,6 +22,9 @@
             }
         });
 
+        if (!contentModule && modules.length) {
+            contentModule = modules[modules.length - 1];
+        }
         if (!contentModule) {
             return;
         }
@@ -34,8 +37,18 @@
             return;
         }
 
-        var tableBody = contentModule.querySelector("table tbody") || contentModule.querySelector("tbody") || contentModule.querySelector("table");
+        var tableBody = contentModule.querySelector("table tbody") || contentModule.querySelector("tbody");
         if (!tableBody) {
+            var listTarget = contentModule.querySelector("ul, ol");
+            if (listTarget) {
+                var listItem = document.createElement("li");
+                listItem.className = "model-analytics";
+                var listLink = document.createElement("a");
+                listLink.href = "/admin/analytics/";
+                listLink.textContent = "Analytics";
+                listItem.appendChild(listLink);
+                listTarget.appendChild(listItem);
+            }
             return;
         }
 
@@ -181,6 +194,29 @@
             }
             editor.focus();
             syncButtonStates();
+        }));
+        toolbar.appendChild(createButton('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M19 20H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.2-2h5.6L16 6h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2zM5 8v10h14V8h-4.2l-1.2-2H10.4L9.2 8H5zm7 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>', "Upload image", function () {
+            var picker = document.createElement("input");
+            picker.type = "file";
+            picker.accept = "image/*";
+            picker.addEventListener("change", function () {
+                var file = picker.files && picker.files[0];
+                if (!file) {
+                    return;
+                }
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    var dataUrl = evt && evt.target ? evt.target.result : "";
+                    if (typeof dataUrl === "string" && dataUrl) {
+                        document.execCommand("insertImage", false, dataUrl);
+                        textarea.value = editor.innerHTML;
+                    }
+                    editor.focus();
+                    syncButtonStates();
+                };
+                reader.readAsDataURL(file);
+            });
+            picker.click();
         }));
 
         editor.addEventListener("input", function () {
