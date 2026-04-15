@@ -187,36 +187,147 @@
             editor.focus();
             syncButtonStates();
         }));
-        toolbar.appendChild(createButton('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2v9.59l4.3-4.3a1 1 0 0 1 1.4 0l2.3 2.3 2.3-2.3a1 1 0 0 1 1.4 0L19 14.59V7H5zm4 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>', "Insert image", function () {
-            var url = window.prompt("Enter image URL");
-            if (url) {
-                document.execCommand("insertImage", false, url);
+        toolbar.appendChild(createButton('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2v9.59l4.3-4.3a1 1 0 0 1 1.4 0l2.3 2.3 2.3-2.3a1 1 0 0 1 1.4 0L19 14.59V7H5zm4 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>', "Image options", function () {
+            var modal = document.createElement("div");
+            modal.className = "epci-richtext-modal-overlay";
+            
+            var modalContent = document.createElement("div");
+            modalContent.className = "epci-richtext-modal";
+            
+            var tabsContainer = document.createElement("div");
+            tabsContainer.className = "epci-richtext-modal-tabs";
+            
+            var urlTab = document.createElement("button");
+            urlTab.type = "button";
+            urlTab.className = "epci-richtext-modal-tab";
+            urlTab.textContent = "URL";
+            urlTab.dataset.tab = "url";
+            
+            var uploadTab = document.createElement("button");
+            uploadTab.type = "button";
+            uploadTab.className = "epci-richtext-modal-tab active";
+            uploadTab.textContent = "UPLOAD";
+            uploadTab.dataset.tab = "upload";
+            
+            tabsContainer.appendChild(urlTab);
+            tabsContainer.appendChild(uploadTab);
+            
+            var contentContainer = document.createElement("div");
+            contentContainer.className = "epci-richtext-modal-content";
+            
+            var urlContent = document.createElement("div");
+            urlContent.className = "epci-richtext-modal-pane";
+            urlContent.style.display = "none";
+            urlContent.dataset.pane = "url";
+            
+            var urlLabel = document.createElement("label");
+            urlLabel.textContent = "Image URL";
+            var urlInput = document.createElement("input");
+            urlInput.type = "text";
+            urlInput.placeholder = "Enter image URL...";
+            urlInput.className = "epci-richtext-modal-input";
+            urlContent.appendChild(urlLabel);
+            urlContent.appendChild(urlInput);
+            
+            var uploadContent = document.createElement("div");
+            uploadContent.className = "epci-richtext-modal-pane";
+            uploadContent.style.display = "block";
+            uploadContent.dataset.pane = "upload";
+            
+            var uploadLabel = document.createElement("label");
+            uploadLabel.textContent = "Choose image from device";
+            var uploadInput = document.createElement("input");
+            uploadInput.type = "file";
+            uploadInput.accept = "image/*";
+            uploadInput.className = "epci-richtext-modal-file-input";
+            uploadContent.appendChild(uploadLabel);
+            uploadContent.appendChild(uploadInput);
+            
+            contentContainer.appendChild(urlContent);
+            contentContainer.appendChild(uploadContent);
+            
+            var buttonsContainer = document.createElement("div");
+            buttonsContainer.className = "epci-richtext-modal-buttons";
+            
+            var cancelBtn = document.createElement("button");
+            cancelBtn.type = "button";
+            cancelBtn.className = "epci-richtext-modal-cancel";
+            cancelBtn.textContent = "Cancel";
+            
+            var insertBtn = document.createElement("button");
+            insertBtn.type = "button";
+            insertBtn.className = "epci-richtext-modal-insert";
+            insertBtn.textContent = "Insert";
+            
+            buttonsContainer.appendChild(cancelBtn);
+            buttonsContainer.appendChild(insertBtn);
+            
+            modalContent.appendChild(tabsContainer);
+            modalContent.appendChild(contentContainer);
+            modalContent.appendChild(buttonsContainer);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            function switchTab(tabName) {
+                Array.from(tabsContainer.querySelectorAll(".epci-richtext-modal-tab")).forEach(function (tab) {
+                    tab.classList.remove("active");
+                });
+                Array.from(contentContainer.querySelectorAll(".epci-richtext-modal-pane")).forEach(function (pane) {
+                    pane.style.display = "none";
+                });
+                
+                contentContainer.querySelector('[data-pane="' + tabName + '"]').style.display = "block";
+                tabsContainer.querySelector('[data-tab="' + tabName + '"]').classList.add("active");
             }
-            editor.focus();
-            syncButtonStates();
-        }));
-        toolbar.appendChild(createButton('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M19 20H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.2-2h5.6L16 6h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2zM5 8v10h14V8h-4.2l-1.2-2H10.4L9.2 8H5zm7 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>', "Upload image", function () {
-            var picker = document.createElement("input");
-            picker.type = "file";
-            picker.accept = "image/*";
-            picker.addEventListener("change", function () {
-                var file = picker.files && picker.files[0];
-                if (!file) {
-                    return;
-                }
-                var reader = new FileReader();
-                reader.onload = function (evt) {
-                    var dataUrl = evt && evt.target ? evt.target.result : "";
-                    if (typeof dataUrl === "string" && dataUrl) {
-                        document.execCommand("insertImage", false, dataUrl);
-                        textarea.value = editor.innerHTML;
-                    }
-                    editor.focus();
-                    syncButtonStates();
-                };
-                reader.readAsDataURL(file);
+            
+            urlTab.addEventListener("click", function () {
+                switchTab("url");
             });
-            picker.click();
+            uploadTab.addEventListener("click", function () {
+                switchTab("upload");
+            });
+            
+            cancelBtn.addEventListener("click", function () {
+                document.body.removeChild(modal);
+            });
+            
+            insertBtn.addEventListener("click", function () {
+                var activeTab = contentContainer.querySelector(".epci-richtext-modal-pane[style*='display: block']");
+                
+                if (activeTab.dataset.pane === "url") {
+                    var url = urlInput.value.trim();
+                    if (url) {
+                        document.execCommand("insertImage", false, url);
+                        document.body.removeChild(modal);
+                    } else {
+                        alert("Please enter an image URL");
+                    }
+                } else {
+                    var file = uploadInput.files && uploadInput.files[0];
+                    if (!file) {
+                        alert("Please select an image file");
+                        return;
+                    }
+                    var reader = new FileReader();
+                    reader.onload = function (evt) {
+                        var dataUrl = evt && evt.target ? evt.target.result : "";
+                        if (typeof dataUrl === "string" && dataUrl) {
+                            document.execCommand("insertImage", false, dataUrl);
+                            textarea.value = editor.innerHTML;
+                        }
+                        document.body.removeChild(modal);
+                    };
+                    reader.readAsDataURL(file);
+                }
+                editor.focus();
+                syncButtonStates();
+            });
+            
+            modal.addEventListener("click", function (e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
         }));
 
         editor.addEventListener("input", function () {

@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 
 # Create your models here.
@@ -14,6 +16,7 @@ SECTOR_CHOICES = [
 
 class News(models.Model):
     heading=models.CharField(max_length=200)
+    published_on = models.DateField(default=date.today)
     top_news = models.BooleanField(default=False, help_text="Display this item first on the news landing page")
     news=models.TextField()
 

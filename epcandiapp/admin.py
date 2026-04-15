@@ -10,11 +10,13 @@ admin.site.enable_nav_sidebar = True
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-	list_display = ("heading",)
+	list_display = ("heading", "published_on", "top_news")
 	list_filter = ("top_news",)
 	search_fields = ("heading", "news")
-	ordering = ("-top_news", "-id")
+	ordering = ("-published_on", "-top_news", "-id")
+	date_hierarchy = "published_on"
 	list_per_page = 25
+	fields = ("heading", "published_on", "top_news", "news")
 
 
 @admin.register(Focus)

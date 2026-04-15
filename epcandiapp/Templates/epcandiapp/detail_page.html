@@ -6,6 +6,9 @@
 {% block content %}
 <div class="list-toolbar">{{ toolbar_title }}</div>
 <div class="list-article-header">{{ detail_title }}</div>
+{% if detail_date %}
+<div class="list-article-date">{{ detail_date|date:"d/m/Y" }}</div>
+{% endif %}
 <div class="list-article-presci">
     {% if detail_is_html %}
         {{ detail_body|safe }}

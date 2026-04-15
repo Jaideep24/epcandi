@@ -119,7 +119,7 @@ def _render_page_model(request, model_class):
     return render(request, "epcandiapp/site_page.html", context)
 
 
-def _render_detail_page(request, *, page_title, toolbar_title, detail_title, detail_body, back_url, back_label):
+def _render_detail_page(request, *, page_title, toolbar_title, detail_title, detail_body, back_url, back_label, detail_date=None):
     context = {
         "detail_title": detail_title,
         "detail_body": detail_body,
@@ -128,6 +128,7 @@ def _render_detail_page(request, *, page_title, toolbar_title, detail_title, det
         "toolbar_title": toolbar_title,
         "page_title": page_title,
         "detail_is_html": False,
+        "detail_date": detail_date,
     }
     context.update(_base_context())
     return render(request, "epcandiapp/detail_page.html", context)
@@ -149,11 +150,26 @@ def home_page(request):
 
 
 def news_page(request):
-    top_news_items = News.objects.filter(top_news=True).order_by("-id")[:5]
-    queryset = News.objects.filter(top_news=False).order_by("-id")
-    context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["News"] = context["page_obj"].object_list
-    context["top_news_items"] = top_news_items
+    top_news_only = request.GET.get("top_news") == "on"
+    if top_news_only:
+        queryset = News.objects.filter(top_news=True).order_by("-published_on", "-id")
+        query_text = request.GET.get("q", "").strip()
+        if query_text:
+            queryset = queryset.filter(heading__icontains=query_text)
+        context = {
+            "News": queryset,
+            "page_obj": None,
+            "page_size": _safe_page_size(request.GET.get("page_size")),
+            "page_size_options": PAGE_SIZE_OPTIONS,
+            "q": query_text,
+        }
+    else:
+        queryset = News.objects.order_by("-published_on", "-id")
+        context = _paginated_listing_context(request, queryset, title_field="heading")
+        context["News"] = context["page_obj"].object_list
+
+    context["top_news_only"] = top_news_only
+    context["show_top_news_filter"] = True
     context.update(_base_context())
     return render(request, "epcandiapp/news.html", context)
 
@@ -166,6 +182,7 @@ def news_detail_page(request, news_id):
         toolbar_title="NEWS",
         detail_title=item.heading,
         detail_body=item.news,
+        detail_date=item.published_on,
         back_url="news",
         back_label="Back to News",
     )

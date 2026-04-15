@@ -1263,6 +1263,146 @@ a:hover {
     margin: 0 2px;
 }
 
+.epci-richtext-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(2px);
+}
+
+.epci-richtext-modal {
+    background: var(--editor-wrap-bg);
+    border: 1px solid var(--editor-toolbar-border);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 420px;
+    overflow: hidden;
+    animation: slideUpModal 0.25s ease;
+}
+
+@keyframes slideUpModal {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.epci-richtext-modal-tabs {
+    display: flex;
+    background: var(--editor-toolbar-bg);
+    border-bottom: 1px solid var(--editor-toolbar-border);
+}
+
+.epci-richtext-modal-tab {
+    flex: 1;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    color: var(--editor-btn-text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+
+.epci-richtext-modal-tab:hover {
+    background: var(--editor-btn-hover);
+}
+
+.epci-richtext-modal-tab.active {
+    color: var(--admin-accent);
+    border-bottom-color: var(--admin-accent);
+}
+
+.epci-richtext-modal-content {
+    padding: 24px 20px;
+}
+
+.epci-richtext-modal-pane {
+    display: none;
+}
+
+.epci-richtext-modal-pane label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--editor-content-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.epci-richtext-modal-input,
+.epci-richtext-modal-file-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--editor-content-bg);
+    border: 1px solid var(--editor-toolbar-border);
+    border-radius: 6px;
+    color: var(--editor-content-text);
+    font-size: 13px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.epci-richtext-modal-input:focus,
+.epci-richtext-modal-file-input:focus {
+    outline: none;
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 3px rgba(91, 163, 255, 0.15);
+}
+
+.epci-richtext-modal-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--editor-toolbar-border);
+    justify-content: flex-end;
+}
+
+.epci-richtext-modal-cancel,
+.epci-richtext-modal-insert {
+    padding: 9px 18px;
+    border: 1px solid var(--editor-btn-border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.epci-richtext-modal-cancel {
+    background: var(--editor-btn-bg);
+    color: var(--editor-btn-text);
+}
+
+.epci-richtext-modal-cancel:hover {
+    background: var(--editor-btn-hover);
+}
+
+.epci-richtext-modal-insert {
+    background: var(--admin-accent);
+    color: #ffffff;
+    border-color: var(--admin-accent);
+}
+
+.epci-richtext-modal-insert:hover {
+    background: var(--admin-accent-hover);
+    border-color: var(--admin-accent-hover);
+}
+
 .epci-richtext-editor {
     min-height: 250px;
     padding: 16px;
