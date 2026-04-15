@@ -7,6 +7,23 @@
 <div class="list-toolbar">NEWS</div>
 
 {% include "epcandiapp/partials/list_controls.html" %}
+<div class="top-news-wrap">
+	<div class="top-news-title">TOP NEWS</div>
+	{% for i in top_news_items %}
+	<div class="top-news-item">
+		<div class="list-article-header">{{ i.heading }}</div>
+		<div class="list-article-date">{{ i.published_on|date:"d/m/Y" }}</div>
+		<div class="list-article-presci">
+	{{ i.news|render_richtext|striptags|truncatechars:280 }}
+			<a href="{% url 'news-detail' i.id %}" class="list-read-more">Read More</a>
+		</div>
+	</div>
+	{% if not forloop.last %}<div class="top-news-separator">*****</div>{% endif %}
+	{% empty %}
+	<div class="list-article-presci">No top news available.</div>
+	{% endfor %}
+</div>
+
 {% for i in News %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-date">{{ i.published_on|date:"d/m/Y" }}</div>

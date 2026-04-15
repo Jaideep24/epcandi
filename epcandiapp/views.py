@@ -150,26 +150,19 @@ def home_page(request):
 
 
 def news_page(request):
-    top_news_only = request.GET.get("top_news") == "on"
-    if top_news_only:
-        queryset = News.objects.filter(top_news=True).order_by("-published_on", "-id")
-        query_text = request.GET.get("q", "").strip()
-        if query_text:
-            queryset = queryset.filter(heading__icontains=query_text)
-        context = {
-            "News": queryset,
-            "page_obj": None,
-            "page_size": _safe_page_size(request.GET.get("page_size")),
-            "page_size_options": PAGE_SIZE_OPTIONS,
-            "q": query_text,
-        }
-    else:
-        queryset = News.objects.order_by("-published_on", "-id")
-        context = _paginated_listing_context(request, queryset, title_field="heading")
-        context["News"] = context["page_obj"].object_list
+    query_text = request.GET.get("q", "").strip()
+    page_size = _safe_page_size(request.GET.get("page_size"))
 
-    context["top_news_only"] = top_news_only
-    context["show_top_news_filter"] = True
+    top_news_queryset = News.objects.filter(top_news=True).order_by("-published_on", "-id")
+    if query_text:
+        top_news_queryset = top_news_queryset.filter(heading__icontains=query_text)
+
+    regular_queryset = News.objects.filter(top_news=False).order_by("-published_on", "-id")
+    context = _paginated_listing_context(request, regular_queryset, title_field="heading")
+    context["News"] = context["page_obj"].object_list
+    context["top_news_items"] = top_news_queryset
+    context["page_size"] = page_size
+    context["q"] = query_text
     context.update(_base_context())
     return render(request, "epcandiapp/news.html", context)
 

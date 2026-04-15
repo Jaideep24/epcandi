@@ -12,12 +12,4 @@
         <label for="q">Title:</label>
         <input type="text" id="q" name="q" value="{{ q }}" class="list-filter-input" placeholder="Type to search..." autocomplete="off">
     </div>
-    {% if show_top_news_filter %}
-    <div class="list-filter-line list-filter-checkbox-line">
-        <label for="top_news" class="list-filter-checkbox-label">
-            <input type="checkbox" id="top_news" name="top_news" value="on" {% if top_news_only %}checked{% endif %}>
-            TOP NEWS
-        </label>
-    </div>
-    {% endif %}
 </form>
