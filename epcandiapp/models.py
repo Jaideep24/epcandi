@@ -30,7 +30,7 @@ class News(models.Model):
 
 class Focus(models.Model):
     heading=models.CharField(max_length=200)
-    category=models.CharField(max_length=200, choices=SECTOR_CHOICES, default="I")
+    category=models.CharField(max_length=200, default="Category 1")
     article=models.TextField()
 
     class Meta:
@@ -39,6 +39,10 @@ class Focus(models.Model):
 
     def __str__(self):
         return self.heading
+
+    @property
+    def category_label(self):
+        return self.category
 
 
 class GuestArticle(models.Model):

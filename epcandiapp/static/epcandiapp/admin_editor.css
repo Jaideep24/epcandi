@@ -731,7 +731,7 @@ body:not(.login) {
 }
 
 .dashboard #content-main {
-    width: calc(100% - 320px) !important;
+    width: calc(100% - 220px) !important;
     max-width: none !important;
     min-width: 0;
     float: left !important;
@@ -741,7 +741,7 @@ body:not(.login) {
 }
 
 .dashboard #content-related {
-    width: 300px !important;
+    width: 220px !important;
     margin: 0;
     float: right !important;
     min-width: 0;
@@ -777,9 +777,16 @@ body:not(.login) {
 }
 
 .dashboard .module h2 {
-    background: linear-gradient(135deg, var(--admin-accent) 0%, var(--admin-accent-hover) 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, #7ec3ff 0%, #5aa9f7 100%);
+    border-bottom: 1px solid rgba(102, 171, 242, 0.65);
+    color: #eaf4ff;
     border-radius: 12px 12px 0 0;
+}
+
+.dashboard .module caption {
+    background: linear-gradient(135deg, #7ec3ff 0%, #5aa9f7 100%);
+    border-bottom: 1px solid rgba(102, 171, 242, 0.65);
+    color: #eaf4ff;
 }
 
 /* Keep dashboard rows on one line like previous layout. */
@@ -797,7 +804,88 @@ body:not(.login) {
 }
 
 .dashboard .module tbody th {
-    width: 68%;
+    width: calc(100% - 360px);
+}
+
+.dashboard .module tbody th a,
+.dashboard .module tbody td a {
+    color: var(--admin-text-soft);
+    padding: 0;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+    line-height: 1.2;
+    margin: 0;
+    text-decoration: none;
+    background: transparent !important;
+    background-image: none !important;
+    padding-left: 0 !important;
+}
+
+.dashboard .module tbody td {
+    width: 180px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.dashboard .module tbody tr:nth-child(odd),
+.dashboard .module tbody tr:nth-child(odd) th,
+.dashboard .module tbody tr:nth-child(odd) td {
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.dashboard .module tbody tr:nth-child(even),
+.dashboard .module tbody tr:nth-child(even) th,
+.dashboard .module tbody tr:nth-child(even) td {
+    background: rgba(59, 130, 246, 0.04);
+}
+
+.dashboard .module tbody tr:hover,
+.dashboard .module tbody tr:hover th,
+.dashboard .module tbody tr:hover td {
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.dashboard .module tbody tr:hover th a,
+.dashboard .module tbody tr:hover td a {
+    color: var(--admin-accent);
+}
+
+.dashboard .module .addlink::before,
+.dashboard .module .changelink::before,
+.dashboard .module .viewlink::before {
+    display: inline-block;
+    min-width: 12px;
+    margin-right: 2px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.dashboard .module .addlink,
+.dashboard .module .changelink,
+.dashboard .module .viewlink {
+    background: transparent !important;
+    background-image: none !important;
+    padding-left: 0 !important;
+}
+
+.dashboard .module .addlink::before {
+    content: "＋";
+    color: #5ecf7a;
+}
+
+.dashboard .module .changelink::before {
+    content: "✎";
+    color: #f0c419;
+    transform: rotate(-32deg);
+    transform-origin: center;
+}
+
+.dashboard .module .viewlink::before {
+    content: "◉";
+    color: #9aa7bd;
 }
 
 .module {

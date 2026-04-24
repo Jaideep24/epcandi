@@ -168,7 +168,7 @@ a:hover
 }
 .menu-div
 {
-    background:linear-gradient(to right, #474c52 0%, #60656c 100%);
+    background:linear-gradient(to right, #b81e24 0%, #8f171d 100%);
     width:100%;
     min-height:40px;
     text-align:left;
@@ -211,7 +211,7 @@ a:hover
 {
     margin:16px 14px 0px 14px;
     padding:8px 12px;
-    background:linear-gradient(to right, #6f747b 0%, #8e939a 100%);
+    background:linear-gradient(to right, #b81e24 0%, #8f171d 100%);
     color:#ffffff;
     text-align:left;
     font-size:12px;
@@ -1300,8 +1300,13 @@ a:hover
 .footer-company
 {
     font-weight:700;
-    color:#3e434a;
+    color:#c9252b;
     letter-spacing:0.2px;
+}
+.footer-editorial
+{
+    color:#c9252b;
+    font-weight:700;
 }
 .footer-credit
 {
