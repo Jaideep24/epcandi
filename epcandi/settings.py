@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'epcandiapp.middleware.AdminLoginRateLimitMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -115,6 +116,21 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dulqi7zzt',
+    'API_KEY': '664691813116289',
+    'API_SECRET': 'qqKJJ8UgLCstQ2LQzYC-O7uVZx4',
+}
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": 'whitenoise.storage.CompressedStaticFilesStorage',
+    },
+}
 
 
 # Internationalization
