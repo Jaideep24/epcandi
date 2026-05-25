@@ -1,0 +1,15 @@
+{% extends "epcandiapp/base.html" %}
+{% load content_filters %}
+{% block page_title %}EPC&amp;I Equipment News - Email Edition{% endblock %}
+{% block meta_description %}Latest equipment news curated for email delivery.{% endblock %}
+{% block meta_keywords %}equipment news, construction machinery, EPC technology, emailer{% endblock %}
+{% block content %}
+<div class="list-toolbar">EQUIPMENT NEWS</div>
+{% for i in equipment_items %}
+<div class="list-article-header">{{ i.heading }}</div>
+<div class="list-article-presci">{{ i.equipment_news|render_richtext|striptags|truncatechars:280 }} <a href="{% url 'equipment-detail' i.id %}" class="list-read-more">Read More</a></div>
+{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+{% empty %}
+<div class="list-article-presci">No equipment news available.</div>
+{% endfor %}
+{% endblock %}

@@ -2114,6 +2114,17 @@ a:hover
     }
 
 }
+
+/* Emailer Page Layout Specific Styles */
+.emailer-page-layout .side-banner-img
+{
+    width:800px !important;
+}
+
+.emailer-page-layout .banner-empty
+{
+    width:800px !important;
+}
     
 /*
      FILE ARCHIVED ON 11:06:08 Sep 15, 2025 AND RETRIEVED FROM THE

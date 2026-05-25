@@ -10,6 +10,7 @@ urlpatterns=[
     path("interview/<int:interview_id>/", interview_detail_page, name="interview-detail"),
     path("equipment/", equipment_page, name="equipment"),
     path("equipment/<int:equipment_id>/", equipment_detail_page, name="equipment-detail"),
+    path("emailer/", emailer_page, name="emailer"),
     path("events/", events_page, name="events"),
     path("events/<int:event_id>/", event_detail_page, name="event-detail"),
     path("analytics/data/", analytics_data_api, name="analytics-data"),

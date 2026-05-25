@@ -350,3 +350,37 @@ class ShoppingCart(models.Model):
 
     def __str__(self):
         return self.heading
+
+
+class EmailerRightAdvertisement(models.Model):
+    name = models.CharField(max_length=200)
+    image = models.FileField(upload_to="emailer_right_advertisement_banners/")
+    link = models.URLField(help_text="Company URL opened when users click this banner")
+    display_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        verbose_name = "EMAILER RIGHT ADVERTISEMENT"
+        verbose_name_plural = "EMAILER RIGHT ADVERTISEMENT"
+
+    def __str__(self):
+        return self.name
+
+
+class EmailerLeftAdvertisement(models.Model):
+    name = models.CharField(max_length=200)
+    image = models.FileField(upload_to="emailer_left_advertisement_banners/")
+    link = models.URLField(help_text="Company URL opened when users click this banner")
+    display_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        verbose_name = "EMAILER LEFT ADVERTISEMENT"
+        verbose_name_plural = "EMAILER LEFT ADVERTISEMENT"
+
+    def __str__(self):
+        return self.name

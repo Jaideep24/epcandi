@@ -234,6 +234,19 @@ def equipment_detail_page(request, equipment_id):
     )
 
 
+def emailer_page(request):
+    queryset = EquipmentNews.objects.order_by("-id")[:5]
+    context = {
+        "equipment_items": queryset,
+        "is_emailer": True,
+        "right_advertisements": EmailerRightAdvertisement.objects.filter(is_active=True),
+        "left_advertisements": EmailerLeftAdvertisement.objects.filter(is_active=True),
+        "banner_advertisement": BannerAdvertisement.objects.filter(is_active=True).order_by("display_order", "id").first(),
+        "latest_issue": LatestIssue.objects.order_by("-updated_at", "-id").first(),
+    }
+    return render(request, "epcandiapp/emailer.html", context)
+
+
 def events_page(request):
     queryset = Events.objects.all().order_by("-start_date", "-id")
     context = _paginated_listing_context(request, queryset, title_field="name")

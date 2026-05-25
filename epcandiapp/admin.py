@@ -202,6 +202,20 @@ class BannerAdvertisementAdmin(admin.ModelAdmin):
 	search_fields = ("name", "link")
 
 
+@admin.register(EmailerRightAdvertisement)
+class EmailerRightAdvertisementAdmin(admin.ModelAdmin):
+	list_display = ("name",)
+	list_filter = ("is_active",)
+	search_fields = ("name", "link")
+
+
+@admin.register(EmailerLeftAdvertisement)
+class EmailerLeftAdvertisementAdmin(admin.ModelAdmin):
+	list_display = ("name",)
+	list_filter = ("is_active",)
+	search_fields = ("name", "link")
+
+
 @admin.register(LatestIssue)
 class LatestIssueAdmin(admin.ModelAdmin):
 	list_display = ("title", "updated_at")
