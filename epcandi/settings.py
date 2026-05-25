@@ -100,7 +100,7 @@ DATABASES = {
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgresql://neondb_owner:npg_saB0lFHebQ4T@ep-round-haze-amxgf81b.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+        default="postgresql://neondb_owner:npg_saB0lFHebQ4T@ep-crimson-wind-ami73sv6.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
     )
 }
 # Password validation
