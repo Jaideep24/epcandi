@@ -14,12 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from epcandiapp.views import analytics_group_page, analytics_page
+from epcandiapp.sitemaps import robots_txt, sitemaps
 
 urlpatterns = [
+    path('robots.txt', robots_txt, name='robots.txt'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('analytics/', analytics_page, name='analytics'),
     path('admin/analytics/', analytics_page, name='admin-analytics'),
     path('admin/analytics/group/', analytics_group_page, name='admin-analytics-group'),
