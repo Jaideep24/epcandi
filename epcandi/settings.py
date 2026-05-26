@@ -32,8 +32,14 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '::1',
+    'epcandi.net',
+    'www.epcandi.net',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://epcandi.net',
+    'https://www.epcandi.net',
+]
 
 # Application definition
 
