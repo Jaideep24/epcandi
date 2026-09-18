@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.core.mail import send_mail
+from django.conf import settings
 from django.db.models.functions import TruncDate
 from django.http import JsonResponse
 from django.core.cache import cache
@@ -305,15 +307,12 @@ def subscribe_page(request):
         telephone = request.POST.get("telephone", "").strip()
         mobile = request.POST.get("mobile", "").strip()
         email = request.POST.get("email", "").strip()
-        password = request.POST.get("password", "").strip()
-        confirm_password = request.POST.get("confirm_password", "").strip()
+        password = ""
         subscription_type = request.POST.get("subscription_type", "0").strip()
         
         # Basic validation
-        if not all([first_name, last_name, email, password]):
+        if not all([first_name, last_name, email]):
             context = {"errors": "Please fill in all required fields."}
-        elif password != confirm_password:
-            context = {"errors": "Passwords do not match."}
         else:
             try:
                 # Save to database
@@ -332,6 +331,19 @@ def subscribe_page(request):
                     password=password,
                     subscription_type=subscription_type
                 )
+                
+                admin_email = getattr(settings, 'ADMIN_EMAIL', None)
+                if admin_email:
+                    email_subject = f"New Subscription Request from {first_name} {last_name}"
+                    email_message = f"A new subscription form was submitted:\n\nName: {first_name} {last_name}\nEmail: {email}\nMobile: {mobile}\nOrganisation: {organisation}\nDesignation: {designation}\nCity: {city}\nSubscription Type: {subscription_type}\n"
+                    send_mail(
+                        subject=email_subject,
+                        message=email_message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[admin_email],
+                        fail_silently=True,
+                    )
+                    
                 context = {"message": "Thank you! Your registration has been submitted. We will get back to you soon."}
             except Exception as e:
                 context = {"errors": f"An error occurred: {str(e)}"}
@@ -368,6 +380,19 @@ def contact_page(request):
                     subject=subject,
                     message=message_text
                 )
+                
+                admin_email = getattr(settings, 'ADMIN_EMAIL', None)
+                if admin_email:
+                    email_subject = f"New Contact Request: {subject}"
+                    email_message = f"A new contact form was submitted:\n\nQuery Type: {query_type}\nName: {name}\nEmail: {email}\nOrganisation: {organisation}\nSubject: {subject}\nMessage:\n{message_text}\n"
+                    send_mail(
+                        subject=email_subject,
+                        message=email_message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[admin_email],
+                        fail_silently=True,
+                    )
+                    
                 context = {"message": "Thank you! Your message has been received. We will get back to you soon."}
             except Exception as e:
                 context = {"errors": f"An error occurred: {str(e)}"}

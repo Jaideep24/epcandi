@@ -5,7 +5,7 @@
 {% block content %}
 <div class="page-panel subscribe-panel">
     <h2 class="panel-title">USER REGISTRATION</h2>
-    <div class="panel-note subscribe-note">
+    <div class="panel-note subscribe-note" style="background: linear-gradient(to right, rgb(184, 30, 36) 0%, rgb(143, 23, 29) 100%); color: white;">
         <b>Subscribe to EPC&I - Print or Soft Copy version.</b><br>
         Select your preferred plan from the options below before submitting the form.<br>
         {% if message %}<span class="panel-success">{{ message }}</span>{% endif %}
@@ -60,14 +60,7 @@
                     <label for="email">Email:</label>
                     <input id="email" name="email" type="email" maxlength="256" class="form-text" required>
                 </div>
-                <div class="subscribe-field">
-                    <label for="password">Password:</label>
-                    <input id="password" name="password" type="password" maxlength="50" class="form-text" required>
-                </div>
-                <div class="subscribe-field">
-                    <label for="confirm_password">Confirm Password:</label>
-                    <input id="confirm_password" name="confirm_password" type="password" maxlength="50" class="form-text" required>
-                </div>
+
             </div>
 
             <div class="pricing-wrap">

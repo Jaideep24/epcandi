@@ -71,7 +71,9 @@ a:hover
 {
     background:#efede6;
     width:100%;
-    height:96px;
+    min-height:96px;
+    height:auto;
+    padding:10px 0;
     text-align:left; 
     vertical-align:middle;  
     clear:both;
@@ -103,6 +105,9 @@ a:hover
 .topbar-meta
 {
     min-width:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
 .topbar-right-banner
 {
@@ -125,9 +130,10 @@ a:hover
 .topbar-title
 {
     font-size:16px;
-    color:var(--ink);
+    color:var(--brand);
     font-weight:700;
     letter-spacing:0.2px;
+    margin-top:4px;
 }
 .topbar-subtitle
 {
@@ -542,24 +548,31 @@ a:hover
 
 .subscribe-pricing-table th.subscribe-pricing-section
 {
-    background:linear-gradient(to right, #6f747b 0%, #8e939a 100%);
+    background:linear-gradient(to right, rgb(184, 30, 36) 0%, rgb(143, 23, 29) 100%);
     color:#ffffff;
     font-size:18px;
     font-weight:700;
     line-height:1.2;
     letter-spacing:0.2px;
     padding:10px 12px;
-    text-align:left;
+    text-align:center;
+    border-bottom: 2px solid #ffffff;
 }
 
 .subscribe-pricing-table th
 {
-    background:#3f4349;
+    background:rgb(184, 30, 36);
     color:#ffffff;
     text-align:left;
     font-size:12px;
     letter-spacing:0.25px;
     padding:9px 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.subscribe-pricing-table th:last-child
+{
+    border-right: none;
 }
 
 .subscribe-pricing-table td
@@ -757,6 +770,7 @@ a:hover
     background:linear-gradient(135deg, #b02028 0%, #8b1819 100%);
     transform:translateY(-1px);
     box-shadow:0px 4px 10px rgba(201, 37, 43, 0.24);
+    color:#ffffff;
 }
 .list-event-header
 {
