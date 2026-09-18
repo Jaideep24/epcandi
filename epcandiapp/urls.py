@@ -22,6 +22,7 @@ urlpatterns=[
     path("focus/", focus_page, name="focus"),
     path("shopping-cart/", shopping_cart_page, name="shopping_cart"),
     path("shopping-cart/<int:shopping_cart_id>/", shopping_cart_detail_page, name="shopping-cart-detail"),
+    path("people-movement/<int:people_movement_id>/", people_movement_detail_page, name="people-movement-detail"),
     path("guest-article/", guest_article_page, name="guest_article"),
     path("square-foot/", square_foot_page, name="square_foot"),
     path("square-foot/<int:square_foot_id>/", square_foot_detail_page, name="square-foot-detail"),

@@ -9,7 +9,7 @@
 {% for i in focus_items %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="focus-category">Category: {{ i.category_label }}</div>
-<div class="list-article-presci">{{ i.article|render_richtext|striptags|truncatechars:280 }} <a href="{% url 'focus-detail' i.id %}" class="list-read-more">Read More</a></div>
+<div class="list-article-presci">{{ i.article|render_richtext|striptags|truncatechars:500 }} <a href="{% url 'focus-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
 <div class="list-article-presci">No articles available.</div>

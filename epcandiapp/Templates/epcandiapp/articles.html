@@ -8,7 +8,7 @@
 {% for i in Articles %}
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-presci">
-    {{ i.article|truncatechars:280|linebreaks }}
+    {{ i.article|truncatechars:500|linebreaks }}
     <a href="{% url 'article-detail' i.id %}" class="list-read-more">Read More</a>
 </div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}

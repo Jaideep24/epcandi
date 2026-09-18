@@ -7,7 +7,7 @@
 <div class="list-toolbar">EQUIPMENT NEWS</div>
 {% for i in equipment_items %}
 <div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.equipment_news|render_richtext|striptags|truncatechars:280 }} <a href="{% url 'equipment-detail' i.id %}" class="list-read-more">Read More</a></div>
+<div class="list-article-presci">{{ i.equipment_news|render_richtext|striptags|truncatechars:500 }} <a href="{% url 'equipment-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
 <div class="list-article-presci">No equipment news available.</div>

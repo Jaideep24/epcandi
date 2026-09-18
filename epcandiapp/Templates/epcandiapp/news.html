@@ -14,7 +14,7 @@
 		<div class="list-article-header">{{ i.heading }}</div>
 		<div class="list-article-date">{{ i.published_on|date:"d/m/Y" }}</div>
 		<div class="list-article-presci">
-	{{ i.news|render_richtext|striptags|truncatechars:280 }}
+	{{ i.news|render_richtext|striptags|truncatechars:500 }}
 			<a href="{% url 'news-detail' i.id %}" class="list-read-more">Read More</a>
 		</div>
 	</div>
@@ -28,7 +28,7 @@
 <div class="list-article-header">{{ i.heading }}</div>
 <div class="list-article-date">{{ i.published_on|date:"d/m/Y" }}</div>
 <div class="list-article-presci">
-	{{ i.news|render_richtext|striptags|truncatechars:280 }}
+	{{ i.news|render_richtext|striptags|truncatechars:500 }}
     <a href="{% url 'news-detail' i.id %}" class="list-read-more">Read More</a>
 </div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}

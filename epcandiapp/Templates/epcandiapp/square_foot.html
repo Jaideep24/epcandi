@@ -8,7 +8,7 @@
 {% include "epcandiapp/partials/list_controls.html" %}
 {% for i in square_foot_items %}
 <div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.square_foot|render_richtext|striptags|truncatechars:280 }} <a href="{% url 'square-foot-detail' i.id %}" class="list-read-more">Read More</a></div>
+<div class="list-article-presci">{{ i.square_foot|render_richtext|striptags|truncatechars:500 }} <a href="{% url 'square-foot-detail' i.id %}" class="list-read-more">Read More</a></div>
 {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
 {% empty %}
 <div class="list-article-presci">No square foot entries available.</div>

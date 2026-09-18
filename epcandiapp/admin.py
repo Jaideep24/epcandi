@@ -181,6 +181,14 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 	list_per_page = 25
 
 
+@admin.register(PeopleMovement)
+class PeopleMovementAdmin(admin.ModelAdmin):
+	list_display = ("heading",)
+	search_fields = ("heading", "people_movement")
+	ordering = ("-id",)
+	list_per_page = 25
+
+
 @admin.register(RightAdvertisement)
 class RightAdvertisementAdmin(admin.ModelAdmin):
 	list_display = ("name",)

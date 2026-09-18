@@ -352,6 +352,18 @@ class ShoppingCart(models.Model):
         return self.heading
 
 
+class PeopleMovement(models.Model):
+    heading = models.CharField(max_length=200)
+    people_movement = models.TextField()
+
+    class Meta:
+        verbose_name = "People Movement"
+        verbose_name_plural = "People Movement"
+
+    def __str__(self):
+        return self.heading
+
+
 class EmailerRightAdvertisement(models.Model):
     name = models.CharField(max_length=200)
     image = models.FileField(upload_to="emailer_right_advertisement_banners/")

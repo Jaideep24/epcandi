@@ -250,10 +250,33 @@ def emailer_page(request):
 
 
 def events_page(request):
-    queryset = Events.objects.all().order_by("-start_date", "-id")
-    context = _paginated_listing_context(request, queryset, title_field="name")
-    context["events"] = context["page_obj"].object_list
-    context.update(_base_context())
+    from datetime import date
+    from django.core.paginator import Paginator
+
+    today = date.today()
+    page_size = _safe_page_size(request.GET.get("page_size"))
+    query_text = request.GET.get("q", "").strip()
+
+    upcoming_qs = Events.objects.filter(end_date__gte=today).order_by("start_date", "id")
+    past_qs = Events.objects.filter(end_date__lt=today).order_by("-start_date", "-id")
+
+    if query_text:
+        upcoming_qs = upcoming_qs.filter(name__icontains=query_text)
+        past_qs = past_qs.filter(name__icontains=query_text)
+
+    combined_list = list(upcoming_qs) + list(past_qs)
+
+    paginator = Paginator(combined_list, page_size)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
+    context = _base_context()
+    context.update({
+        "events": page_obj.object_list,
+        "page_obj": page_obj,
+        "page_size": page_size,
+        "page_size_options": PAGE_SIZE_OPTIONS,
+        "q": query_text,
+    })
     return render(request, "epcandiapp/events.html", context)
 
 
@@ -1289,10 +1312,31 @@ def focus_page(request):
 
 
 def shopping_cart_page(request):
-    queryset = ShoppingCart.objects.order_by("-id")
-    context = _paginated_listing_context(request, queryset, title_field="heading")
-    context["shopping_cart_items"] = context["page_obj"].object_list
-    context.update(_base_context())
+    section = request.GET.get("section", "shopping-cart")
+    query_text = request.GET.get("q", "").strip()
+    page_size = _safe_page_size(request.GET.get("page_size"))
+
+    shopping_cart_queryset = ShoppingCart.objects.order_by("-id")
+    people_movement_queryset = PeopleMovement.objects.order_by("-id")
+
+    if query_text:
+        shopping_cart_queryset = shopping_cart_queryset.filter(heading__icontains=query_text)
+        people_movement_queryset = people_movement_queryset.filter(heading__icontains=query_text)
+
+    if section == "people-movement":
+        page_obj = Paginator(people_movement_queryset, page_size).get_page(request.GET.get("page"))
+    else:
+        page_obj = Paginator(shopping_cart_queryset, page_size).get_page(request.GET.get("page"))
+
+    context = _base_context()
+    context.update({
+        "section": section,
+        "q": query_text,
+        "page_size": page_size,
+        "page_size_options": PAGE_SIZE_OPTIONS,
+        "items": page_obj.object_list,
+        "page_obj": page_obj,
+    })
     return render(request, "epcandiapp/shopping_cart.html", context)
 
 
@@ -1305,7 +1349,20 @@ def shopping_cart_detail_page(request, shopping_cart_id):
         detail_title=item.heading,
         detail_body=item.shopping_cart,
         back_url="shopping_cart",
-        back_label="Back to Shopping Cart",
+        back_label="Back to Shopping Cart & People Movement",
+    )
+
+
+def people_movement_detail_page(request, people_movement_id):
+    item = get_object_or_404(PeopleMovement, id=people_movement_id)
+    return _render_detail_page(
+        request,
+        page_title=f"{item.heading} | EPC&I People Movement",
+        toolbar_title="PEOPLE MOVEMENT",
+        detail_title=item.heading,
+        detail_body=item.people_movement,
+        back_url="shopping_cart",
+        back_label="Back to Shopping Cart & People Movement",
     )
 
 

@@ -112,20 +112,22 @@ a:hover
 .topbar-right-banner
 {
     margin-left:auto;
-    width:468px;
-    min-width:468px;
+    width:100%;
+    max-width:468px;
     height:60px;
     display:flex;
     align-items:center;
-    justify-content:flex-end;
+    justify-content:center;
     overflow:hidden;
 }
 .topbar-banner-image
 {
-    width:468px;
-    height:60px;
-    display:block;
+    width:100%;
+    max-width:468px;
+    height:auto;
     object-fit:cover;
+    border-radius:4px;
+    border:1px solid var(--line);
 }
 .topbar-title
 {
@@ -899,6 +901,21 @@ a:hover
 .event-detail-content
 {
     min-width:0;
+}
+
+.subscribe-plan-row
+{
+    margin-bottom:20px;
+    padding:16px;
+    background:#fff;
+    border:1px solid #d7d1c5;
+    border-radius:10px;
+    box-shadow:var(--shadow-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    font-weight:700;
 }
 
 .event-detail-media-box
@@ -1825,9 +1842,14 @@ a:hover
 
     .layout-grid
     {
-        grid-template-columns:1fr;
+        display:flex;
+        flex-direction:column;
         gap:14px;
     }
+
+    .content-div { order: 1; }
+    .leftpanel-div { order: 2; }
+    .rightpanel-div { order: 3; }
 
     .leftpanel-div,
     .content-div,
@@ -1901,17 +1923,30 @@ a:hover
         display:flex;
         gap:2px 0px;
         justify-content:flex-start;
+        overflow-x:auto;
+        white-space:nowrap;
+        flex-wrap:nowrap;
+        -webkit-overflow-scrolling:touch;
     }
 
     .topbar-inner
     {
         padding:0px 10px;
         gap:10px;
+        flex-wrap:wrap;
+        justify-content:center;
     }
 
     .topbar-meta
     {
-        display:none;
+        text-align:center;
+        width:100%;
+    }
+    
+    .topbar-title 
+    {
+        font-size: 13px;
+        margin-top: 2px;
     }
 
     .menu-div a,
@@ -2108,7 +2143,9 @@ a:hover
 
     .form-labels
     {
-        display:none;
+        display:block;
+        margin-bottom: 4px;
+        font-weight: 600;
     }
 
     .form-fields p

@@ -1,17 +1,86 @@
 {% extends "epcandiapp/base.html" %}
 {% load content_filters %}
-{% block page_title %}EPC&amp;I Shopping Cart{% endblock %}
-{% block meta_description %}Browse Shopping Cart updates and announcements from EPC&amp;I.{% endblock %}
-{% block meta_keywords %}EPC shopping cart, construction marketplace, infrastructure buying updates{% endblock %}
+{% block page_title %}EPC&amp;I Shopping Cart &amp; People Movement{% endblock %}
+{% block meta_description %}Browse Shopping Cart and People Movement updates and announcements from EPC&amp;I.{% endblock %}
+{% block meta_keywords %}EPC shopping cart, people movement, construction marketplace, infrastructure buying updates{% endblock %}
 {% block content %}
-<div class="list-toolbar">SHOPPING CART</div>
-{% include "epcandiapp/partials/list_controls.html" %}
-{% for i in shopping_cart_items %}
-<div class="list-article-header">{{ i.heading }}</div>
-<div class="list-article-presci">{{ i.shopping_cart|render_richtext|striptags|truncatechars:280 }} <a href="{% url 'shopping-cart-detail' i.id %}" class="list-read-more">Read More</a></div>
-{% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
-{% empty %}
-<div class="list-article-presci">No shopping cart entries available.</div>
-{% endfor %}
-{% include "epcandiapp/partials/pagination.html" %}
+<div class="list-toolbar">SHOPPING CART &amp; PEOPLE MOVEMENT</div>
+
+<div class="content-switch" role="tablist" aria-label="Content Type Switch">
+    <a
+        href="?section=shopping-cart&q={{ q|urlencode }}&page_size={{ page_size }}"
+        class="content-switch-link {% if section == 'shopping-cart' %}is-active{% endif %}"
+        role="tab"
+        aria-selected="{% if section == 'shopping-cart' %}true{% else %}false{% endif %}"
+    >
+        SHOPPING CART
+    </a>
+    <a
+        href="?section=people-movement&q={{ q|urlencode }}&page_size={{ page_size }}"
+        class="content-switch-link {% if section == 'people-movement' %}is-active{% endif %}"
+        role="tab"
+        aria-selected="{% if section == 'people-movement' %}true{% else %}false{% endif %}"
+    >
+        PEOPLE MOVEMENT
+    </a>
+</div>
+
+<form method="get" class="list-filter-form">
+    <input type="hidden" name="section" value="{{ section }}">
+    <div class="list-filter-line">
+        <label for="page_size"><strong>ARTICLES PER PAGE:</strong></label>
+        <select name="page_size" id="page_size" class="articles-per-page">
+            {% for size in page_size_options %}
+            <option value="{{ size }}" {% if page_size == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="list-filter-line"><strong>FILTER YOUR RESULTS</strong></div>
+    <div class="list-filter-line">
+        <label for="q">Title:</label>
+        <input type="text" id="q" name="q" value="{{ q }}" class="list-filter-input" placeholder="Type to search..." autocomplete="off">
+    </div>
+</form>
+
+<div class="list-article-header">
+    {% if section == 'people-movement' %}PEOPLE MOVEMENT{% else %}SHOPPING CART{% endif %}
+</div>
+
+{% if section == 'people-movement' %}
+    {% for i in items %}
+    <div class="list-article-header">{{ i.heading }}</div>
+    <div class="list-article-presci">{{ i.people_movement|render_richtext|striptags|truncatechars:500 }} <a href="{% url 'people-movement-detail' i.id %}" class="list-read-more">Read More</a></div>
+    {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+    {% empty %}
+    <div class="list-article-presci">No people movement entries available.</div>
+    {% endfor %}
+{% else %}
+    {% for i in items %}
+    <div class="list-article-header">{{ i.heading }}</div>
+    <div class="list-article-presci">{{ i.shopping_cart|render_richtext|striptags|truncatechars:500 }} <a href="{% url 'shopping-cart-detail' i.id %}" class="list-read-more">Read More</a></div>
+    {% if not forloop.last %}<div class="list-seperator">*****</div>{% endif %}
+    {% empty %}
+    <div class="list-article-presci">No shopping cart entries available.</div>
+    {% endfor %}
+{% endif %}
+
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
+<div class="pagination-wrap">
+    {% if page_obj.has_previous %}
+    <a href="?section={{ section }}&q={{ q|urlencode }}&page_size={{ page_size }}&page={{ page_obj.previous_page_number }}" class="pager-link">Previous</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <span class="pager-selected">{{ num }}</span>
+        {% else %}
+        <a href="?section={{ section }}&q={{ q|urlencode }}&page_size={{ page_size }}&page={{ num }}" class="pager-link">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?section={{ section }}&q={{ q|urlencode }}&page_size={{ page_size }}&page={{ page_obj.next_page_number }}" class="pager-link">Next</a>
+    {% endif %}
+</div>
+{% endif %}
 {% endblock %}

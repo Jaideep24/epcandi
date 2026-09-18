@@ -1,4 +1,5 @@
 {% extends 'epcandiapp/base.html' %}
+{% load static %}
 {% block page_title %}Subscribe to EPC&amp;I | Infrastructure &amp; Construction Magazine{% endblock %}
 {% block meta_description %}Subscribe to EPC&amp;I for regular updates on Engineering, Procurement, Construction and Infrastructure news, analysis, and special reports.{% endblock %}
 {% block meta_keywords %}subscribe EPC&amp;I, infrastructure magazine subscription, construction news subscription, engineering publication{% endblock %}
@@ -60,7 +61,18 @@
                     <label for="email">Email:</label>
                     <input id="email" name="email" type="email" maxlength="256" class="form-text" required>
                 </div>
-
+                <div class="subscribe-field subscribe-field-wide">
+                    <label for="subscription_type">Select your subscription plan:</label>
+                    <select id="subscription_type" name="subscription_type" class="form-text">
+                        <option value="0" selected>No Thanks</option>
+                        <option value="print_1y">Print - 1 Year (12 Issues) - Rs. 1,920</option>
+                        <option value="print_2y">Print - 2 Years (24 Issues) - Rs. 3,400</option>
+                        <option value="print_3y">Print - 3 Years (36 Issues) - Rs. 5,000</option>
+                        <option value="soft_1y">Soft Copy - 1 Year (12 Issues) - Rs. 500</option>
+                        <option value="soft_2y">Soft Copy - 2 Years (24 Issues) - Rs. 1,000</option>
+                        <option value="soft_3y">Soft Copy - 3 Years (36 Issues) - Rs. 1,500</option>
+                    </select>
+                </div>
             </div>
 
             <div class="pricing-wrap">
@@ -88,17 +100,11 @@
                     </div>
                 </div>
 
-                <div class="subscribe-plan-row">
-                    <span>Select your subscription plan:</span>
-                    <select name="subscription_type" class="form-text subscribe-plan-select">
-                        <option value="0" selected>No Thanks</option>
-                        <option value="print_1y">Print - 1 Year (12 Issues) - Rs. 1,920</option>
-                        <option value="print_2y">Print - 2 Years (24 Issues) - Rs. 3,400</option>
-                        <option value="print_3y">Print - 3 Years (36 Issues) - Rs. 5,000</option>
-                        <option value="soft_1y">Soft Copy - 1 Year (12 Issues) - Rs. 500</option>
-                        <option value="soft_2y">Soft Copy - 2 Years (24 Issues) - Rs. 1,000</option>
-                        <option value="soft_3y">Soft Copy - 3 Years (36 Issues) - Rs. 1,500</option>
-                    </select>
+                <div class="qr-code-section" style="text-align: center; margin-top: 20px;">
+                    <p style="font-weight: bold; margin-bottom: 10px;">Scan to pay with any UPI app</p>
+                    <img src="{% static 'epcandiapp/upi_qr.jpg' %}" alt="UPI QR Code" style="max-width: 350px; width: 100%; border-radius: 12px; border: 1px solid #ddd; padding: 10px; background: white; box-shadow: 0px 4px 10px rgba(0,0,0,0.05);">
+                    <p style="margin-top: 10px; color: #555;">UPI ID: mktgepci@oksbi</p>
+                    <p style="font-size: 13px; color: #777;">PRINTASIA</p>
                 </div>
             </div>
             <div class="form-submit"><input type="submit" value="SUBMIT"></div>
