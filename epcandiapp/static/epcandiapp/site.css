@@ -1824,6 +1824,11 @@ a:hover
     margin-top:2px;
 }
 
+/* =========================================================================
+   RESPONSIVE MEDIA QUERIES (COMMENTED OUT FOR FIXED DESKTOP LAYOUT ON MOBILE)
+   To restore responsive scaling on small screens, simply remove the /* and */ below.
+========================================================================= */
+/*
 @media (max-width: 1024px)
 {
     .main-div,
@@ -2165,6 +2170,7 @@ a:hover
     }
 
 }
+*/
 
 /* Emailer Page Layout Specific Styles */
 .emailer-page-layout .side-banner-img
